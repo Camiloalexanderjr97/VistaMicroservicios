@@ -1,0 +1,20 @@
+/* Create two equal columns that floats next to each other */
+.column1 {
+    float: left;
+    width: 20%; /* Should be removed. Only for demonstration */
+  }
+  .column2 {
+      color:#3C4858;
+      font-weight: 400;
+      line-height: 22px;
+     text-transform: uppercase;
+    float: right;
+    width: 80%; /* Should be removed. Only for demonstration */
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }

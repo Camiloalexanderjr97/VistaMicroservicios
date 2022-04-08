@@ -1,0 +1,201 @@
+
+
+
+<!-- <app-sidebar></app-sidebar> -->
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title "><b>Libros registrados</b></h4>
+                        <p class="card-category">Libros registrados exitosamente.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Titulo</th>
+                                        <th scope="col">ISBN</th>
+                                        <th scope="col">Fecha Publicacion</th>
+                                        <th scope="col">Autor</th>
+                                        <th scope="col">Editorial</th>
+                                        <th scope="col">Lugar Publicacion</th>
+                                        <th scope="col">Certificado Creditos</th>
+                                        <th scope="col">Certificado Investigacion</th>
+                                        <th scope="col">N° Capitulos</th>
+                                        
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let libros of   listarLibreria">
+                                        <th>{{libros.id_libro}}</th>
+                                        <th><a [routerLink]="['/LibrosComponent/:{{libros.id_libro}}']"> {{libros.titulo_libro}}</a></th>
+
+                                        <th>{{libros.isbn_libro}}</th>
+                                        <th>{{libros.fecha_publicacion_libro}}</th>
+                                        <th>{{libros.autores_libro}}</th>
+                                        <th>{{libros.editorial_libro}}</th>
+
+                                        <th>{{libros.lugar_publicacion_libro}}</th>
+                                        <th>{{libros.certificado_creditos_libro}}</th>
+                                        <th>{{libros.certificado_investigacion_libro}}</th>
+                                        <th>{{libros.numero_capitulos_libro}}</th>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title "><b>Documentos Pendientes</b></h4>
+                        <p class="card-category"> documentos sin su firma aun.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Remitente
+                                    </th>
+                                    <th>
+                                        Fecha de Petición
+                                    </th>
+                                    <th>
+                                        Documento
+                                    </th>
+                                    <th>
+                                        Estado
+                                    </th>
+                                    <th>
+                                        Firma
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            Dakota Rice
+                                        </td>
+                                        <td>
+                                            23-05-2022
+                                        </td>
+                                        <td>
+                                            <a href="#">Oud-Turnhout.pdf</a>   
+                                        </td>
+                                        <td class="text-primary">
+                                            Pendiente
+                                        </td>
+                                        <td>
+                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            Minerva Hooper
+                                        </td>
+                                        <td>
+                                            05-12-2022
+                                        </td>
+                                        <td>
+                                            <a href="#">Sinaai-Waas.pdf</a> 
+                                           
+                                        </td>
+                                        <td class="text-primary">
+                                            Pendiente
+                                        </td>
+                                        <td>
+                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            3
+                                        </td>
+                                        <td>
+                                            Sage Rodriguez
+                                        </td>
+                                        <td>
+                                            13-03-2021
+                                        </td>
+                                        <td>
+                                            <a href="#">Baileux.pdf</a>
+                                           
+                                        </td>
+                                        <td class="text-primary">
+                                            Pendiente
+                                        </td>
+                                        <td>
+                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            4
+                                        </td>
+                                        <td>
+                                            Philip Chaney
+                                        </td>
+                                        <td>
+                                            18-06-2022
+                                        </td>
+                                        <td>
+                                            <a href="#">Overland Park.pdf</a>
+                                        </td>
+                                        <td class="text-primary">
+                                            Pendiente
+                                        </td>
+                                        <td>
+                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            5
+                                        </td>
+                                        <td>
+                                            Doris Greene
+                                        </td>
+                                        <td>
+                                            07-10-2022
+                                        </td>
+                                        <td>
+                                            <a href="#">Feldkirchen in Kärnten.pdf</a>
+                                            
+                                        </td>
+                                        <td class="text-primary">
+                                            Pendiente
+                                        </td>
+                                        <td>
+                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
