@@ -1,3 +1,5 @@
+import { ArticuloComponent } from './../../articulo/articulo.component';
+import { SemilleroComponent } from './../../semillero/semillero.component';
 import { Component } from '@angular/core';
 import { LibrosComponent } from './../../libros/libros.component';
 import { Routes } from '@angular/router';
@@ -12,8 +14,10 @@ import { TypographyComponent } from 'app/typographys/typography.component';
 import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
-import { UpgradeComponent } from '../../upgrade/upgrade.component';
+// import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { ProgramasAcademicosComponent } from 'app/programas-academicos/programas-academicos.component';
+import { GrupoComponent } from 'app/grupo/grupo.component';
+import { DepartamentoComponent } from 'app/departamento/departamento.component';
 // import { LibrosComponent } from 'app/libros/libros.component';
 
 // import { ProgramasAcademicosComponent}
@@ -68,10 +72,14 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'icons',          component: IconsComponent },
     { path: 'maps',           component: MapsComponent },
     { path: 'notifications',  component: NotificationsComponent },
-    { path: 'upgrade',        component: UpgradeComponent },
+    // { path: 'upgrade',        component: UpgradeComponent },
     { path: 'ProgramasAcademicosComponent',        component: ProgramasAcademicosComponent },
     { path: 'LibrosComponent', component: LibrosComponent},
     { path: 'RegisterComponent', component: RegisterComponent},
-    { path: 'ProductoComponent', component: ProductoComponent}
+    { path: 'ArticuloComponent', component: ArticuloComponent},
+    { path: 'ProductoComponent', component: ProductoComponent},
+    { path: 'SemilleroComponent', component: SemilleroComponent},
+    { path: 'GrupoComponent', component: GrupoComponent},
+    { path: 'DepartamentoComponent', component: DepartamentoComponent}
     
 ];

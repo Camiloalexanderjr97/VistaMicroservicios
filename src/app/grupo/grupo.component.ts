@@ -1,30 +1,30 @@
+import { GrupoService } from './../Services/grupo.service';
+import { Grupo } from './../Modelos/Grupo';
 import { Component, OnInit } from '@angular/core';
-import { Articulos } from 'app/Modelos/Articulos';
-import { ArticuloService } from 'app/Services/articulo.service';
 
 @Component({
-  selector: 'articulo',
-  templateUrl: './articulo.component.html',
-  styleUrls: ['./articulo.component.css']
+  selector: 'grupo',
+  templateUrl: './grupo.component.html',
+  styleUrls: ['./grupo.component.css']
 })
-export class ArticuloComponent implements OnInit {
+export class GrupoComponent implements OnInit {
 
-  articulos = new Articulos();
-  listarArticulos: Articulos[]=[];
+  grupos = new Grupo();
+  listarGrupos: Grupo[]=[];
 
 
-  constructor(private articuloService: ArticuloService) {
+  constructor(private grupoService: GrupoService) {
     //_CargaScripts.Carga(["main3"]);
   }
   
 
 
-  listarArticulo(): void {
-    this.articuloService.getArticulos().subscribe( (data: any) => {
+  listarGrupo(): void {
+    this.grupoService.getGrupo().subscribe( (data: any) => {
         
-        this.listarArticulos = data ;
+        this.listarGrupos = data ;
         console.log(data.nombre)
-        console.log(this.listarArticulos)
+        console.log(this.listarGrupos)
       },
       (error) => console.log(error),
       () => console.log("Complete")
@@ -74,7 +74,7 @@ export class ArticuloComponent implements OnInit {
 
 
 ngOnInit() {
-  this.listarArticulo();
+  this.listarGrupo();
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
 }

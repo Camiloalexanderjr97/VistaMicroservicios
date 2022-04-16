@@ -6,5 +6,6 @@ export class ProgramaAcademico {
   id?: String;
   nombre?: String;
   id_facultad?: Facultad;
+  facultad?: String;
  
 }

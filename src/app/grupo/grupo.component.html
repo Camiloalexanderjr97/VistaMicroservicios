@@ -17,34 +17,25 @@
                                 <thead class=" text-primary">
                                     <tr>
                                         <th scope="col">Id</th>
-                                        <th scope="col">Nombre Revista</th>   
+                                        <th scope="col">Nombre</th>   
                                           
-                                        <th scope="col">Titulo Articulo</th>    
-                                        <th scope="col">Autores Articulo</th>       
-                                        <th scope="col">Año Articulo</th>            
-                                        <th scope="col">Mes Articulo</th>            
-                                        <th scope="col">Volumen Articulo</th>            
-                                        <th scope="col">Pagina Inicial</th>            
-                                        <th scope="col">ISSN</th>            
-                                        <th scope="col">DOI</th>             
-                                        <th scope="col">URL</th>                                       
+                                        <th scope="col">Cantidad de Integrantes</th>    
+                                        <th scope="col">Fecha de Conformacion</th>       
+                                        <th scope="col">Semillero</th>            
+                                        <th scope="col">Departamento</th>                                       
                                        
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let articulos of   listarArticulos">
-                                        <th>{{articulos.id_articulo}}</th>
-                                        <th>{{articulos.nombre_revista}}</th>
-                                        <th>{{articulos.titulo_articulo}}</th>
-                                        <th>{{articulos.autores_articulo}}</th>
-                                        <th>{{articulos.anio_articulo}}</th>
-                                        <th>{{articulos.mes_articulo}}</th>
-                                        <th>{{articulos.volumen_articulo}}</th>
-                                        <th>{{articulos.pagina_inical}}</th>
-                                        <th>{{articulos.pagina_final}}</th>
-                                        <th>{{articulos.issn_articulo}}</th>
-                                        <th>{{articulos.doi_articulo}}</th>
-                                        <th>{{articulos.url_articulo}}</th>
+                                    <tr *ngFor="let grupos of   listarGrupos">
+                                        <th>{{grupos.id}}</th>
+
+                                        <th><a [routerLink]="['/productosComponent/:{{grupos.nombre}}']"> {{grupos.nombre}}</a></th>
+                                        <th>{{grupos.canIntegrantes}}</th>
+                                        <th>{{grupos.fechaConformacion}}</th>
+                                        <th><a [routerLink]="['/productosComponent/:{{grupos.semillero}}']"> {{grupos.semillero}}</a></th>
+                                        <th><a [routerLink]="['/productosComponent/:{{grupos.departamento}}']"> {{grupos.departamento}}</a></th>
+                                        
 
                                     </tr>
                                 </tbody>

@@ -1,6 +1,8 @@
 import { ProgramaAcademicoService } from './../Services/ProgramaAcademico.service';
 import { ProgramaAcademico } from './../Modelos/ProgramaAcademico';
 import { Component, OnInit } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon'
 
 @Component({
   selector: 'programas-academicos',
@@ -12,12 +14,13 @@ export class ProgramasAcademicosComponent implements OnInit {
   programaAcademico = new ProgramaAcademico();
   ListarProgramas: ProgramaAcademico[]=[];
   
-    constructor(private programaAcademicoService: ProgramaAcademicoService) {
+    constructor(private programaAcademicoService: ProgramaAcademicoService, icon: MatIconModule) {
       //_CargaScripts.Carga(["main3"]);
     }
      listarFacultades(){
       this.programaAcademicoService.getProgramasAcademicos().subscribe((data: any) => {
         this.ListarProgramas = data;
+        
         console.log(this.ListarProgramas);
       });
     }
@@ -26,6 +29,7 @@ export class ProgramasAcademicosComponent implements OnInit {
   
   ngOnInit() {
     this.listarFacultades();
+    
   }
   
 }

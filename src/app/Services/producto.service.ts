@@ -38,7 +38,7 @@ export class ProductoService {
   //eliminar
   deleteProducto(id: string): Observable<any> {
     console.log("eliminar" + id);
-    return this.http.delete<any>(this.url + "/{id}" + id);
+    return this.http.delete<any>(this.url + "/" + id);
   }
 
   // login(Producto: Producto): Observable<boolean> {
@@ -47,6 +47,6 @@ export class ProductoService {
 
   //modificar un Producto
   editProducto(Producto: Producto) {
-    return this.http.put(this.url + "/{id}", Producto);
+    return this.http.put(this.url + "/", Producto);
   }
 }

@@ -1,9 +1,7 @@
 import * as Chartist from 'chartist';
-import { Firma } from "./../Modelos/Firma";
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { User } from "app/Modelos/User";
-import { File } from "app/Modelos/File";
 // import SignaturePad from "signature_pad";
 // import { CargarScriptsService } from "../cargar-scripts.service";
 import { UsuarioService } from "app/Services/usuario.service";

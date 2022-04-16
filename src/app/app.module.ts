@@ -17,7 +17,7 @@ import { TypographyComponent } from 'app/typographys/typography.component';
 import { IconsComponent } from './icons/icons.component';
 import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { UpgradeComponent } from './upgrade/upgrade.component';
+// import { UpgradeComponent } from './upgrade/upgrade.component';
 import { LibrosComponent } from './libros/libros.component';
 import { ProgramasAcademicosComponent } from 'app/programas-academicos/programas-academicos.component';
 import { RegisterComponent } from './register/register.component';
@@ -26,9 +26,16 @@ import {
 } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { ArticuloComponent } from './articulo/articulo.component';
+import { GrupoComponent } from './grupo/grupo.component';
+import { SemilleroComponent } from './semillero/semillero.component';
+import { DepartamentoComponent } from './departamento/departamento.component';
 // import { ProductoComponent } from './producto/producto.component';
 
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MaterialModule } from './material-module';
 
 @NgModule({
   imports: [
@@ -38,6 +45,12 @@ import { ArticuloComponent } from './articulo/articulo.component';
     HttpClientModule,
     ComponentsModule,
     RouterModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MaterialModule,
+
     AppRoutingModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
@@ -45,8 +58,7 @@ import { ArticuloComponent } from './articulo/articulo.component';
   ],
   declarations: [
     AppComponent,
-    AdminLayoutComponent,
-    ArticuloComponent,
+    AdminLayoutComponent
     // ProductoComponent,
 
   ],

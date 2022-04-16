@@ -14,14 +14,19 @@ export const ROUTES: RouteInfo[] = [
     { path: '/LibrosComponent', title: 'libros',  icon:'local_library', class: '' },
     
     { path: '/ProductoComponent', title: 'productos',  icon:'content_paste', class: '' },
+    { path: '/ArticuloComponent', title: 'Articulos',  icon:'content_paste', class: '' },
 
     // { path: '/Facultad', title: 'Facultad',  icon:'content_paste', class: '' },
     { path: '/ProgramasAcademicosComponent', title: 'Programas Academicos',  icon:'content_paste', class: '' },
     { path: '/typography', title: 'Facultad',  icon:'pages', class: '' },
+    
+    { path: '/SemilleroComponent', title: 'Semilleros',  icon:'content_paste', class: '' },
+    { path: '/GrupoComponent', title: 'Grupos',  icon:'content_paste', class: '' },
+    { path: '/DepartamentoComponent', title: 'Departamentos',  icon:'content_paste', class: '' },
     { path: '/icons', title: 'Icons',  icon:'bubble_chart', class: '' },
     { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
     { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
-    { path: '/upgrade', title: 'Upgrade to PRO',  icon:'unarchive', class: 'active-pro' },
+    // { path: '/upgrade', title: 'Upgrade to PRO',  icon:'unarchive', class: 'active-pro' },
 ];
 
 @Component({

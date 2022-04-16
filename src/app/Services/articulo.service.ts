@@ -38,7 +38,7 @@ export class ArticuloService {
   //eliminar
   deleteArticulo(id: string): Observable<any> {
     console.log("eliminar" + id);
-    return this.http.delete<any>(this.url + "/{id}" + id);
+    return this.http.delete<any>(this.url + "/" + id);
   }
 
   // login(Articulo: Articulo): Observable<boolean> {
@@ -47,6 +47,6 @@ export class ArticuloService {
 
   //modificar un Articulo
   editArticulo(Articulo: Articulos) {
-    return this.http.put(this.url + "/{id}", Articulo);
+    return this.http.put(this.url + "/", Articulo);
   }
 }

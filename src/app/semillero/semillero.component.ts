@@ -1,30 +1,30 @@
+import { SemilleroService } from './../Services/semillero.service';
 import { Component, OnInit } from '@angular/core';
-import { Articulos } from 'app/Modelos/Articulos';
-import { ArticuloService } from 'app/Services/articulo.service';
+import { Semillero } from 'app/Modelos/Semillero';
 
 @Component({
-  selector: 'articulo',
-  templateUrl: './articulo.component.html',
-  styleUrls: ['./articulo.component.css']
+  selector: 'semillero',
+  templateUrl: './semillero.component.html',
+  styleUrls: ['./semillero.component.css']
 })
-export class ArticuloComponent implements OnInit {
+export class SemilleroComponent implements OnInit {
 
-  articulos = new Articulos();
-  listarArticulos: Articulos[]=[];
+  Semilleros = new Semillero();
+  listarSemilleros: Semillero[]=[];
 
 
-  constructor(private articuloService: ArticuloService) {
+  constructor(private SemilleroService: SemilleroService) {
     //_CargaScripts.Carga(["main3"]);
   }
   
 
 
-  listarArticulo(): void {
-    this.articuloService.getArticulos().subscribe( (data: any) => {
+  listarSemillero(): void {
+    this.SemilleroService.getSemillero().subscribe( (data: any) => {
         
-        this.listarArticulos = data ;
+        this.listarSemilleros = data ;
         console.log(data.nombre)
-        console.log(this.listarArticulos)
+        console.log(this.listarSemilleros)
       },
       (error) => console.log(error),
       () => console.log("Complete")
@@ -74,7 +74,7 @@ export class ArticuloComponent implements OnInit {
 
 
 ngOnInit() {
-  this.listarArticulo();
+  this.listarSemillero();
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
 }

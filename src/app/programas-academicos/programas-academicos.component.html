@@ -1,13 +1,50 @@
+
+
 <div class="main-content">
     <div class="container-fluid">
+        
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header card-header-danger">
+                    <div class="card-header card-header-danger row">
+                        <div col-6>
                         <h4 class="card-title "><b>Usuarios registrados</b></h4>
                         <p class="card-category">Usuarios registrados exitosamente.</p>
                     </div>
-                    <div class="card-body">
+                    <div class="col-5"></div>
+                    <div class="col-3">
+
+                        <div class="float-right">
+                            <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
+                                <div class="float-left">
+                                    <div class="input-group form-control-lg p-0">
+                                        <div class="form-group m-0" id="accionBuscarDownHandlerReHo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <div id="accionBuscarReHo" class="d-inline-block">
+                                        <button type="button" onclick="buscarResiduoHospitalarioReHo();" class="btn btn-primary btn-sm" name="buscarReHo" id="buscarReHo"><i class="fas fa-search" aria-hidden="true"></i></button>
+    
+                                    </div>
+                                    <div id="accionListarReHo" class="d-inline-block">
+                                        <button mat-icon-button type="button" onclick="listarResiduoHospitalarioReHo();" class="btn btn-primary btn-sm" name="listarReHo" id="listarReHo"></button>
+    
+                                    </div>
+                                    <div id="accionAgregarReHo" class="d-inline-block">
+                                        <button type="button" onclick="formAgregarResiduoHospitalarioReHo();" class="btn btn-primary btn-sm " name="formAgregarReHo" id="formAgregarReHo"><i class="fas fa-plus"></i></button>
+    
+                                    </div>
+                                    <div id="accionImportarReHo" class="d-inline-block">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="importarArchivoResiduoHospitalarioReHo();" name="importarReHo" id="importarReHo"><i class="fas fa-file-excel"></i></button>
+    
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="card-body ">
                         <div class="table-responsive">
                             <table class="table">
                              <thead class=" text-primary">
@@ -21,7 +58,8 @@
                                     <tr *ngFor="let programa of ListarProgramas">
                                         <th>{{programa.id}}</th>
                                         <td>{{programa.nombre}}</td>
-                                        <td><a href="{{programa.id_facultad.nombre}}"></a>{{programa.id_facultad.nombre}}</td>
+                                        <!-- <td>{{programa.id_facultad.nombre}}</td> -->
+                                        <!-- <td><a href="{{programa.id_facultad.id}}"></a>{{programa.id_facultad.id}}</td> -->
                                     </tr>
                                 </tbody>
                             </table>

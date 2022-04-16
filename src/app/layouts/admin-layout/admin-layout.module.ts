@@ -1,3 +1,7 @@
+import { ArticuloComponent } from './../../articulo/articulo.component';
+import { GrupoComponent } from './../../grupo/grupo.component';
+import { DepartamentoComponent } from './../../departamento/departamento.component';
+import { SemilleroComponent } from './../../semillero/semillero.component';
 import { ProgramasAcademicosComponent } from 'app/programas-academicos/programas-academicos.component';
 // import { ProgramasAcademicosComponent } from './../../components/programas-academicos/programas-academicos.component';
 import { NgModule } from '@angular/core';
@@ -13,12 +17,13 @@ import { LibrosComponent } from './../../libros/libros.component';
 import { RegisterComponent } from 'app/register/register.component';
 import { ProductoComponent } from 'app/producto/producto.component';
 
+
 // import { TypographyComponent } from '../../typographys/typography.component';
 // import { ProgramasAcademicosComponent } from 'app/programas-academicos';
 import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
-import { UpgradeComponent } from '../../upgrade/upgrade.component';
+// import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatRippleModule} from '@angular/material/core';
@@ -49,9 +54,12 @@ import {MatSelectModule} from '@angular/material/select';
     IconsComponent,
     MapsComponent,
     NotificationsComponent,
-    UpgradeComponent,
     RegisterComponent,
     ProductoComponent,
+    SemilleroComponent,
+    DepartamentoComponent,
+    GrupoComponent,
+    ArticuloComponent
     
   ]
 })

@@ -1,30 +1,30 @@
+import { DepartamentoService } from './../Services/departamento.service';
 import { Component, OnInit } from '@angular/core';
-import { Articulos } from 'app/Modelos/Articulos';
-import { ArticuloService } from 'app/Services/articulo.service';
+import { Departamento } from 'app/Modelos/Departamento';
 
 @Component({
-  selector: 'articulo',
-  templateUrl: './articulo.component.html',
-  styleUrls: ['./articulo.component.css']
+  selector: 'departamento',
+  templateUrl: './departamento.component.html',
+  styleUrls: ['./departamento.component.css']
 })
-export class ArticuloComponent implements OnInit {
+export class DepartamentoComponent implements OnInit {
 
-  articulos = new Articulos();
-  listarArticulos: Articulos[]=[];
+  departamentos = new Departamento();
+  listarDepartamentos: Departamento[]=[];
 
 
-  constructor(private articuloService: ArticuloService) {
+  constructor(private departamentoService: DepartamentoService) {
     //_CargaScripts.Carga(["main3"]);
   }
   
 
 
-  listarArticulo(): void {
-    this.articuloService.getArticulos().subscribe( (data: any) => {
+  listarDepartamento(): void {
+    this.departamentoService.getDepartamento().subscribe( (data: any) => {
         
-        this.listarArticulos = data ;
+        this.listarDepartamentos = data ;
         console.log(data.nombre)
-        console.log(this.listarArticulos)
+        console.log(this.listarDepartamentos)
       },
       (error) => console.log(error),
       () => console.log("Complete")
@@ -74,7 +74,7 @@ export class ArticuloComponent implements OnInit {
 
 
 ngOnInit() {
-  this.listarArticulo();
+  this.listarDepartamento();
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
 }

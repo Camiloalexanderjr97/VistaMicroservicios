@@ -10,4 +10,5 @@ export const environment = {
 export const urlUser = "http://localhost:8080";
 export const urlArticulo = "http://localhost:4000";
 export const urlProgramaAcedmico = "http://localhost:8081";
+export const urlGrupo = "http://localhost:8082";
 // export const urlapi = "http://localhost:8080";

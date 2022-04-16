@@ -39,7 +39,7 @@ export class LibrosService {
   //eliminar
   deleteLibros(id: string): Observable<any> {
     console.log("eliminar" + id);
-    return this.http.delete<any>(this.url + "/{id}" + id);
+    return this.http.delete<any>(this.url + "/" + id);
   }
 
   // login(Libros: Libros): Observable<boolean> {
@@ -48,6 +48,6 @@ export class LibrosService {
 
   //modificar un Libros
   editLibros(Libros: Libros) {
-    return this.http.put(this.url + "/{id}", Libros);
+    return this.http.put(this.url + "/", Libros);
   }
 }
