@@ -5,3 +5,4 @@ export class Facultad {
   nombre?: String;
  
 }
+ 

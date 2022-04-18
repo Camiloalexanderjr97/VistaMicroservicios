@@ -1,12 +1,11 @@
 import { Facultad } from './Facultad';
 // import { Rol } from "./Rol";
 
-export class ProgramaAcademico {
+export interface ProgramaAcademicoInterface {
 
   id?: String;
   nombre?: String;
-  id_facultad?: Facultad;
+  id_facultad?: Facultad; 
   facultad?: String;
  
 }
- 

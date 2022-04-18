@@ -1,8 +1,15 @@
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CargarScriptsService } from './../cargar-scripts.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+import { DataTablesModule } from 'angular-datatables';
+import { CommonModule } from '@angular/common'; 
+import { BrowserModule } from '@angular/platform-browser';
 
 
 import { AppRoutingModule } from './app.routing';
@@ -31,13 +38,21 @@ import { SemilleroComponent } from './semillero/semillero.component';
 import { DepartamentoComponent } from './departamento/departamento.component';
 // import { ProductoComponent } from './producto/producto.component';
 
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MaterialModule } from './material-module';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
+// import {NgbModuledule} from '@ ng-bootstrap / ng-bootstrap';
+
+
 
 @NgModule({
+  
+  declarations: [
+    AppComponent,
+    AdminLayoutComponent,
+    // ProductoComponent,
+
+  ],
   imports: [
     BrowserAnimationsModule,
     FormsModule,
@@ -45,24 +60,19 @@ import { MaterialModule } from './material-module';
     HttpClientModule,
     ComponentsModule,
     RouterModule,
-    MatDialogModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MaterialModule,
+    MaterialModule,NgbModule,
+    BrowserModule,DataTablesModule,
+    HttpClientModule,    NgxDatatableModule,
 
-    AppRoutingModule,
+    CommonModule,
+    AppRoutingModule,    MatProgressBarModule,
+
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     })
   ],
-  declarations: [
-    AppComponent,
-    AdminLayoutComponent
-    // ProductoComponent,
-
-  ],
-  providers: [],
+  providers: [CargarScriptsService,NgbModule],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,7 +9,7 @@ import {Producto} from "../Modelos/Producto";
   providedIn: "root",
 })
 export class ProductoService {
-  private url = `${urlArticulo}/prod/productos`;
+  private url = `${urlArticulo}/prod`;
   // private url2 = `${urlProducto}/file`;
 
 
@@ -17,12 +17,12 @@ export class ProductoService {
 
   //getProductos
   getProductos(): Observable<Producto[]> {
-    return this.http.get<Producto[]>(this.url);
+    return this.http.get<Producto[]>(this.url+"/productos");
   }
 
   //get un Producto
-  getProducto(id: string): Observable<any> {
-    return this.http.get<any>(this.url + "/" + id);
+  getProductoByID(id: string): Observable<any> {
+    return this.http.get<any>(this.url + "/findById/" + id);
   }
 
   // //get un Producto
@@ -46,7 +46,7 @@ export class ProductoService {
   // }
 
   //modificar un Producto
-  editProducto(Producto: Producto) {
-    return this.http.put(this.url + "/", Producto);
+  editProducto(producto: Producto) {
+    return this.http.put(this.url + "/editProd/"+producto.id, producto);
   }
 }

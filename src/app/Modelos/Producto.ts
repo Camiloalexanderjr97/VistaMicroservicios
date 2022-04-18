@@ -9,6 +9,6 @@ export class Producto {
         fecha?: String;
         grupo?: String;
         programa?: String;
-        facultad?: Facultad;
+        facultad?: String;
 
 }

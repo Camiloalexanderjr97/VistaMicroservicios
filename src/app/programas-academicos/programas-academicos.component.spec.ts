@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { BrowserModule } from '@angular/platform-browser';
+import { MatIconModule } from '@angular/material/icon';
 import { ProgramasAcademicosComponent } from './programas-academicos.component';
 
 describe('TypographyComponent', () => {

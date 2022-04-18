@@ -7,195 +7,213 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header card-header-danger">
+                    <div class="card-header card-header-danger row">
+
+
+                        <div col-6>
                         <h4 class="card-title "><b>Libros registrados</b></h4>
                         <p class="card-category">Libros registrados exitosamente.</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class=" text-primary">
-                                    <tr>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">Titulo</th>
-                                        <th scope="col">ISBN</th>
-                                        <th scope="col">Fecha Publicacion</th>
-                                        <th scope="col">Autor</th>
-                                        <th scope="col">Editorial</th>
-                                        <th scope="col">Lugar Publicacion</th>
-                                        <th scope="col">Certificado Creditos</th>
-                                        <th scope="col">Certificado Investigacion</th>
-                                        <th scope="col">N° Capitulos</th>
+                        </div>
+                          <div class="col-5"></div>
+
+
+
+
+
+                            <div class="col-3">
+                                <div class="float-right">
+                                  <form
+                                    class="text-center mt-2"
+                                    autocomplete="off"
+                                    name="formBuscarReHo"
+                                    id="formBuscarReHo"
+                                  >
+                                    <div class="float-left">
+                                      <div class="input-group form-control-lg p-0">
+                                        <div
+                                          class="form-group m-0"
+                                          id="accionBuscarDownHandlerReHo"
+                                        ></div>
+                                      </div>
+                                    </div>
+                                    <div class="float-right">
+                                      <div id="accionBuscarReHo" class="d-inline-block">
+                                        <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"  aria-placeholder="Listar"   >       
                                         
-                                       
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let libros of   listarLibreria">
-                                        <th>{{libros.id_libro}}</th>
-                                        <th><a [routerLink]="['/LibrosComponent/:{{libros.id_libro}}']"> {{libros.titulo_libro}}</a></th>
+                                        
+                                          <mat-icon>menu</mat-icon>                   
+                                           </button>
+                                      </div>
+                                      <div id="accionBuscarReHo" class="d-inline-block">
+                                        <button mat-mini-fab color="warn" type="button" (click)="mostrarAgg()"  aria-placeholder="Agregar"   >       
+                                          <mat-icon>plus_one</mat-icon>
+                  
+                                           </button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
 
-                                        <th>{{libros.isbn_libro}}</th>
-                                        <th>{{libros.fecha_publicacion_libro}}</th>
-                                        <th>{{libros.autores_libro}}</th>
-                                        <th>{{libros.editorial_libro}}</th>
 
-                                        <th>{{libros.lugar_publicacion_libro}}</th>
-                                        <th>{{libros.certificado_creditos_libro}}</th>
-                                        <th>{{libros.certificado_investigacion_libro}}</th>
-                                        <th>{{libros.numero_capitulos_libro}}</th>
 
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+
                     </div>
+
+                    <mat-form-field>
+                        <mat-label>Buscar</mat-label>
+                        <input matInput (keyup)="filtrar($event)" placeholder="buscar">
+              
+              
+                        
+                      </mat-form-field>
+
+
+
+
+                      <table class="table" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+                      class="mat-elevation-z8">
+                  
+                   
+                  
+                    <!-- id Column -->
+                    <ng-container matColumnDef="id_libro">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id_libro">
+                          id
+                        </th>
+                        <td mat-cell *matCellDef="let libros"> {{libros.id_libro}} </td>
+                      </ng-container>
+                  
+                         <!-- itulo_libro -->
+                    <ng-container matColumnDef="titulo_libro">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by titulo_libro">
+                            Titulo
+                        </th>
+                        <td mat-cell *matCellDef="let libros"> {{libros.titulo_libro}} </td>
+                      </ng-container>
+                    
+
+
+
+                    <!-- Nombre numero_capitulos_libro -->
+
+                    <ng-container matColumnDef="numero_capitulos_libro">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by numero_capitulos_libro">
+                          Numero de Capitulos
+                        </th>
+                        <td  class="td" *matCellDef="let libros"> {{libros.numero_capitulos_libro}} </td>
+                      </ng-container>
+
+                      <!-- Nombre autores_libro -->
+  
+                      <ng-container matColumnDef="autores_libro">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by autores_libro">
+                            Autor
+                          </th>
+                          <td mat-cell *matCellDef="let libros"> {{libros.autores_libro}} </td>
+                        </ng-container>
+
+                           <!-- Nombre fecha_publicacion_libro -->
+  
+                      <ng-container matColumnDef="fecha_publicacion_libro">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by fecha_publicacion_libro">
+                          Fecha Publicacion
+                        </th>
+                        <td mat-cell *matCellDef="let libros"> {{libros.fecha_publicacion_libro | date: 'dd/MM/yyyy'}} </td>
+                      </ng-container>
+ 
+
+
+                          <!-- Nombre lugar_publicacion_libro -->
+  
+                          <ng-container matColumnDef="lugar_publicacion_libro">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by lugar_publicacion_libro">
+                              Lugar Publicacion
+                            </th>
+                            <td mat-cell *matCellDef="let libros"> {{libros.lugar_publicacion_libro}} </td>
+                          </ng-container>
+                          
+                            <!-- Nombre certificado_creditos_libro -->
+  
+                            <ng-container matColumnDef="certificado_creditos_libro">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by certificado_creditos_libro">
+                                  Certificado Creditos
+                                </th>
+                                <td mat-cell *matCellDef="let libros"> {{libros.certificado_creditos_libro}} </td>
+                              </ng-container>
+                               <!-- Nombre certificado_investigacion_libro -->
+  
+                            <ng-container matColumnDef="certificado_investigacion_libro">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by certificado_investigacion_libro">
+                                  Certificacion Inves.
+                                </th>
+                                <td mat-cell *matCellDef="let libros"> {{libros.certificado_investigacion_libro}} </td>
+                              </ng-container>
+                               <!-- Nombre editorial_libro -->
+  
+                            <ng-container matColumnDef="editorial_libro">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by editorial_libro">
+                                  Editorial
+                                </th>
+                                <td mat-cell *matCellDef="let libros"> {{libros.editorial_libro}} </td>
+                              </ng-container>
+                    
+                    <!-- Nombre isbn_libro -->
+                    <ng-container matColumnDef="isbn_libro" >
+            
+                           <th  scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by isbn_libro">
+                        Isbn
+                      </th>
+            
+                      <td   mat-cell *matCellDef="let libros" class="row"> 
+                        <div class="col-7">
+            
+                        {{libros.isbn_libro}} 
+            
+            
+                        </div>
+            
+                        
+                      <div class="col-2">
+             <button mat-flat-button color="warn" (click)="enviarID(libros.id_libro)" aria-label="Example icon button with a delete icon">
+                          <span class="material-icons">mode_edit</span>
+                        </button>
+            
+                      </div>
+                   
+                      </td>
+            
+            
+                    </ng-container>
+            
+                      <!-- Nombre Column -->
+                      <ng-container >
+                        <th  scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
+                          Editar
+                        </th>
+                        <td>
+                         
+                        </td>     
+                      </ng-container>
+                 
+                 
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+            
+
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                  showFirstLastButtons 
+                  aria-label="Select page of periodic elements">
+   </mat-paginator>
+
+
+
+
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title "><b>Documentos Pendientes</b></h4>
-                        <p class="card-category"> documentos sin su firma aun.</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class=" text-primary">
-                                    <th>
-                                        ID
-                                    </th>
-                                    <th>
-                                        Remitente
-                                    </th>
-                                    <th>
-                                        Fecha de Petición
-                                    </th>
-                                    <th>
-                                        Documento
-                                    </th>
-                                    <th>
-                                        Estado
-                                    </th>
-                                    <th>
-                                        Firma
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            Dakota Rice
-                                        </td>
-                                        <td>
-                                            23-05-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Oud-Turnhout.pdf</a>   
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            2
-                                        </td>
-                                        <td>
-                                            Minerva Hooper
-                                        </td>
-                                        <td>
-                                            05-12-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Sinaai-Waas.pdf</a> 
-                                           
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            3
-                                        </td>
-                                        <td>
-                                            Sage Rodriguez
-                                        </td>
-                                        <td>
-                                            13-03-2021
-                                        </td>
-                                        <td>
-                                            <a href="#">Baileux.pdf</a>
-                                           
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            4
-                                        </td>
-                                        <td>
-                                            Philip Chaney
-                                        </td>
-                                        <td>
-                                            18-06-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Overland Park.pdf</a>
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            5
-                                        </td>
-                                        <td>
-                                            Doris Greene
-                                        </td>
-                                        <td>
-                                            07-10-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Feldkirchen in Kärnten.pdf</a>
-                                            
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

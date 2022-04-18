@@ -24,7 +24,9 @@ export class ProgramaAcademicoService {
 
   //get un ProgramaAcademico
   getProgramaAcademicoById(id: string): Observable<any> {
-    return this.http.get<any>(this.url + "/" + id);
+    // console.log(id):
+
+    return this.http.get<any>(this.url + "/buscarBy/" + id);
   }
 
 

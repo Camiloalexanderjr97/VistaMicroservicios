@@ -30,6 +30,11 @@ import {MatRippleModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MaterialModule } from 'app/material-module';
+// MatTableModule
+
+
 
 @NgModule({
   imports: [
@@ -43,6 +48,9 @@ import {MatSelectModule} from '@angular/material/select';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    MatProgressBarModule,
+    MaterialModule,
+    FormsModule,
   ],
   declarations: [
     DashboardComponent,
