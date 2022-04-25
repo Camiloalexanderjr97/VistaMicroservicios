@@ -23,8 +23,12 @@ export class FacultadService {
   }
 
   //get un Facultad
-  getFacultadById(id: string): Observable<any> {
-    return this.http.get<any>(this.url + "/" + id);
+  getFacultadById(id: String): Observable<Facultad> {
+    return this.http.get<Facultad>(this.url + "/" + id);
+  }
+
+    getFacultadByName(nombre: string): Observable<Facultad> {
+    return this.http.get<Facultad>(this.url + "/" + nombre);
   }
 
 

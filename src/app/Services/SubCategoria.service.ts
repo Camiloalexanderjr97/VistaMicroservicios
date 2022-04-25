@@ -9,7 +9,7 @@ import {subCategorias} from "../Modelos/SubCategorias";
   providedIn: "root",
 })
 export class SubCategoriaService {
-  private url = `${urlArticulo}/art/Articulos`;
+  private url = `${urlArticulo}/sub`;
   // private url2 = `${urlSubCategoria}/file`;
 
 
@@ -17,12 +17,12 @@ export class SubCategoriaService {
 
   //getSubCategoriass
   getSubCategorias(): Observable<subCategorias[]> {
-    return this.http.get<subCategorias[]>(this.url);
+    return this.http.get<subCategorias[]>(this.url+"/subcategorias");
   }
 
   //get un SubCategoria
-  getSubCategoriaById(id: string): Observable<any> {
-    return this.http.get<any>(this.url + "/" + id);
+  getSubCategoriaById(id: String): Observable<any> {
+    return this.http.get<any>(this.url + "/findById/" + id);
   }
 
   // //get un SubCategoria
@@ -38,7 +38,7 @@ export class SubCategoriaService {
   //eliminar
   deleteSubCategoria(id: string): Observable<any> {
     console.log("eliminar" + id);
-    return this.http.delete<any>(this.url + "/" + id);
+    return this.http.delete<any>(this.url + "/deleteSub/" + id);
   }
 
   // login(SubCategoria: SubCategoria): Observable<boolean> {
@@ -46,7 +46,7 @@ export class SubCategoriaService {
   // }
 
   //modificar un SubCategoria
-  editSubCategoria(SubCategoria: subCategorias) {
-    return this.http.put(this.url + "/", SubCategoria);
+  editSubCategoria(subCategoria: subCategorias) {
+    return this.http.put(this.url + "/editSub/"+subCategoria.id, subCategoria);
   }
 }

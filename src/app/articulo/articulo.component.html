@@ -1,202 +1,441 @@
 
 
 
+
 <!-- <app-sidebar></app-sidebar> -->
-<div class="main-content">
+<div class="main-content"*ngIf="mostrarListado" >
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title "><b>productos registrados</b></h4>
-                        <p class="card-category">productos registrados exitosamente.</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class=" text-primary">
-                                    <tr>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">Nombre Revista</th>   
-                                          
-                                        <th scope="col">Titulo Articulo</th>    
-                                        <th scope="col">Autores Articulo</th>       
-                                        <th scope="col">Año Articulo</th>            
-                                        <th scope="col">Mes Articulo</th>            
-                                        <th scope="col">Volumen Articulo</th>            
-                                        <th scope="col">Pagina Inicial</th>            
-                                        <th scope="col">ISSN</th>            
-                                        <th scope="col">DOI</th>             
-                                        <th scope="col">URL</th>                                       
-                                       
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let articulos of   listarArticulos">
-                                        <th>{{articulos.id_articulo}}</th>
-                                        <th>{{articulos.nombre_revista}}</th>
-                                        <th>{{articulos.titulo_articulo}}</th>
-                                        <th>{{articulos.autores_articulo}}</th>
-                                        <th>{{articulos.anio_articulo}}</th>
-                                        <th>{{articulos.mes_articulo}}</th>
-                                        <th>{{articulos.volumen_articulo}}</th>
-                                        <th>{{articulos.pagina_inical}}</th>
-                                        <th>{{articulos.pagina_final}}</th>
-                                        <th>{{articulos.issn_articulo}}</th>
-                                        <th>{{articulos.doi_articulo}}</th>
-                                        <th>{{articulos.url_articulo}}</th>
+                    <div class="card-header card-header-danger row">
 
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                        <div col-6>
+                        <h4 class="card-title "><b>articulos registrados</b></h4>
+                        <p class="card-category">articulos registrados exitosamente.</p>
                         </div>
+                          <div class="col-5"></div>
+
+
+
+
+
+                            <div class="col-3">
+                                <div class="float-right">
+                                  <form
+                                    class="text-center mt-2"
+                                    autocomplete="off"
+                                    name="formBuscarReHo"
+                                    id="formBuscarReHo"
+                                  >
+                                    <div class="float-left">
+                                      <div class="input-group form-control-lg p-0">
+                                        <div
+                                          class="form-group m-0"
+                                          id="accionBuscarDownHandlerReHo"
+                                        ></div>
+                                      </div>
+                                    </div>
+                                    <div class="float-right">
+                                      <div id="accionBuscarReHo" class="d-inline-block">
+                                        <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"  aria-placeholder="Listar"   >       
+                                        
+                                        
+                                          <mat-icon>menu</mat-icon>                   
+                                           </button>
+                                      </div>
+                                      <div id="accionBuscarReHo" class="d-inline-block">
+                                        <button mat-mini-fab color="warn" type="button" (click)="mostrarAgg()"  aria-placeholder="Agregar"   >       
+                                          <mat-icon>plus_one</mat-icon>
+                  
+                                           </button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+
+
+
+
+
                     </div>
+
+                    <mat-form-field>
+                        <mat-label>Buscar</mat-label>
+                        <input matInput (keyup)="filtrar($event)" placeholder="buscar">
+              
+              
+                        
+                      </mat-form-field>
+
+
+
+
+                      <table class="table" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+                      class="mat-elevation-z8">
+                  
+                   
+                  
+                    <!-- id id_articulo -->
+                    <ng-container matColumnDef="id_articulo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id_articulo">
+                          id
+                        </th>
+                        <td mat-cell *matCellDef="let articulos"> {{articulos.id_articulo}} </td>
+                      </ng-container>
+                  
+                         <!-- nombre_revista -->
+                    <ng-container matColumnDef="nombre_revista">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre_revista">
+                            Nombre Revista
+                        </th>
+                        <td mat-cell *matCellDef="let articulos"> {{articulos.nombre_revista}} </td>
+                      </ng-container>
+                    
+
+
+
+                    <!-- Nombre titulo_articulo -->
+
+                    <ng-container matColumnDef="titulo_articulo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by titulo_articulo">
+                            Titulo Articulo
+                        </th>
+                        <td  class="td" *matCellDef="let articulos"> {{articulos.titulo_articulo}} </td>
+                      </ng-container>
+
+                      <!-- Nombre autores_articulo -->
+  
+                      <ng-container matColumnDef="autores_articulo">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by autores_articulo">
+                            Autor
+                          </th>
+                          <td mat-cell *matCellDef="let articulos"> {{articulos.autores_articulo}} </td>
+                        </ng-container>
+
+                           <!-- Nombre anio_articulo -->
+  
+                      <ng-container matColumnDef="anio_articulo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by anio_articulo">
+                          Año
+                        </th>
+                        <td mat-cell *matCellDef="let articulos"> {{articulos.anio_articulo}} </td>
+                      </ng-container>
+ 
+
+
+                          <!-- Nombre mes_articulo -->
+  
+                          <ng-container matColumnDef="mes_articulo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by mes_articulo">
+                              Mes
+                            </th>
+                            <td mat-cell *matCellDef="let articulos"> {{articulos.mes_articulo}} </td>
+                          </ng-container>
+                          
+                            <!-- Nombre volumen_articulo -->
+  
+                            <ng-container matColumnDef="volumen_articulo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by volumen_articulo">
+                                    Volumen
+                                </th>
+                                <td mat-cell *matCellDef="let articulos"> {{articulos.volumen_articulo}} </td>
+                              </ng-container>
+
+
+
+                              
+                               <!-- Nombre pagina_inical -->
+  
+                            <ng-container matColumnDef="pagina_inical">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by pagina_inical">
+                                  Pag. Inicial
+                                </th>
+                                <td mat-cell *matCellDef="let articulos"> {{articulos.pagina_inical}} </td>
+                              </ng-container>
+                               <!-- Nombre pagina_final -->
+  
+                            <ng-container matColumnDef="pagina_final">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by pagina_final">
+                                 Pag. Final
+                                </th>
+                                <td mat-cell *matCellDef="let articulos"> {{articulos.pagina_final}} </td>
+                              </ng-container>
+                              
+                              
+                                  
+                            <!-- Nombre issn_articulo -->
+                            
+                            <ng-container matColumnDef="issn_articulo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by issn_articulo">
+                                ISSN
+                                </th>
+                                <td mat-cell *matCellDef="let articulos"> {{articulos.issn_articulo}} </td>
+                            </ng-container>
+
+                            <!-- Nombre doi_articulo -->
+                            
+                            <ng-container matColumnDef="doi_articulo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by doi_articulo">
+                                DOI
+                                </th>
+                                <td mat-cell *matCellDef="let articulos"> {{articulos.doi_articulo}} </td>
+                            </ng-container>
+
+                    <!-- Nombre url_articulo -->
+                    <ng-container matColumnDef="url_articulo" >
+            
+                           <th  scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by url_articulo">
+                        URL
+                      </th>
+            
+                      <td   mat-cell *matCellDef="let articulos" class="row"> 
+                        <div class="col-10">
+                            <a href="  {{articulos.url_articulo}} ">
+                                  {{articulos.url_articulo}} 
+                            </a>
+                      
+            
+            
+                        </div>
+            
+                        
+                      <div class="col-2">
+             <button mat-flat-button color="warn" (click)="enviarID(articulos.id_libro)" aria-label="Example icon button with a delete icon">
+                          <span class="material-icons">mode_edit</span>
+                        </button>
+            
+                      </div>
+                   
+                      </td>
+            
+            
+                    </ng-container>
+            
+                    
+                 
+                 
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+            
+
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                  showFirstLastButtons 
+                  aria-label="Select page of periodic elements">
+   </mat-paginator>
+
+
+
+
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title "><b>Documentos Pendientes</b></h4>
-                        <p class="card-category"> documentos sin su firma aun.</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class=" text-primary">
-                                    <th>
-                                        ID
-                                    </th>
-                                    <th>
-                                        Remitente
-                                    </th>
-                                    <th>
-                                        Fecha de Petición
-                                    </th>
-                                    <th>
-                                        Documento
-                                    </th>
-                                    <th>
-                                        Estado
-                                    </th>
-                                    <th>
-                                        Firma
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            Dakota Rice
-                                        </td>
-                                        <td>
-                                            23-05-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Oud-Turnhout.pdf</a>   
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            2
-                                        </td>
-                                        <td>
-                                            Minerva Hooper
-                                        </td>
-                                        <td>
-                                            05-12-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Sinaai-Waas.pdf</a> 
-                                           
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            3
-                                        </td>
-                                        <td>
-                                            Sage Rodriguez
-                                        </td>
-                                        <td>
-                                            13-03-2021
-                                        </td>
-                                        <td>
-                                            <a href="#">Baileux.pdf</a>
-                                           
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            4
-                                        </td>
-                                        <td>
-                                            Philip Chaney
-                                        </td>
-                                        <td>
-                                            18-06-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Overland Park.pdf</a>
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            5
-                                        </td>
-                                        <td>
-                                            Doris Greene
-                                        </td>
-                                        <td>
-                                            07-10-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Feldkirchen in Kärnten.pdf</a>
-                                            
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+
+
+
+
+
+<!-- Formulario Agregar -->
+ 
+<div class="agregar" *ngIf="mostrarAgregar">
+    <div class="agregar">
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger row">
+                  <div class="col-4"> 
+                  <h4 class="card-title">Create Lib</h4>
+                  <p class="card-category">Complete your params</p>
+                </div>
+                  <div class="col-5"></div>
+                  <div class="col-3">
+                    <div class="float-right">
+                      <form
+                        class="text-center mt-2"
+                        autocomplete="off"
+                        name="formBuscarReHo"
+                        id="formBuscarReHo"
+                      >
+                        <div class="float-left">
+                          <div class="input-group form-control-lg p-0">
+                            <div
+                              class="form-group m-0"
+                              id="accionBuscarDownHandlerReHo"
+                            ></div>
+                          </div>
+                        </div>
+                        <div class="float-right">
+                          <div id="accionBuscarReHo" class="d-inline-block">
+                            <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"  aria-placeholder="Listar"   >       
+                            
+                            
+                              <mat-icon>menu</mat-icon>                   
+                               </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <form (submit)="crearLibro()">
+                    <div class="row">
+  
+                      
+                      <div class="col-md-2">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="articulos.id_libro"
+                            matInput
+                            placeholder="Codigo"
+                            type="text"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="articulos.titulo_libro"
+                            matInput
+                            placeholder="Titulo"
+                            type="text"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <input
+                              [(ngModel)]="articulos.numero_capitulos_libro"
+                              matInput
+                              placeholder="Capitulos"
+                              type="number"
+                            />
+                          </mat-form-field>
+                        </div>
+  
+  
+  
+  
+  
+  
+                    
+                    </div>
+  
+                    <div class="row">
+  
+                      
+                      <div class="col-md-2">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="articulos.autores_libro"
+                            matInput
+                            placeholder="Autor"
+                            type="text"
+                          />
+                        </mat-form-field>
+  
+                        
+                 
+                      </div>
+  
+  
+  
+  
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="articulos.fecha_publicacion_libro"
+                            matInput
+                            placeholder="Fecha Publicacion"
+                            type="date"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <input
+                              [(ngModel)]="articulos.lugar_publicacion_libro"
+                              matInput
+                              placeholder="Lugar Publicacion"
+                              type="text"
+                            />
+                          </mat-form-field>
+                        </div>
+                    </div>
+  
+                    <div class="row">
+  
+                      
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="articulos.certificado_creditos_libro"
+                            matInput
+                            placeholder="Certificacion Creditos"
+                            type="text"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                            <input
+                              [(ngModel)]="articulos.editorial_libro"
+                              matInput
+                              placeholder="Editorial"
+                              type="text"
+                            />
+                          </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                            <input
+                              [(ngModel)]="articulos.isbn_libro"
+                              matInput
+                              placeholder="Isbn"
+                              type="text"
+                            />
+                          </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                            <input
+                              [(ngModel)]="articulos.certificado_investigacion_libro"
+                              matInput
+                              placeholder="Certificado Investigacion"
+                              type="text"
+                            />
+                          </mat-form-field>
+                      </div>
+  
+  
+                    <button
+                      mat-raised-button
+                      type="submit"
+                      class="btn btn-danger pull-right"
+                    >
+                      Create Libro
+                    </button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+

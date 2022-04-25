@@ -17,8 +17,8 @@
   
               
               <div col-6>
-                <h4 class="card-title"><b>Listado de grupos</b></h4>
-                <p class="card-category">grupos registradas exitosamente.</p>
+                <h4 class="card-title"><b>Listado de Facultades</b></h4>
+                <p class="card-category">Facultades registradas exitosamente.</p>
               </div>
               <div class="col-5"></div>
               <div class="col-3">
@@ -71,65 +71,40 @@
             <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
             class="mat-elevation-z8">
         
-      
+          <!-- Position Column -->
+          <!-- <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+              No.
+            </th>
+            <td mat-cell *matCellDef="let Facultad"> {{Facultad.position}} </td>
+          </ng-container> -->
+        
           <!-- id Column -->
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id">
               id
             </th>
-            <td mat-cell *matCellDef="let grupo"> {{grupo.id}} </td>
+            <td mat-cell *matCellDef="let facultad"> {{facultad.id}} </td>
           </ng-container>
-
-            <!-- id nombre -->
-            <ng-container matColumnDef="nombre">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
-                  id
-                </th>
-                <td mat-cell *matCellDef="let grupo"> {{grupo.nombre}} </td>
-              </ng-container>
-
-                <!-- id canIntegrantes -->
-                <ng-container matColumnDef="canIntegrantes">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by canIntegrantes">
-                      Cantidad de Integrantes
-                    </th>
-                    <td mat-cell *matCellDef="let grupo"> {{grupo.canIntegrantes}} </td>
-                  </ng-container>
-
-                      <!-- id fechaConformacion -->
-            <ng-container matColumnDef="fechaConformacion">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by fechaConformacion">
-                    Fecha Conformacion
-                </th>
-                <td mat-cell *matCellDef="let grupo"> {{grupo.fechaConformacion}} </td>
-              </ng-container>
-
-                  <!-- id id_Semillero -->
-            <ng-container matColumnDef="id_Semillero">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id_Semillero">
-                   Semillero
-                </th>
-                <td mat-cell *matCellDef="let grupo"> {{grupo.id_Semillero}} </td>
-              </ng-container>
-              
-          <!-- Nombre id_departamento -->
-          <ng-container matColumnDef="id_departamento" >
+        
+          <!-- Nombre Column -->
+          <ng-container matColumnDef="nombre" >
   
-                 <th  scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id_departamento">
-                    Departamento
+                 <th  scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
+              Nombre
             </th>
   
-            <td   mat-cell *matCellDef="let grupo" class="row"> 
-              <div class="col-9">
+            <td   mat-cell *matCellDef="let facultad" class="row"> 
+              <div class="col-10">
   
-              {{grupo.id_departamento}} 
+              {{facultad.nombre}} 
   
   
               </div>
   
               
             <div class="col-2">
-   <button mat-flat-button color="warn" (click)="enviarID(grupo.id)" aria-label="Example icon button with a delete icon">
+   <button mat-flat-button color="warn" (click)="enviarID(facultad.id)" aria-label="Example icon button with a delete icon">
                 <span class="material-icons">mode_edit</span>
               </button>
   
@@ -140,7 +115,7 @@
   
           </ng-container>
   
-         
+          
        
        
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -175,7 +150,7 @@
               <div class="card">
                 <div class="card-header card-header-danger row">
                   <div class="col-4">
-                  <h4 class="card-title">Create grupo </h4>
+                  <h4 class="card-title">Create Facultad </h4>
                   <p class="card-category">Complete your params</p>
                 </div>
                   <div class="col-5"></div>
@@ -209,14 +184,14 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form (submit)="creargrupo()">
+                  <form (submit)="crearFacultad()">
                     <div class="row">
   
                       
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
                           <input
-                            [(ngModel)]="grupo.id"
+                            [(ngModel)]="Facultad.id"
                             matInput
                             placeholder="Codigo"
                             type="text"
@@ -226,21 +201,21 @@
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
                           <input
-                            [(ngModel)]="grupo.nombre"
+                            [(ngModel)]="facultad.nombre"
                             matInput
                             placeholder="Full Name"
                             type="text"
                           />
                         </mat-form-field>
                       </div>
-                      <h3>grupo</h3>
+                      <h3>Facultad</h3>
   
                       <form class="example-form">
                         <mat-form-field class="example-full-width" appearance="fill">
                           <mat-label>Assignee</mat-label>
   
                           <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                          [(ngModel)]="grupo.nombre">
+                          [(ngModel)]="facultad.nombre">
                           <mat-autocomplete #auto="matAutocomplete" >
                             <mat-option [value]="option.id+'-'+option.nombre"  *ngFor="let option of filteredOptions | async" >
                               {{option.id}}-{{option.nombre}}
@@ -258,7 +233,7 @@
                       type="submit"
                       class="btn btn-danger pull-right"
                     >
-                      Create grupo
+                      Create Facultad
                     </button>
                     <div class="clearfix"></div>
                   </form>
@@ -283,7 +258,7 @@
               <div class="card">
                 <div class="card-header card-header-danger row">
                   <div class="col-4">
-                  <h4 class="card-title">Editar grupo Academico</h4>
+                  <h4 class="card-title">Editar Facultad Academico</h4>
                   <p class="card-category">Complete your params</p>
                 </div>
                   <div class="col-5"></div>
@@ -317,14 +292,14 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form (submit)="creargrupo()">
+                  <form (submit)="crearFacultad()">
                     <div class="row">
                       
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
                           
                           <input
-                            [(ngModel)]="grupo.id"
+                            [(ngModel)]="Facultad.id"
                             matInput
                             placeholder="Codigo"
                             type="text"
@@ -334,21 +309,21 @@
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
                           <input
-                            [(ngModel)]="grupo.nombre"
+                            [(ngModel)]="Facultad.nombre"
                             matInput
-                            placeholder="Nombre grupo"
+                            placeholder="Nombre Facultad"
                             type="text"
                           />
                         </mat-form-field>
                       </div>
-                      <h3>grupo</h3>
+                      <h3>Facultad</h3>
   
                       <form class="example-form">
                         <mat-form-field class="example-full-width" appearance="fill">
-                          <mat-label>{{grupo.grupo}}</mat-label>
+                          <mat-label>{{Facultad.facultad}}</mat-label>
   
                           <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                          [(ngModel)]="grupo.grupo">
+                          [(ngModel)]="Facultad.facultad">
                           <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
                             <mat-option [value]="option.id+'-'+option.nombre"  *ngFor="let option of filteredOptions | async" >
                               {{option.id}}-{{option.nombre}}
@@ -366,7 +341,7 @@
                       type="submit"
                       class="btn btn-danger pull-right"
                     >
-                      Create grupo
+                      Create Facultad
                     </button>
                     <div class="clearfix"></div>
                   </form>

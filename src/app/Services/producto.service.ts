@@ -44,7 +44,7 @@ export class ProductoService {
   // login(Producto: Producto): Observable<boolean> {
   //   return this.http.post<any>(`${this.url}/login`, Producto);
   // }
-
+ 
   //modificar un Producto
   editProducto(producto: Producto) {
     return this.http.put(this.url + "/editProd/"+producto.id, producto);

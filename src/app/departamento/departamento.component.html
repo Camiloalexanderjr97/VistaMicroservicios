@@ -1,184 +1,363 @@
+<!-- Formulario Listar -->
 
-
-
-<!-- <app-sidebar></app-sidebar> -->
-<div class="main-content">
+<div class="main-content"*ngIf="mostrarListado" >
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title "><b>productos registrados</b></h4>
-                        <p class="card-category">productos registrados exitosamente.</p>
+      <div class="row">
+        <div class="col-md-12" >
+          <div class="card">
+            <div class="card-header card-header-danger row">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+              
+              <div col-6>
+                <h4 class="card-title"><b>Listado de Departamentoes</b></h4>
+                <p class="card-category">Departamentoes registradas exitosamente.</p>
+              </div>
+              <div class="col-5"></div>
+              <div class="col-3">
+                <div class="float-right">
+                  <form
+                    class="text-center mt-2"
+                    autocomplete="off"
+                    name="formBuscarReHo"
+                    id="formBuscarReHo"
+                  >
+                    <div class="float-left">
+                      <div class="input-group form-control-lg p-0">
+                        <div
+                          class="form-group m-0"
+                          id="accionBuscarDownHandlerReHo"
+                        ></div>
+                      </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class=" text-primary">
-                                    <tr>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">Nombre</th>                                       
-                                       
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let departamentos of   listarDepartamentos">
-                                        <th>{{departamentos.id}}</th>
-
-                                        <th><a [routerLink]="['/productosComponent/:{{departamentos.name}}']"> {{departamentos.name}}</a></th>
+                    <div class="float-right">
+                      <div id="accionBuscarReHo" class="d-inline-block">
+                        <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"  aria-placeholder="Listar"   >       
+                        
+                        
+                          <mat-icon>menu</mat-icon>                   
+                           </button>
+                      </div>
+                      <div id="accionBuscarReHo" class="d-inline-block">
+                        <button mat-mini-fab color="warn" type="button" (click)="mostrarAgg()"  aria-placeholder="Agregar"   >       
+                          <mat-icon>plus_one</mat-icon>
+  
+                           </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+  
+  
+          <mat-form-field>
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="filtrar($event)" placeholder="buscar">
+  
+  
+            
+          </mat-form-field>
+          
+            <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+            class="mat-elevation-z8">
+        
+          <!-- Position Column -->
+          <!-- <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+              No.
+            </th>
+            <td mat-cell *matCellDef="let Departamento"> {{Departamento.position}} </td>
+          </ng-container> -->
+        
+          <!-- id Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id">
+              id
+            </th>
+            <td mat-cell *matCellDef="let Departamento"> {{Departamento.id}} </td>
+          </ng-container>
+        
+          <!-- Nombre Column -->
+          <ng-container matColumnDef="name" >
+  
+                 <th  scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+              Nombre
+            </th>
+  
+            <td   mat-cell *matCellDef="let Departamento" class="row"> 
+              <div class="col-10">
+  
+              {{Departamento.name}} 
+  
+  
+              </div>
+  
+              
+            <div class="col-2">
+   <button mat-flat-button color="warn" (click)="enviarID(Departamento.id)" aria-label="Example icon button with a delete icon">
+                <span class="material-icons">mode_edit</span>
+              </button>
+  
+            </div>
+         
+            </td>
+  
+  
+          </ng-container>
+  
+          
+       
+       
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+  
+         <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons 
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+        </div>
+        
+  
+  
+  
+            
+            
+          </div>
+        </div>
+      </div>
+  
+  
+  
+  <!-- Formulario Agregar -->
+  
+  <div class="agregar" *ngIf="mostrarAgregar">
+    <div class="agregar">
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger row">
+                  <div class="col-4">
+                  <h4 class="card-title">Create Departamento </h4>
+                  <p class="card-category">Complete your params</p>
+                </div>
+                  <div class="col-5"></div>
+                  <div class="col-3">
+                    <div class="float-right">
+                      <form
+                        class="text-center mt-2"
+                        autocomplete="off"
+                        name="formBuscarReHo"
+                        id="formBuscarReHo"
+                      >
+                        <div class="float-left">
+                          <div class="input-group form-control-lg p-0">
+                            <div
+                              class="form-group m-0"
+                              id="accionBuscarDownHandlerReHo"
+                            ></div>
+                          </div>
+                        </div>
+                        <div class="float-right">
+                          <div id="accionBuscarReHo" class="d-inline-block">
+                            <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"  aria-placeholder="Listar"   >       
+                            
+                            
+                              <mat-icon>menu</mat-icon>                   
+                               </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <form (submit)="crearDepartamento()">
+                    <div class="row">
+  
+                      
+                      <div class="col-md-2">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="Departamento.id"
+                            matInput
+                            placeholder="Codigo"
+                            type="text"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="Departamento.nombre"
+                            matInput
+                            placeholder="Full Name"
+                            type="text"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <h3>Departamento</h3>
+  
+                      <form class="example-form">
+                        <mat-form-field class="example-full-width" appearance="fill">
+                          <mat-label>Assignee</mat-label>
+  
+                          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
+                          [(ngModel)]="Departamento.nombre">
+                          <mat-autocomplete #auto="matAutocomplete" >
+                            <mat-option [value]="option.id+'-'+option.nombre"  *ngFor="let option of filteredOptions | async" >
+                              {{option.id}}-{{option.nombre}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </form>
+  
+  
+                    
+                    </div>
+  
+                    <button
+                      mat-raised-button
+                      type="submit"
+                      class="btn btn-danger pull-right"
+                    >
+                      Create Departamento
+                    </button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+       
+  <!-- Formulario Editar -->
+  
+  <div class="agregar" *ngIf="mostrarEditar">
+    <div class="agregar">
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger row">
+                  <div class="col-4">
+                  <h4 class="card-title">Editar Departamento Academico</h4>
+                  <p class="card-category">Complete your params</p>
+                </div>
+                  <div class="col-5"></div>
+                  <div class="col-3">
+                    <div class="float-right">
+                      <form
+                        class="text-center mt-2"
+                        autocomplete="off"
+                        name="formBuscarReHo"
+                        id="formBuscarReHo"
+                      >
+                        <div class="float-left">
+                          <div class="input-group form-control-lg p-0">
+                            <div
+                              class="form-group m-0"
+                              id="accionBuscarDownHandlerReHo"
+                            ></div>
+                          </div>
+                        </div>
+                        <div class="float-right">
+                          <div id="accionBuscarReHo" class="d-inline-block">
+                            <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"  aria-placeholder="Listar"   >       
+                            
+                            
+                              <mat-icon>menu</mat-icon>                   
+                               </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <form (submit)="crearDepartamento()">
+                    <div class="row">
+                      
+                      <div class="col-md-2">
+                        <mat-form-field class="example-full-width">
                           
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                          <input
+                            [(ngModel)]="Departamento.id"
+                            matInput
+                            placeholder="Codigo"
+                            type="text"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="Departamento.nombre"
+                            matInput
+                            placeholder="Nombre Departamento"
+                            type="text"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <h3>Departamento</h3>
+  
+                      <form class="example-form">
+                        <mat-form-field class="example-full-width" appearance="fill">
+                          <mat-label>{{Departamento.Departamento}}</mat-label>
+  
+                          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
+                          [(ngModel)]="Departamento.Departamento">
+                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
+                            <mat-option [value]="option.id+'-'+option.nombre"  *ngFor="let option of filteredOptions | async" >
+                              {{option.id}}-{{option.nombre}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </form>
+  
+  
+                    
                     </div>
+  
+                    <button
+                      mat-raised-button
+                      type="submit"
+                      class="btn btn-danger pull-right"
+                    >
+                      Create Departamento
+                    </button>
+                    <div class="clearfix"></div>
+                  </form>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  
+  
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title "><b>Documentos Pendientes</b></h4>
-                        <p class="card-category"> documentos sin su firma aun.</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class=" text-primary">
-                                    <th>
-                                        ID
-                                    </th>
-                                    <th>
-                                        Remitente
-                                    </th>
-                                    <th>
-                                        Fecha de Petición
-                                    </th>
-                                    <th>
-                                        Documento
-                                    </th>
-                                    <th>
-                                        Estado
-                                    </th>
-                                    <th>
-                                        Firma
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            Dakota Rice
-                                        </td>
-                                        <td>
-                                            23-05-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Oud-Turnhout.pdf</a>   
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            2
-                                        </td>
-                                        <td>
-                                            Minerva Hooper
-                                        </td>
-                                        <td>
-                                            05-12-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Sinaai-Waas.pdf</a> 
-                                           
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            3
-                                        </td>
-                                        <td>
-                                            Sage Rodriguez
-                                        </td>
-                                        <td>
-                                            13-03-2021
-                                        </td>
-                                        <td>
-                                            <a href="#">Baileux.pdf</a>
-                                           
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            4
-                                        </td>
-                                        <td>
-                                            Philip Chaney
-                                        </td>
-                                        <td>
-                                            18-06-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Overland Park.pdf</a>
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            5
-                                        </td>
-                                        <td>
-                                            Doris Greene
-                                        </td>
-                                        <td>
-                                            07-10-2022
-                                        </td>
-                                        <td>
-                                            <a href="#">Feldkirchen in Kärnten.pdf</a>
-                                            
-                                        </td>
-                                        <td class="text-primary">
-                                            Pendiente
-                                        </td>
-                                        <td>
-                                            <!-- <button (click)="alerta1();" class="btn btn-primary">Firmar</button> -->
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
+
+

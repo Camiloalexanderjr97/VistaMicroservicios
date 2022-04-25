@@ -6,7 +6,7 @@ export class Producto {
   nombre?: String;
         cantidad?: String;
         subcategoria?: String;
-        fecha?: String;
+        fecha?: Date;
         grupo?: String;
         programa?: String;
         facultad?: String;

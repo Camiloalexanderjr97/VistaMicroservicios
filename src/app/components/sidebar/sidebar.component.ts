@@ -18,7 +18,7 @@ export const ROUTES: RouteInfo[] = [
 
     // { path: '/Facultad', title: 'Facultad',  icon:'content_paste', class: '' },
     { path: '/ProgramasAcademicosComponent', title: 'Programas Academicos',  icon:'content_paste', class: '' },
-    { path: '/typography', title: 'Facultad',  icon:'pages', class: '' },
+    { path: '/facultad', title: 'Facultad',  icon:'pages', class: '' },
     
     { path: '/SemilleroComponent', title: 'Semilleros',  icon:'content_paste', class: '' },
     { path: '/GrupoComponent', title: 'Grupos',  icon:'content_paste', class: '' },
@@ -28,7 +28,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
     // { path: '/upgrade', title: 'Upgrade to PRO',  icon:'unarchive', class: 'active-pro' },
 ];
-
+ 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',

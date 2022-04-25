@@ -1,8 +1,11 @@
-import { Facultad } from './../Modelos/Facultad';
-import { FacultadService } from './../Services/Facultad.service';
-import { SubCategoriaService } from './../Services/SubCategoria.service';
-import { Producto } from 'app/Modelos/Producto';
-import { ProductoService } from 'app/Services/producto.service';
+import { GrupoService } from './../Services/grupo.service';
+import { ProgramaAcademico } from "./../Modelos/ProgramaAcademico";
+import { ProgramaAcademicoService } from "./../Services/ProgramaAcademico.service";
+import { Facultad } from "./../Modelos/Facultad";
+import { FacultadService } from "./../Services/Facultad.service";
+import { SubCategoriaService } from "./../Services/SubCategoria.service";
+import { Producto } from "app/Modelos/Producto";
+import { ProductoService } from "app/Services/producto.service";
 import { ViewChild } from "@angular/core";
 import { Component, OnInit } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
@@ -17,30 +20,38 @@ import { FormControl } from "@angular/forms";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
-import { subCategorias } from 'app/Modelos/SubCategorias';
+import { subCategorias } from "app/Modelos/SubCategorias";
+import { Grupo } from 'app/Modelos/Grupo';
 
 declare var $;
 var DataTable = require("datatables.net");
 
-
 @Component({
-  selector: 'producto',
-  templateUrl: './producto.component.html',
-  styleUrls: ['./producto.component.css']
+  selector: "producto",
+  templateUrl: "./producto.component.html",
+  styleUrls: ["./producto.component.css"],
 })
 export class ProductoComponent implements OnInit {
   productos = new Producto();
-  listarProductos: Producto[]=[];
+  productoN = new Producto();
+  listarProductos: Producto[] = [];
 
   subCategoria = new subCategorias();
-  listarSubCategorias: subCategorias[]=[];
+  listarSubCategorias: subCategorias[] = [];
 
-  
   facultad = new Facultad();
-  ListarFacultad: Facultad[]=[];
+  ListarFacultad: Facultad[] = [];
 
-
-  displayedColumns: string[] = ["id", "nombre","cantidad","subcategoria","fecha","grupo","programa","facultad"];
+  displayedColumns: string[] = [
+    "id",
+    "nombre",
+    "cantidad",
+    "subcategoria",
+    "fecha",
+    "grupo",
+    "programa",
+    "facultad",
+  ];
 
   dataSource: any;
 
@@ -48,15 +59,18 @@ export class ProductoComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-
-  constructor(private FacultadService: FacultadService,private subCategoriaService: SubCategoriaService,private productoService: ProductoService,   private _liveAnnouncer: LiveAnnouncer,
+  constructor(
+    private facultadService: FacultadService,
+    private subCategoriaService: SubCategoriaService,
+    private productoService: ProductoService,
+    private _liveAnnouncer: LiveAnnouncer,
     private _CargaScripts: CargarScriptsService,
     private router: Router,
-    icon: MatIconModule,
+    private programaAcademicoService: ProgramaAcademicoService,
+    private grupoService: GrupoService,
   ) {
     //_CargaScripts.Carga(["main3"]);
   }
-  
 
   ngOnInit() {
     this.listarProducto();
@@ -75,12 +89,38 @@ export class ProductoComponent implements OnInit {
     }
   }
 
-
   listarProducto(): void {
-    this.productoService.getProductos().subscribe( (data: Producto[]) => {
-        
-        this.listarProductos = data ;
-        
+    this.productoService.getProductos().subscribe(
+      (data: Producto[]) => {
+        for (let elemento of data) {
+
+
+          this.subCategoriaService.getSubCategoriaById(elemento.subcategoria).subscribe((subcategoria: subCategorias)=>
+          {
+            elemento.subcategoria=subcategoria.descripcion;
+          })
+          this.grupoService.getGrupoById(elemento.grupo).subscribe((grupo: Grupo)=>{
+
+            elemento.grupo = grupo.nombre;
+          })
+
+
+          this.programaAcademicoService
+            .getProgramaAcademicoById(elemento.programa)
+            .subscribe((programa: ProgramaAcademico) => {
+              elemento.programa = programa.nombre;
+            });
+
+          this.facultadService.getFacultadById(elemento.facultad).subscribe(
+            (facu: Facultad) => {
+              elemento.facultad = facu.nombre;
+            },
+            (error) => console.log(error),
+            () => console.log("Complete")
+          );
+
+          this.listarProductos.push(elemento);
+        }
         console.log(this.listarProductos);
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
@@ -88,23 +128,29 @@ export class ProductoComponent implements OnInit {
       },
       (error) => console.log(error),
       () => console.log("Complete")
-    )
+    );
   }
 
-  
+  facultadPorId(id): String {
+    this.facultadService.getFacultadById(id).subscribe(
+      (data: Facultad) => {
+        this.facultad = data;
+      },
+      (error) => console.log(error),
+      () => console.log("Complete")
+    );
+    return this.facultad.nombre;
+  }
+
   filtrar(event: Event) {
     const filtro = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filtro.trim().toLowerCase();
   }
 
-
-  
   crearProgramaAcademico() {
-
     this.productos.facultad;
-    var splitted = this.productos.facultad.split("-", 1); 
-    this.productos.facultad=splitted[0];
-
+    var splitted = this.productos.facultad.split("-", 1);
+    this.productos.facultad = splitted[0];
 
     alert(
       this.productos.facultad +
@@ -114,54 +160,58 @@ export class ProductoComponent implements OnInit {
         this.productos.nombre
     );
 
-    this.productoService
-      .addProducto(this.productos)
-      .subscribe(
-        (data: Producto) => {
-          this.productos = data;
-          console.log(data);
-          Swal.fire("Register Success!", "Registrado correctamente", "success");
-         this.mostrarList();
-        },
-        (error) =>
-          Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
-        () => console.log("Complete")
-      );
+    this.productoService.addProducto(this.productos).subscribe(
+      (data: Producto) => {
+        this.productos = data;
+        console.log(data);
+        Swal.fire("Register Success!", "Registrado correctamente", "success");
+        this.mostrarList();
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
   }
 
-  
+  formatearFecha(date: Date): string {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return `${year}/${month}/${day}`;
+  }
+  date: Date;
+
   editarProgramaAcademico() {
+    this.date = new Date(this.formatearFecha(this.productoN.fecha));
 
-    this.productos.facultad;
-    var splitted = this.productos.facultad.split("-", 1); 
-    this.productos.facultad=splitted[0];
+    this.productoN.fecha = this.date;
+    alert(this.productoN + "---" + this.productoN.fecha);
 
+    this.productoN.facultad;
+    var splitted = this.productoN.facultad.split("-", 1);
+    this.productoN.facultad = splitted[0];
 
     alert(
-      this.productos.facultad +
+      this.productoN.facultad +
         "-" +
-        this.productos.id +
+        this.productoN.id +
         "-" +
-        this.productos.nombre
+        this.productoN.cantidad
     );
 
-    this.productoService
-      .editProducto(this.productos)
-      .subscribe(
-        (data: Producto) => {
-          this.productos = data;
-          console.log(data);
-          Swal.fire("Register Success!", "Actualizado correctamente", "success");
-         this.mostrarList();
-        },
-        (error) =>
-          Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
-        () => console.log("Complete")
-      );
+    this.productoService.editProducto(this.productoN).subscribe(
+      (data: Producto) => {
+        this.productoN = data;
+        console.log(data);
+        Swal.fire("Register Success!", "Actualizado correctamente", "success");
+        this.mostrarList();
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
   }
-
-
-  
 
   myControl = new FormControl();
   // // options: User[] = [{nombre: 'Mary'}, {nombre: 'Shelley'}, {nombre: 'Igor'}];
@@ -169,122 +219,79 @@ export class ProductoComponent implements OnInit {
   filteredOptionsSubCategoria: Observable<subCategorias[]>;
   filteredOptionsFacultad: Observable<Facultad[]>;
 
+  //Ocultar y mostrar paneles de agregar y listar
+  mostrarListado: Boolean = true;
+  mostrarAgregar: Boolean = false;
+  mostrarEditar: Boolean = false;
 
+  mostrarAgg() {
+    this.mostrarListado = false;
+    this.mostrarAgregar = true;
+    this.mostrarEditar = false;
+    this.listarFacultades();
+  }
 
+  mostrarList() {
+    this.mostrarAgregar = false;
+    this.mostrarListado = true;
+    this.mostrarEditar = false;
+    this.listarProducto();
+  }
 
+  mostrarEdit() {
+    this.mostrarAgregar = false;
+    this.mostrarListado = false;
+    this.mostrarEditar = true;
+    this.listarFacultades();
+  }
 
+  //Editat Programa Academico
 
-//Ocultar y mostrar paneles de agregar y listar
-mostrarListado: Boolean = true;
-mostrarAgregar: Boolean = false;
-mostrarEditar: Boolean = false;
+  enviarID(id) {
+    this.mostrarEdit();
 
-mostrarAgg() {
-  this.mostrarListado = false;
-  this.mostrarAgregar = true;
-  this.mostrarEditar = false;
-  this.listarFacultades();
-}
+    console.log(id + "_id");
+    this.productoService.getProductoByID(id).subscribe(
+      (data: Producto) => {
+        this.productoN = new Producto();
 
-mostrarList() {
-  this.mostrarAgregar = false;
-  this.mostrarListado = true;
-  this.mostrarEditar = false;
-  this.listarProducto();
-}
+        this.productoN = data;
+        console.log(data);
+      },
+      (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+  }
 
-mostrarEdit() {
-  this.mostrarAgregar = false;
-  this.mostrarListado = false;
-  this.mostrarEditar = true;
-}
+  //Listar subCategorias para agregar en el list
+  listarSubCategoriasMostrar() {
+    this.subCategoriaService
+      .getSubCategorias()
+      .subscribe((data: subCategorias[]) => {
+        this.listarSubCategorias = data;
+        console.log(this.listarSubCategorias);
+      });
 
+    this.filteredOptionsSubCategoria = this.myControl.valueChanges.pipe(
+      startWith(""),
+      map((descipcion) => {
+        return this.listarSubCategorias.filter((option) => option.descripcion);
+      })
+    );
+  }
 
+  //Listar Facultades para agregar en el list
+  listarFacultades() {
+    this.facultadService.getFacultad().subscribe((data: Facultad[]) => {
+      this.ListarFacultad = data;
+      console.log(this.ListarFacultad);
+    });
 
-//Editat Programa Academico
-
-enviarID(id){
-  // this.mostrarEdit();
-
-  console.log(id+"_id")
-  this.productoService.getProductoByID(id).subscribe(
-    (data: Producto) => {
-      this.productos = new Producto();
-      
-      this.productos=data;
-      console.log(data);
-      alert(data.id);
-    },
-    (error) =>
-      Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
-    () => console.log("Complete")
-  );
-
-}
-
-
-
-
-
-
-
-
-//Listar subCategorias para agregar en el list 
-listarSubCategoriasMostrar() {
- 
-    
-
-  this.subCategoriaService.getSubCategorias().subscribe((data: subCategorias[]) => {
-    this.listarSubCategorias = data;
-    console.log(this.listarSubCategorias);
-  });
-
-
-  this.filteredOptionsSubCategoria = this.myControl.valueChanges.pipe(
-    startWith(''),
-    map(descipcion => {
-      return this.listarSubCategorias.filter((option) =>
-      
-      option.descripcion
-      );
-    })
-  );
-}
-
-
-
-
-
-//Listar Facultades para agregar en el list 
-listarFacultades() {
-
-    
-
-  this.FacultadService.getFacultad().subscribe((data: Facultad[]) => {
-    this.ListarFacultad = data;
-    console.log(this.ListarFacultad);
-  });
-
-
-  this.filteredOptionsFacultad = this.myControl.valueChanges.pipe(
-    startWith(''),
-    map(nombre => {
-      return this.ListarFacultad.filter((option) =>
-      
-      option.nombre
-      );
-    })
-  );
-}
-
-
-
-
-
-
-
-
-
-
-
+    this.filteredOptionsFacultad = this.myControl.valueChanges.pipe(
+      startWith(""),
+      map((nombre) => {
+        return this.ListarFacultad.filter((option) => option.nombre);
+      })
+    );
+  }
 }

@@ -21,7 +21,7 @@ export class GrupoService {
   }
 
   //get un Grupo
-  getGrupoById(id: string): Observable<any> {
+  getGrupoById(id: String): Observable<any> {
     return this.http.get<any>(this.url + "/getGrupo/" + id);
   }
 

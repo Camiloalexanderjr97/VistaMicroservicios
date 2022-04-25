@@ -11,8 +11,8 @@ export class Grupo {
   fechaConformacion?: String;
   id_Semillero?: String;
   id_departamento?: String;
-  semillero?: String;
-  departamento?: String;
+  semillero?: Semillero;
+  departamento?: Departamento;
 
 
 }

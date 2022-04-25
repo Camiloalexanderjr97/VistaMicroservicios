@@ -23,7 +23,7 @@ export class ProgramaAcademicoService {
   }
 
   //get un ProgramaAcademico
-  getProgramaAcademicoById(id: string): Observable<any> {
+  getProgramaAcademicoById(id: String): Observable<any> {
     // console.log(id):
 
     return this.http.get<any>(this.url + "/buscarBy/" + id);

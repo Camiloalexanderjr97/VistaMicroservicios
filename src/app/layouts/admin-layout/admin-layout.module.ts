@@ -1,3 +1,4 @@
+import { FacultadsComponent } from './../../facultads/facultads.component';
 import { ArticuloComponent } from './../../articulo/articulo.component';
 import { GrupoComponent } from './../../grupo/grupo.component';
 import { DepartamentoComponent } from './../../departamento/departamento.component';
@@ -12,7 +13,7 @@ import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { TableListComponent } from '../../table-list/table-list.component';
-import { TypographyComponent } from 'app/typographys/typography.component';
+// import { facultadComponent } from '../../Facultad/FacultadsComponent.component';
 import { LibrosComponent } from './../../libros/libros.component';
 import { RegisterComponent } from 'app/register/register.component';
 import { ProductoComponent } from 'app/producto/producto.component';
@@ -57,7 +58,7 @@ import { MaterialModule } from 'app/material-module';
     UserProfileComponent,
     TableListComponent,
     ProgramasAcademicosComponent,
-    TypographyComponent,
+    FacultadsComponent,
     LibrosComponent,
     IconsComponent,
     MapsComponent,

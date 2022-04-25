@@ -118,13 +118,13 @@ export class ProgramasAcademicosComponent implements OnInit {
     this.programaAcademico.facultad=splitted[0];
 
 
-    alert(
-      this.programaAcademico.facultad +
-        "-" +
-        this.programaAcademico.id +
-        "-" +
-        this.programaAcademico.nombre
-    );
+    // alert(
+    //   this.programaAcademico.facultad +
+    //     "-" +
+    //     this.programaAcademico.id +
+    //     "-" +
+    //     this.programaAcademico.nombre
+    // );
 
     this.programaAcademicoService
       .addProgramaAcademico(this.programaAcademico)

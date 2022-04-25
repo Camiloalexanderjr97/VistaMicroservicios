@@ -435,7 +435,7 @@
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
                           <input
-                            [(ngModel)]="productos.id"
+                            [(ngModel)]="productoN.id"
                             matInput
                             placeholder="Codigo"
                             type="text"
@@ -445,9 +445,9 @@
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
                           <input
-                            [(ngModel)]="productos.nombre"
+                            [(ngModel)]=productoN.nombre
                             matInput
-                            placeholder="Full Name"
+                            placeholder="Nombre"
                             type="text"
                           />
                         </mat-form-field>
@@ -455,10 +455,10 @@
                       <div class="col-md-4">
                           <mat-form-field class="example-full-width">
                             <input
-                              [(ngModel)]="productos.cantidad"
                               matInput
                               placeholder="Cantidad"
                               type="number"
+                              value="{{productoN.cantidad}}"
                             />
                           </mat-form-field>
                         </div>
@@ -477,7 +477,7 @@
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
                           <input
-                            [(ngModel)]="productos.subcategoria"
+                            [(ngModel)]="productoN.subcategoria"
                             matInput
                             placeholder="SubCategoria"
                             type="text"
@@ -504,7 +504,7 @@
                       <div class="col-md-4">
                           <mat-form-field class="example-full-width">
                             <input
-                              [(ngModel)]="productos.grupo"
+                              [(ngModel)]="productoN.grupo"
                               matInput
                               placeholder="Grupo"
                               type="text"
@@ -519,7 +519,7 @@
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
                           <input
-                            [(ngModel)]="productos.programa"
+                            [(ngModel)]="productoN.programa"
                             matInput
                             placeholder="Programa"
                             type="text"
@@ -532,7 +532,7 @@
                                 <mat-label>Assignee</mat-label>
         
                                 <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                                [(ngModel)]="productos.facultad">
+                                [(ngModel)]="productoN.facultad">
                                 <mat-autocomplete #auto="matAutocomplete" >
                                   <mat-option [value]="option.id+'-'+option.nombre"  *ngFor="let option of filteredOptionsFacultad | async" >
                                     {{option.id}}-{{option.nombre}}

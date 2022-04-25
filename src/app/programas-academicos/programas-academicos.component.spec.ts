@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatIconModule } from '@angular/material/icon';
 import { ProgramasAcademicosComponent } from './programas-academicos.component';
 
-describe('TypographyComponent', () => {
+describe('FacultadComponent', () => {
   let component: ProgramasAcademicosComponent;
   let fixture: ComponentFixture<ProgramasAcademicosComponent>;
 

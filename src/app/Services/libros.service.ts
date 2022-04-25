@@ -10,7 +10,7 @@ import {Libros} from "../Modelos/Libros";
 })
 export class LibrosService {
 
-  private url = `${urlArticulo}/lib/libros`;
+  private url = `${urlArticulo}/lib`;
   // private url2 = `${urlArticulo}/file`;
 
 
@@ -18,12 +18,12 @@ export class LibrosService {
 
   //getLibross
   getLibreria(): Observable<Libros[]> {
-    return this.http.get<Libros[]>(this.url);
+    return this.http.get<Libros[]>(this.url+"/libros");
   }
 
   //get un Libros
   getLibrosById(id: string): Observable<any> {
-    return this.http.get<any>(this.url + "/" + id);
+    return this.http.get<any>(this.url + "/librosById" + id);
   }
 
   // //get un Libros
@@ -33,13 +33,13 @@ export class LibrosService {
 
   //agregar un Libros
   addLibros(Libros: Libros) {
-    return this.http.post(this.url + "/addLibros", Libros);
+    return this.http.post(this.url + "/addLibro", Libros);
   }
 
   //eliminar
   deleteLibros(id: string): Observable<any> {
     console.log("eliminar" + id);
-    return this.http.delete<any>(this.url + "/" + id);
+    return this.http.delete<any>(this.url + "/deleteLib/" + id);
   }
 
   // login(Libros: Libros): Observable<boolean> {
@@ -47,7 +47,7 @@ export class LibrosService {
   // }
 
   //modificar un Libros
-  editLibros(Libros: Libros) {
-    return this.http.put(this.url + "/", Libros);
+  editLibros(libros: Libros) {
+    return this.http.put(this.url + "/editLibro/"+libros.id_libro, libros);
   }
 }
