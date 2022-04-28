@@ -267,7 +267,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form (submit)="crearLibro()">
+                  <form (submit)="crearLibros()">
                     <div class="row">
   
                       
@@ -415,3 +415,200 @@
       </div>
     </div>
   </div>
+
+  
+
+
+<!-- Formulario Editar -->
+ 
+<div class="agregar" *ngIf="mostrarEditar">
+  <div class="agregar">
+    <div class="main-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-danger row">
+                <div class="col-4"> 
+                <h4 class="card-title">Editar Lib</h4>
+                <p class="card-category">Complete your params</p>
+              </div>
+                <div class="col-5"></div>
+                <div class="col-3">
+                  <div class="float-right">
+                    <form
+                      class="text-center mt-2"
+                      autocomplete="off"
+                      name="formBuscarReHo"
+                      id="formBuscarReHo"
+                    >
+                      <div class="float-left">
+                        <div class="input-group form-control-lg p-0">
+                          <div
+                            class="form-group m-0"
+                            id="accionBuscarDownHandlerReHo"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="float-right">
+                        <div id="accionBuscarReHo" class="d-inline-block">
+                          <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"  aria-placeholder="Listar"   >       
+                          
+                          
+                            <mat-icon>menu</mat-icon>                   
+                             </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <form (submit)="editarLibro()">
+                  <div class="row">
+
+                    
+                    <div class="col-md-2">
+                      <mat-form-field class="example-full-width">
+                        <input
+                          [(ngModel)]="libros.id_libro"
+                          matInput
+                          placeholder="Codigo"
+                          type="text"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input
+                          [(ngModel)]="libros.titulo_libro"
+                          matInput
+                          placeholder="Titulo"
+                          type="text"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="libros.numero_capitulos_libro"
+                            matInput
+                            placeholder="Capitulos"
+                            type="number"
+                          />
+                        </mat-form-field>
+                      </div>
+
+
+
+
+
+
+                  
+                  </div>
+
+                  <div class="row">
+
+                    
+                    <div class="col-md-2">
+                      <mat-form-field class="example-full-width">
+                        <input
+                          [(ngModel)]="libros.autores_libro"
+                          matInput
+                          placeholder="Autor"
+                          type="text"
+                        />
+                      </mat-form-field>
+
+                      
+               
+                    </div>
+
+
+
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input
+                          [(ngModel)]="libros.fecha_publicacion_libro"
+                          matInput
+                          placeholder="Fecha Publicacion"
+                          type="date"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="libros.lugar_publicacion_libro"
+                            matInput
+                            placeholder="Lugar Publicacion"
+                            type="text"
+                          />
+                        </mat-form-field>
+                      </div>
+                  </div>
+
+                  <div class="row">
+
+                    
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input
+                          [(ngModel)]="libros.certificado_creditos_libro"
+                          matInput
+                          placeholder="Certificacion Creditos"
+                          type="text"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="libros.editorial_libro"
+                            matInput
+                            placeholder="Editorial"
+                            type="text"
+                          />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="libros.isbn_libro"
+                            matInput
+                            placeholder="Isbn"
+                            type="text"
+                          />
+                        </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                          <input
+                            [(ngModel)]="libros.certificado_investigacion_libro"
+                            matInput
+                            placeholder="Certificado Investigacion"
+                            type="text"
+                          />
+                        </mat-form-field>
+                    </div>
+
+
+                  <button
+                    mat-raised-button
+                    type="submit"
+                    class="btn btn-danger pull-right"
+                  >
+                    Editar Libro
+                  </button>
+                  <div class="clearfix"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

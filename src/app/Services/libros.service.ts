@@ -23,7 +23,7 @@ export class LibrosService {
 
   //get un Libros
   getLibrosById(id: string): Observable<any> {
-    return this.http.get<any>(this.url + "/librosById" + id);
+    return this.http.get<any>(this.url + "/findById/" + id);
   }
 
   // //get un Libros

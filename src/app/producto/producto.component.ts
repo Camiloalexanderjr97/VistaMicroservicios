@@ -35,12 +35,14 @@ export class ProductoComponent implements OnInit {
   productos = new Producto();
   productoN = new Producto();
   listarProductos: Producto[] = [];
+  ListarProgramas: ProgramaAcademico[]=[];
 
   subCategoria = new subCategorias();
   listarSubCategorias: subCategorias[] = [];
 
   facultad = new Facultad();
   ListarFacultad: Facultad[] = [];
+  ListarGrupos: Grupo[] = [];
 
   displayedColumns: string[] = [
     "id",
@@ -74,6 +76,7 @@ export class ProductoComponent implements OnInit {
 
   ngOnInit() {
     this.listarProducto();
+    console.log(this.mostrarEditar)
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -182,7 +185,7 @@ export class ProductoComponent implements OnInit {
   }
   date: Date;
 
-  editarProgramaAcademico() {
+  editarProducto() {
     this.date = new Date(this.formatearFecha(this.productoN.fecha));
 
     this.productoN.fecha = this.date;
@@ -213,7 +216,8 @@ export class ProductoComponent implements OnInit {
     );
   }
 
-  myControl = new FormControl();
+  myControlFacultad = new FormControl();
+  myControlSub = new FormControl();
   // // options: User[] = [{nombre: 'Mary'}, {nombre: 'Shelley'}, {nombre: 'Igor'}];
   // options: Facultad[] ;
   filteredOptionsSubCategoria: Observable<subCategorias[]>;
@@ -225,24 +229,31 @@ export class ProductoComponent implements OnInit {
   mostrarEditar: Boolean = false;
 
   mostrarAgg() {
-    this.mostrarListado = false;
+    
     this.mostrarAgregar = true;
+    this.mostrarListado = false;
     this.mostrarEditar = false;
     this.listarFacultades();
+    this.listarSubCategoriasMostrar();
+    this.listadoGrupos();
+    this.listadoProgramas();
   }
 
   mostrarList() {
-    this.mostrarAgregar = false;
     this.mostrarListado = true;
+    this.mostrarAgregar = false;
     this.mostrarEditar = false;
     this.listarProducto();
   }
 
   mostrarEdit() {
+    this.mostrarEditar = true;
     this.mostrarAgregar = false;
     this.mostrarListado = false;
-    this.mostrarEditar = true;
     this.listarFacultades();
+    this.listarSubCategoriasMostrar();
+    this.listadoGrupos();
+    this.listadoProgramas();
   }
 
   //Editat Programa Academico
@@ -253,10 +264,9 @@ export class ProductoComponent implements OnInit {
     console.log(id + "_id");
     this.productoService.getProductoByID(id).subscribe(
       (data: Producto) => {
-        this.productoN = new Producto();
 
         this.productoN = data;
-        console.log(data);
+        console.log(this.productoN);
       },
       (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")
@@ -272,10 +282,10 @@ export class ProductoComponent implements OnInit {
         console.log(this.listarSubCategorias);
       });
 
-    this.filteredOptionsSubCategoria = this.myControl.valueChanges.pipe(
+    this.filteredOptionsSubCategoria = this.myControlSub.valueChanges.pipe(
       startWith(""),
-      map((descipcion) => {
-        return this.listarSubCategorias.filter((option) => option.descripcion);
+      map((descripcion) => {
+        return this.listarSubCategorias.filter((options) => options.descripcion);
       })
     );
   }
@@ -287,11 +297,24 @@ export class ProductoComponent implements OnInit {
       console.log(this.ListarFacultad);
     });
 
-    this.filteredOptionsFacultad = this.myControl.valueChanges.pipe(
+    this.filteredOptionsFacultad = this.myControlFacultad.valueChanges.pipe(
       startWith(""),
       map((nombre) => {
         return this.ListarFacultad.filter((option) => option.nombre);
       })
     );
+  }
+
+
+  listadoGrupos(){
+    this.grupoService.getGrupo().subscribe((data: Grupo[])=>{
+      this.ListarGrupos=data;
+    })
+  }
+  
+  listadoProgramas(){
+    this.programaAcademicoService.getProgramasAcademicos().subscribe((data: ProgramaAcademico[])=>{
+      this.ListarProgramas=data;
+    })
   }
 }

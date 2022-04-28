@@ -1,13 +1,13 @@
 import * as Chartist from 'chartist';
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { User } from "app/Modelos/User";
-// import SignaturePad from "signature_pad";
-// import { CargarScriptsService } from "../cargar-scripts.service";
-import { UsuarioService } from "app/Services/usuario.service";
-import { UserAuthService } from "app/Services/user-auth.service";
+import { HttpClient } from '@angular/common/http';
+import { throwError } from 'rxjs';
+
+import { OwlOptions } from 'ngx-owl-carousel-o';
 // import Swal from "sweetalert2";
 declare var $: any;
+import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,19 +16,31 @@ declare var $: any;
 })
 export class DashboardComponent implements OnInit {
 
-  user = new User();
-  ListarUser: User[]=[];
+  customOptions: OwlOptions = {
+    loop: true,
+    mouseDrag: true,
+    autoplay: true,
+    center: true,
+    dots: false,
+    autoHeight: true,
+    autoWidth: true,
+    responsive: {
+      0: {
+        items: 1,
+      },
+      600: {
+        items: 1,
+      },
+      1000: {
+        items: 1,
+      }
+    }
+  }
+
   
-    constructor(private UsuarioService: UsuarioService) {
-      //_CargaScripts.Carga(["main3"]);
-    }
-     listarUser(){
-      this.UsuarioService.getUsuario().subscribe((data: any) => {
-        this.ListarUser = data;
-        console.log(this.ListarUser);
-      });
-    }
-    
+     
+  
+  
 
   startAnimationForLineChart(chart){
       let seq: any, delays: any, durations: any;
@@ -87,13 +99,13 @@ export class DashboardComponent implements OnInit {
       seq2 = 0;
   };
   ngOnInit() {
-    this.listarUser();
       const dataDailySalesChart: any = {
           labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
           series: [
               [12, 17, 7, 17, 23, 18, 38]
           ]
       };
+ 
 
      const optionsDailySalesChart: any = {
           lineSmooth: Chartist.Interpolation.cardinal({

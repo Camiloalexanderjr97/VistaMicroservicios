@@ -97,27 +97,15 @@ ngOnInit() {
 
 
   
-  crearLibro() {
+  crearLibros() {
+    alert(this.libros.id_libro);
 
-    // this.Libros.facultad;
-    // var splitted = this.libros.facultad.split("-", 1); 
-    // this.libros.facultad=splitted[0];
-
-
-    alert(
-      this.libros.id_libro +
-        "-" +
-        this.libros.autores_libro +
-        "-" +
-        this.libros.titulo_libro
-    );
 
     this.libroService
       .addLibros(this.libros)
       .subscribe(
         (data: Libros) => {
           this.libros = data;
-          console.log(data);
           Swal.fire("Register Success!", "Registrado correctamente", "success");
          this.mostrarList();
         },
@@ -198,9 +186,8 @@ mostrarEdit() {
 //Editar Libro
 
 enviarID(id){
-  // this.mostrarEdit();
+  this.mostrarEdit();
 
-  console.log(id+"_id")
   this.libroService.getLibrosById(id).subscribe(
     (data: Libros) => {
       this.libros = new Libros();

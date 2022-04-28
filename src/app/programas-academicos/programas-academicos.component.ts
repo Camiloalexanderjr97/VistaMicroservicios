@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { ViewChild } from "@angular/core";
 import { FacultadService } from "./../Services/Facultad.service";
 import { Facultad } from "./../Modelos/Facultad";
@@ -46,7 +47,7 @@ export class ProgramasAcademicosComponent implements OnInit {
 
 
   
-  displayedColumns: string[] = ["id", "nombre"];
+  displayedColumns: string[] = ["id", "nombre","facultad"];
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -94,8 +95,13 @@ export class ProgramasAcademicosComponent implements OnInit {
   listarProgramasAcademicos() {
     this.programaAcademicoService
       .getProgramasAcademicos()
-      .subscribe((data: Facultad[]) => {
-        this.ListarProgramas = data;
+      .subscribe((data: ProgramaAcademico[]) => {
+        this.ListarProgramas=data;
+        for(let element of this.ListarProgramas){
+          console.log(element.facultad)
+          // element.facultad=element.id_facultad.nombre;
+          // alert(element.id_facultad.nombre)
+        }
 
         console.log(this.ListarProgramas);
         this.dataSource = new MatTableDataSource(data);

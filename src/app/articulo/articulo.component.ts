@@ -59,6 +59,20 @@ export class ArticuloComponent implements OnInit {
     )
   }
 
+
+  crearArticulo(){
+    this.articuloService.addArticulo(this.articulos)
+    .subscribe(
+      (data: Articulos) => {
+        this.articulos = data;
+        Swal.fire("Register Success!", "Registrado correctamente", "success");
+       this.mostrarList();
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+  }
   
   filtrar(event: Event) {
     const filtro = (event.target as HTMLInputElement).value;
@@ -109,6 +123,78 @@ mostrarEdit() {
   this.mostrarListado = false;
   this.mostrarEditar = true;
 }
+
+
+editarArticulo() {
+
+  // this.libros.facultad;
+  // var splitted = this.libros.facultad.split("-", 1); 
+  // this.libros.facultad=splitted[0];
+
+
+  // alert(
+  //   this.libros.facultad +
+  //     "-" +
+  //     this.libros.id +
+  //     "-" +
+  //     this.libros.nombre
+  // );
+
+  this.articuloService
+    .editArticulo(this.articulos)
+    .subscribe(
+      (data: Articulos) => {
+        this.articulos = data;
+        console.log(data);
+        Swal.fire("Register Success!", "Actualizado correctamente", "success");
+       this.mostrarList();
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+}
+
+//Editar Libro
+
+enviarID(id){
+  alert(id);
+  this.mostrarEdit();
+
+  this.articuloService.getArticuloById(id).subscribe(
+    (data: Articulos) => {
+      this.articulos = new Articulos();
+      
+      this.articulos=data;
+      console.log(data);
+    },
+    (error) =>
+      Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
+    () => console.log("Complete")
+  );
+
+}
+
+EliminarArticulo(id){
+  alert(id);
+ 
+
+  this.articuloService.deleteArticulo(id).subscribe(
+    (data: Articulos) => {
+      this.articulos = new Articulos();
+      
+      this.articulos=data;
+      console.log(data);
+    },
+    (error) =>
+      Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
+    () => console.log("Complete")
+  );
+  this.mostrarList;
+
+}
+
+
 
 
 }

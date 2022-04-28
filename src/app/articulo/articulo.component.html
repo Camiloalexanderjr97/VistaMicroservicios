@@ -202,12 +202,19 @@
                         </div>
             
                         
-                      <div class="col-2">
-             <button mat-flat-button color="warn" (click)="enviarID(articulos.id_libro)" aria-label="Example icon button with a delete icon">
+                      <div class="col-1">
+             <button mat-flat-button color="warn" (click)="enviarID(articulos.id_articulo)" aria-label="Example icon button with a delete icon">
                           <span class="material-icons">mode_edit</span>
                         </button>
             
                       </div>
+
+                      <div class="col-1">
+                        <button mat-flat-button color="warn" (click)="EliminarArticulo(articulos.id_articulo)" aria-label="Example icon button with a delete icon">
+                                     <span class="material-icons">delete</span>
+                                   </button>
+                       
+                                 </div>
                    
                       </td>
             
@@ -252,7 +259,7 @@
               <div class="card">
                 <div class="card-header card-header-danger row">
                   <div class="col-4"> 
-                  <h4 class="card-title">Create Lib</h4>
+                  <h4 class="card-title">Create Article</h4>
                   <p class="card-category">Complete your params</p>
                 </div>
                   <div class="col-5"></div>
@@ -286,7 +293,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form (submit)="crearLibro()">
+                  <form (submit)="crear()">
                     <div class="row">
   
                       

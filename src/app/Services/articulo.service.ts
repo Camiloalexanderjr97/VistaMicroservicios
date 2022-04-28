@@ -9,7 +9,7 @@ import {Articulos} from "../Modelos/Articulos";
   providedIn: "root",
 })
 export class ArticuloService {
-  private url = `${urlArticulo}/art/Articulos`;
+  private url = `${urlArticulo}/art/`;
   // private url2 = `${urlArticulo}/file`;
 
 
@@ -17,12 +17,12 @@ export class ArticuloService {
 
   //getArticuloss
   getArticulos(): Observable<Articulos[]> {
-    return this.http.get<Articulos[]>(this.url);
+    return this.http.get<Articulos[]>(this.url+"/Articulos");
   }
 
   //get un Articulo
-  getArticulo(id: string): Observable<any> {
-    return this.http.get<any>(this.url + "/" + id);
+  getArticuloById(id: string): Observable<any> {
+    return this.http.get<any>(this.url + "/findById/" + id);
   }
 
   // //get un Articulo
@@ -38,7 +38,7 @@ export class ArticuloService {
   //eliminar
   deleteArticulo(id: string): Observable<any> {
     console.log("eliminar" + id);
-    return this.http.delete<any>(this.url + "/" + id);
+    return this.http.delete<any>(this.url + "/deleteArt/" + id);
   }
 
   // login(Articulo: Articulo): Observable<boolean> {
@@ -47,6 +47,6 @@ export class ArticuloService {
 
   //modificar un Articulo
   editArticulo(Articulo: Articulos) {
-    return this.http.put(this.url + "/", Articulo);
+    return this.http.put(this.url + "/editArt/", Articulo);
   }
 }

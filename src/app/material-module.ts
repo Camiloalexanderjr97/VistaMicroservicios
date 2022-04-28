@@ -10,15 +10,18 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {CarouselModule} from 'ngx-owl-carousel-o';
+
 
 
 import { MatDialogModule } from '@angular/material/dialog';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 // import { DataTablesModule } from '@angular/cdk/collections';
 
 
 @NgModule({
-  imports: [MatButtonModule, MatPseudoCheckboxModule,MatInputModule,MatIconModule,MatSortModule,CommonModule,DataTablesModule,MatTableModule,MatPaginatorModule],
-  exports: [MatButtonModule, MatInputModule, MatIconModule,MatProgressBarModule,MatSortModule,CommonModule,DataTablesModule,MatTableModule,MatPaginatorModule,MatAutocompleteModule]
+  imports: [MatButtonModule,NgbCarouselModule,CarouselModule, MatPseudoCheckboxModule,MatInputModule,MatIconModule,MatSortModule,CommonModule,DataTablesModule,MatTableModule,MatPaginatorModule],
+  exports: [MatButtonModule, MatInputModule, NgbCarouselModule,CarouselModule,MatIconModule,MatProgressBarModule,MatSortModule,CommonModule,DataTablesModule,MatTableModule,MatPaginatorModule,MatAutocompleteModule]
 })
 
 
