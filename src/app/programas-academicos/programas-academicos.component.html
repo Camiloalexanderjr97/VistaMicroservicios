@@ -6,16 +6,7 @@
       <div class="col-md-12" >
         <div class="card">
           <div class="card-header card-header-danger row">
-
-
-
-
-
-
-
-
-
-            
+     
             <div col-6>
               <h4 class="card-title"><b>Listado Programas</b></h4>
               <p class="card-category">Programas registrados exitosamente.</p>
@@ -194,6 +185,12 @@
                   </div>
                 </div>
               </div>
+
+               
+
+              
+              
+            <div *ngIf="mostrarAgregarIndividual">
               <div class="card-body">
                 <form (submit)="crearProgramaAcademico()">
                   <div class="row">
@@ -219,12 +216,13 @@
                         />
                       </mat-form-field>
                     </div>
-                    <div class="col-m4">
-                    <h3>Facultad</h3>
+                  </div>
+                  <div class="row">
+                    <div class="col">
 
                     <form class="example-form">
                       <mat-form-field class="example-full-width" appearance="fill">
-                        <mat-label>Assignee</mat-label>
+                        <mat-label>Facultad</mat-label>
 
                         <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
                         [(ngModel)]="programaAcademico.facultad">
@@ -238,18 +236,92 @@
 
 
                     </div>
+                      <div class="col clearfix">
+                        <button
+                                        mat-raised-button
+                                        type="submit"
+                                        class="btn btn-danger pull-right"
+                                      >
+                                        Create Program
+                                      </button>
+                      
+                    </div>
                   </div>
-
-                  <button
-                    mat-raised-button
-                    type="submit"
+<div class="row">
+  <div class="col clearfix">
+    <button
+                   (click)="mostrarMas()"
                     class="btn btn-danger pull-right"
                   >
-                    Create Program
+                    Cambiar A Masivo
                   </button>
+  </div>
+
+
+</div>
+                  
                   <div class="clearfix"></div>
                 </form>
               </div>
+              </div>
+
+
+
+<!-- Modal -->
+<div *ngIf="mostrarAgregarMasivo" class="row">
+
+  <div class="col-2">
+    <div>
+      <a href="../../assets/Files/prueba.xlsx" class="link-success pl-2 pt-2">
+      <div>
+        <img src="../../assets/Files/excel.png" width="40%" class="rounded mx-auto d-block" alt="">
+   
+      </div>
+      <div>
+        <span class="badge badge-success">    Descargar Plantilla
+        </span>
+
+      </div>
+      </a>
+    </div>
+    <div class="clearfix">
+      <button
+                     (click)="mostrarIndi()"
+                      class="btn btn-danger "
+                    >
+                      Cambiar A Individal
+                    </button>
+    </div>
+
+
+  </div>
+  <div class="col-10">
+  <form id="file-upload-form" class="uploader">
+    <div class="form-group files">
+
+    <input id="file-upload" type="file" 
+    (change)="onFileChange($event)" name="fileUpload" 
+    accept=".xls,.xlsx" />
+    </div>
+        
+      <label for="file-upload" id="file-drag">
+        <img id="file-image" src="#" alt="Preview" class="hidden">
+        <div id="start">
+          <i class="fa fa-download" aria-hidden="true"></i>
+          <div>Select a file or drag here</div>
+          <div id="notimage" class="hidden">Please select an Document </div>
+          <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+        </div>
+        <div id="response" class="hidden">
+          <div id="messages"></div>
+          <progress class="progress" id="file-progress" value="0">
+            <span>0</span>%
+          </progress>
+        </div>
+      </label>
+    </form>
+  </div>
+</div>
             </div>
           </div>
         </div>
