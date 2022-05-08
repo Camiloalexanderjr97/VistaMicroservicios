@@ -48,4 +48,7 @@ export class FacultadService {
   editFacultad(Facultad: Facultad) {
     return this.http.put(this.url + "/", Facultad);
   }
+  agregarListado(facultad: Facultad[]){
+    return this.http.post(this.url + "/masivo", facultad);
+  }
 }

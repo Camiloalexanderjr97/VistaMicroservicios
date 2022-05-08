@@ -21,6 +21,7 @@ import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from 'app/Modelos/SubCategorias';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'libros',
@@ -160,12 +161,34 @@ ngOnInit() {
 mostrarListado: Boolean = true;
 mostrarAgregar: Boolean = false;
 mostrarEditar: Boolean = false;
+mostrarAgregarIndividual: Boolean= false;
+mostrarAgregarMasivo: Boolean=false;
 
 mostrarAgg() {
-  this.mostrarListado = false;
-  this.mostrarAgregar = true;
-  this.mostrarEditar = false;
-  // this.listarLibreria();
+  Swal.fire({
+    title: 'Como le gustaría crear el Libro?',
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonText: 'Individual',
+    denyButtonText: `Masivo`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      this.mostrarAgregar = true;
+
+      this.mostrarListado = false;
+      this.mostrarEditar = false;
+        this.mostrarIndi();
+    } else if (result.isDenied) {
+      this.mostrarAgregar = true;
+
+
+      this.mostrarListado = false;
+      this.mostrarEditar = false;
+
+      this.mostrarMas();
+    }
+  })
 }
 
 mostrarList() {
@@ -180,6 +203,18 @@ mostrarEdit() {
   this.mostrarListado = false;
   this.mostrarEditar = true;
 }
+
+mostrarMas(){
+
+  this.mostrarAgregarMasivo=true;
+  this.mostrarAgregarIndividual=false;
+}
+
+mostrarIndi(){
+  this.mostrarAgregarIndividual=true;
+  this.mostrarAgregarMasivo=false;    
+
+ }
 
 
 
@@ -202,6 +237,62 @@ enviarID(id){
   );
 
 }
+
+
+onFileChange(evt: any){
+  const target: DataTransfer = <DataTransfer>(evt.target);
+  const reader: FileReader = new FileReader();
+  reader.onload=(e: any)=>{
+    const bstr: String =e.target.result;
+
+    const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary'});
+
+    const wsname : string = wb.SheetNames[0];
+    const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+
+
+    wb.SheetNames.forEach(sheet =>{
+      this.listarLibreria = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
+      // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
+     
+
+      Swal.fire({
+        title: 'Do you want to save the changes?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+            this.libroService.agregarListado(this.listarLibreria).subscribe(
+        (data: any) => {
+          this.listarLibreria = data;
+          console.log(data);
+          Swal.fire("Register Success!", "Registrado correctamente", "success");
+         this.mostrarList();
+        },
+        (error) =>
+          Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+        () => console.log("Complete")
+      );
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info')
+          this.mostrarList();
+        }
+      })
+
+
+
+    
+    }) 
+  };
+  reader.readAsBinaryString(target.files[0]);
+
+}
+
 
 
 

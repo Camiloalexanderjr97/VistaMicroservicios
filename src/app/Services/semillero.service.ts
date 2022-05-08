@@ -50,4 +50,7 @@ export class SemilleroService {
   editSemillero(Semillero: Semillero) {
     return this.http.put(this.url + "/update/"+Semillero.id, Semillero);
   }
+  agregarListado(semillero: Semillero[]){
+    return this.http.post(this.url + "/masivo", semillero);
+  }
 }

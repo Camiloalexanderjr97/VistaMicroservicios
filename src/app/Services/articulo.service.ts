@@ -49,4 +49,8 @@ export class ArticuloService {
   editArticulo(Articulo: Articulos) {
     return this.http.put(this.url + "/editArt/", Articulo);
   }
+  
+  agregarListado(Articulo: Articulos[]){
+    return this.http.post(this.url + "/masivo", Articulo);
+  }
 }

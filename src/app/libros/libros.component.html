@@ -266,6 +266,8 @@
                     </div>
                   </div>
                 </div>
+                <div *ngIf="mostrarAgregarIndividual">
+
                 <div class="card-body">
                   <form (submit)="crearLibros()">
                     <div class="row">
@@ -397,7 +399,8 @@
                           </mat-form-field>
                       </div>
   
-  
+                      <div class="col clearfix">
+
                     <button
                       mat-raised-button
                       type="submit"
@@ -405,9 +408,78 @@
                     >
                       Create Libro
                     </button>
+                      </div>
+                    
+                  <div class="row">
+                    <div class="col clearfix">
+                      <button
+                        (click)="mostrarMas()"
+                        class="btn btn-danger pull-right"
+                      >
+                        Cambiar A Masivo
+                      </button>
+                    </div>
+                  </div>
                     <div class="clearfix"></div>
                   </form>
                 </div>
+              </div>
+
+                <!-- Modal -->
+<div *ngIf="mostrarAgregarMasivo" class="row">
+
+  <div class="col-2">
+    <div>
+      <a href="../../assets/Files/prueba.xlsx" class="link-success pl-2 pt-2">
+      <div>
+        <img src="../../assets/Files/excel.png" width="40%" class="rounded mx-auto d-block" alt="">
+   
+      </div>
+      <div>
+        <span class="badge badge-success">    Descargar Plantilla
+        </span>
+
+      </div>
+      </a>
+    </div>
+    <div class="clearfix">
+      <button
+                     (click)="mostrarIndi()"
+                      class="btn btn-danger "
+                    >
+                      Cambiar A Individal
+                    </button>
+    </div>
+
+
+  </div>
+  <div class="col-10">
+  <form id="file-upload-form" class="uploader">
+    <div class="form-group files">
+
+    <input id="file-upload" type="file" 
+    (change)="onFileChange($event)" name="fileUpload" 
+    accept=".xls,.xlsx" />
+    </div>
+        
+      <label for="file-upload" id="file-drag">
+        <img id="file-image" src="#" alt="Preview" class="hidden">
+        <div id="start">
+          <i class="fa fa-download" aria-hidden="true"></i>
+          <div>Select a file or drag here</div>
+          <div id="notimage" class="hidden">Please select an Document </div>
+          <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+        </div>
+        <div id="response" class="hidden">
+          <div id="messages"></div>
+          <progress class="progress" id="file-progress" value="0">
+            <span>0</span>%
+          </progress>
+        </div>
+      </label>
+    </form>
+  </div>
+</div>
               </div>
             </div>
           </div>

@@ -49,4 +49,7 @@ export class ProductoService {
   editProducto(producto: Producto) {
     return this.http.put(this.url + "/editProd/"+producto.id, producto);
   }
+  agregarListado(producto: Producto[]){
+    return this.http.post(this.url + "/masivo", producto);
+  }
 }

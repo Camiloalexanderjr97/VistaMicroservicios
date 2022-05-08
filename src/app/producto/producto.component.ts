@@ -8,12 +8,10 @@ import { Producto } from "app/Modelos/Producto";
 import { ProductoService } from "app/Services/producto.service";
 import { ViewChild } from "@angular/core";
 import { Component, OnInit } from "@angular/core";
-import { MatIconModule } from "@angular/material/icon";
 import Swal from "sweetalert2";
 import { Router } from "@angular/router";
 import { CargarScriptsService } from "cargar-scripts.service";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
-import { AfterViewInit } from "@angular/core";
 import { MatSort, Sort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { FormControl } from "@angular/forms";
@@ -22,6 +20,7 @@ import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from "app/Modelos/SubCategorias";
 import { Grupo } from 'app/Modelos/Grupo';
+import * as XLSX from 'xlsx';
 
 declare var $;
 var DataTable = require("datatables.net");
@@ -226,18 +225,45 @@ export class ProductoComponent implements OnInit {
   //Ocultar y mostrar paneles de agregar y listar
   mostrarListado: Boolean = true;
   mostrarAgregar: Boolean = false;
-  mostrarEditar: Boolean = false;
+  mostrarEditar: Boolean = false;  
+mostrarAgregarIndividual: Boolean= false;
+mostrarAgregarMasivo: Boolean=false;
+
 
   mostrarAgg() {
     
-    this.mostrarAgregar = true;
-    this.mostrarListado = false;
-    this.mostrarEditar = false;
     this.listarFacultades();
     this.listarSubCategoriasMostrar();
     this.listadoGrupos();
     this.listadoProgramas();
+    Swal.fire({
+      title: 'Como le gustaría crear el Libro?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Individual',
+      denyButtonText: `Masivo`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.mostrarAgregar = true;
+  
+        this.mostrarListado = false;
+        this.mostrarEditar = false;
+          this.mostrarIndi();
+      } else if (result.isDenied) {
+        this.mostrarAgregar = true;
+  
+  
+        this.mostrarListado = false;
+        this.mostrarEditar = false;
+  
+        this.mostrarMas();
+      }
+    })
   }
+
+
+
 
   mostrarList() {
     this.mostrarListado = true;
@@ -255,6 +281,19 @@ export class ProductoComponent implements OnInit {
     this.listadoGrupos();
     this.listadoProgramas();
   }
+
+  mostrarMas(){
+
+    this.mostrarAgregarMasivo=true;
+    this.mostrarAgregarIndividual=false;
+  }
+  
+  mostrarIndi(){
+    this.mostrarAgregarIndividual=true;
+    this.mostrarAgregarMasivo=false;    
+  
+   }
+  
 
   //Editat Programa Academico
 
@@ -317,4 +356,61 @@ export class ProductoComponent implements OnInit {
       this.ListarProgramas=data;
     })
   }
+
+  
+onFileChange(evt: any){
+  const target: DataTransfer = <DataTransfer>(evt.target);
+  const reader: FileReader = new FileReader();
+  reader.onload=(e: any)=>{
+    const bstr: String =e.target.result;
+
+    const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary'});
+
+    const wsname : string = wb.SheetNames[0];
+    const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+
+
+    wb.SheetNames.forEach(sheet =>{
+      this.listarProductos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
+      // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
+     
+
+      Swal.fire({
+        title: 'Do you want to save the changes?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+            this.productoService.agregarListado(this.listarProductos).subscribe(
+        (data: any) => {
+          this.listarProductos = data;
+          console.log(data);
+          Swal.fire("Register Success!", "Registrado correctamente", "success");
+         this.mostrarList();
+        },
+        (error) =>
+          Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+        () => console.log("Complete")
+      );
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info')
+          this.mostrarList();
+        }
+      })
+
+
+
+    
+    }) 
+  };
+  reader.readAsBinaryString(target.files[0]);
+
+}
+
+
 }
