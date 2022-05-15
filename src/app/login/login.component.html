@@ -1,27 +1,40 @@
-<div id="body"><div id="contenedor">
-    <div id="central">
-        <div id="login">
-            <div class="titulo">
-                <b>Bienvenido!</b>
-            </div>
-            <!-- <form (submit)="signIn()" > -->
-                <form>
-                <div class="form-group">
-                    <label for="username">username</label>
-                    <!-- <input [(ngModel)]="User.username" name="username" id="username" type="text" class="form-control form-control-alternative" placeholder="username"> -->
-                  </div>
-                  <div class="form-group"> 
-                    <label for="password">Password</label>
-                    <!-- <input [(ngModel)]="User.password" name="password" id="password" type="password"  class="form-control form-control-alternative" placeholder="********"> -->
-                  </div>
-                <!-- <input class="fa fa-user" name='username' type="text" placeholder="username" required /> -->
-                <!-- <input type="password" name="password" placeholder="password" class="fa fa-key" required /> -->
-                <button routerLink="/LibrosComponent" class="state">Ingresar</button>
-            </form>
-            <div class="pie-form">
-                <a routerLink="/LibrosComponent"><b>Registrarte!</b></a>
+<div class="text-center" *ngIf="isLogged; else null">
+    <h2>Ya has iniciado Sesión</h2>
+
+</div>
+
+<!-- <ng-template #loggedOut>
+    <div class="container d-flex justify-content-center"></div>
+</ng-template> -->
+
+<div id="body">
+    <div id="contenedor">
+        <div id="central">
+            <div id="login">
+                <div class="titulo">
+                    <b>Bienvenido!</b>
+                </div>
+                <form  (ngSubmit)="onLogin()" novalidate>
+
+                    <div class="form-group">
+                        <label for="username">username</label>
+                        <input  name="username" id="username" type="text"
+                            class="form-control form-control-alternative" [(ngModel)]="username" placeholder="username" required>
+                    </div>
+                                        
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input [(ngModel)]="password" name="password" id="password" type="password"
+                            class="form-control form-control-alternative"  placeholder="********"  required>
+                    </div>
+                    <!-- <input class="fa fa-user" name='username' type="text" placeholder="username" required /> -->
+                    <!-- <input type="password" name="password" placeholder="password" class="fa fa-key" required /> -->
+                    <button  class="state">Ingresar</button>
+
+                     
+                </form>
+               
             </div>
         </div>
     </div>
-</div>
 </div>

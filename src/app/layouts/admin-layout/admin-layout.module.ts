@@ -51,7 +51,6 @@ import { MaterialModule } from 'app/material-module';
     MatTooltipModule,
     MatProgressBarModule,
     MaterialModule,
-    FormsModule,
   ],
   declarations: [
     DashboardComponent,
