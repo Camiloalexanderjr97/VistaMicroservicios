@@ -11,6 +11,7 @@ import { User } from "app/Modelos/User";
 import { UserAuthService } from "app/Services/user-auth.service";
 import { TokenService } from 'app/Services/JWT/token.service';
 import Swal from 'sweetalert2';
+import { authorities } from 'app/Modelos/JWT/authorities';
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -27,18 +28,19 @@ export class LoginComponent implements OnInit {
   password: string;
   roles: string[] = [];
   errMsj: String[];
+  auth: authorities[];
   constructor(private userauthService: UserAuthService, private router: Router,
-   private tokenService: TokenService, private authService: AuthService) { 
+    private tokenService: TokenService, private authService: AuthService) {
 
-    } 
+  }
 
-  ngOnInit(){
+  ngOnInit() {
 
     // console.log(this.User);
     if (this.tokenService.getToken()) {
       this.isLogged = true;
       this.isLoginFail = false;
-      this.roles= this.tokenService.getAuthorities();
+      this.auth = this.tokenService.getAuthorities();
 
     }
 
@@ -47,36 +49,69 @@ export class LoginComponent implements OnInit {
   onLogin(): void {
     this.loginUsuario = new LoginUsuario(this.username, this.password);
     this.authService.login(this.loginUsuario).subscribe(
-      data=> {
+      data => {
         this.isLogged = true;
         this.isLoginFail = false;
 
         this.tokenService.setToken(data.token);
         this.tokenService.setUserName(this.username);
         // console.log(this.usern ame);
-        this.tokenService.setAuthorities(data.authorities);
-        this.aut=data.authorities;
-        this.router.navigate(['/dashboard']);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Sesion Iniciada',
-          showConfirmButton: false,
-          timer: 1500 
-        })
-        for(let element of  this.tokenService.roles){
-          localStorage.setItem("rol", element);
+        // console.log(data.authorities);
 
-        }
-       
- 
+        this.tokenService.setAuthorities(data.authorities);
+         this.tokenService.getAuthorities();
+         console.log(this.tokenService.getAuthorities());
+
+        // this.aut.forEach(rol => {
+        //   if (rol === 'ROLE_ADMIN') {
+            sessionStorage.setItem("rol_", "ROLE_ADMIN");
+
+          //   }
+          // });
+
+
+          this.router.navigate(['/dashboard']);
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Sesion Iniciada',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        // Swal.fire({
+        //   title: '¿Con que tipo de Usuario le gustaria Acceder?',
+        //   showDenyButton: true,
+        //   showCancelButton: true,
+        //   confirmButtonText: 'Admin',
+        //   denyButtonText: `User`,
+        //   denyButtonColor: '#2767EF'
+        // }).then((result) => {
+        //   /* Read more about isConfirmed, isDenied below */
+        //   if (result.isConfirmed) {
+
+        // this.router.navigate(['/dashboard']);
+        // sessionStorage.setItem("rol_", "ROLE_ADMIN");
+        //     Swal.fire({
+        //       position: 'center',
+        //       icon: 'success',
+        //       title: 'Sesion Iniciada',
+        //       showConfirmButton: false,
+        //       timer: 1500 
+        //     })
+        //   } else if (result.isDenied) {
+
+        //   }
+        // })
+  
+
+        
       },
       err => {
-        this.isLogged=false;
-        this.isLoginFail=true;
-        this.errMsj =err.error.mensaje;
+        this.isLogged = false;
+        this.isLoginFail = true;
+        this.errMsj = err.error.mensaje;
         Swal.fire({
-          position: 'top-end',
+          position: 'center',
           icon: 'warning',
           title: 'Datos no validos',
           showConfirmButton: false,
@@ -87,20 +122,20 @@ export class LoginComponent implements OnInit {
 
   }
 
-  signIn() {
-    console.log(this.User.username + "------" + this.User.password);
-    this.userauthService.signIn(this.User).subscribe((res) => {
-      localStorage.setItem("user", JSON.stringify(res));
-      if (res != null) {
-        // Swal.fire("Login Success!", "inicio de sesión correctamente!", "success");
-        this.router.navigate(['/dashboard']);
+  // signIn() {
+  //   console.log(this.User.username + "------" + this.User.password);
+  //   this.userauthService.signIn(this.User).subscribe((res) => {
+  //     localStorage.setItem("user", JSON.stringify(res));
+  //     if (res != null) {
+  //       // Swal.fire("Login Success!", "inicio de sesión correctamente!", "success");
+  //       this.router.navigate(['/dashboard']);
 
-      } else {
-        // Swal.fire("Login Error!", "credenciales incorrectas!", "warning");
-        this.router.navigate(['/login']);
-      }
-    });
-  }
+  //     } else {
+  //       // Swal.fire("Login Error!", "credenciales incorrectas!", "warning");
+  //       this.router.navigate(['/login']);
+  //     }
+  //   });
+  // }
 
 
 

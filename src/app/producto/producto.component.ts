@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { GrupoService } from './../Services/grupo.service';
 import { ProgramaAcademico } from "./../Modelos/ProgramaAcademico";
 import { ProgramaAcademicoService } from "./../Services/ProgramaAcademico.service";
@@ -69,13 +70,32 @@ export class ProductoComponent implements OnInit {
     private router: Router,
     private programaAcademicoService: ProgramaAcademicoService,
     private grupoService: GrupoService,
+    private tokenService: TokenService
   ) {
     //_CargaScripts.Carga(["main3"]);
   }
 
+  isLogged=false;
+
   ngOnInit() {
+
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+
     this.listarProducto();
-    console.log(this.mostrarEditar)
+    } else {
+      this.isLogged = false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -123,7 +143,6 @@ export class ProductoComponent implements OnInit {
 
           this.listarProductos.push(elemento);
         }
-        console.log(this.listarProductos);
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -165,7 +184,7 @@ export class ProductoComponent implements OnInit {
     this.productoService.addProducto(this.productos).subscribe(
       (data: Producto) => {
         this.productos = data;
-        console.log(data);
+        
         Swal.fire("Register Success!", "Registrado correctamente", "success");
         this.mostrarList();
       },
@@ -205,7 +224,7 @@ export class ProductoComponent implements OnInit {
     this.productoService.editProducto(this.productoN).subscribe(
       (data: Producto) => {
         this.productoN = data;
-        console.log(data);
+      
         Swal.fire("Register Success!", "Actualizado correctamente", "success");
         this.mostrarList();
       },

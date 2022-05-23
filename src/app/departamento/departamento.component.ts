@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { DepartamentoService } from './../Services/departamento.service';
 // import { Component, OnInit } from '@angular/core';
 import { Departamento } from 'app/Modelos/Departamento';
@@ -42,7 +43,7 @@ export class DepartamentoComponent implements OnInit {
 
   
 
-  constructor(private departamentoService: DepartamentoService,private _liveAnnouncer: LiveAnnouncer) {
+  constructor(private tokenService: TokenService, private router: Router,private departamentoService: DepartamentoService,private _liveAnnouncer: LiveAnnouncer) {
     //_CargaScripts.Carga(["main3"]);
   }
   
@@ -93,12 +94,27 @@ filteredOptions: Observable<Facultad[]>;
 
   
 
-
+isLogged=false;
 
 ngOnInit() {
-  this.listarDepartamento();
+ 
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
+    if(this.tokenService.getToken()){
+      this.isLogged=true;
+    this.listarDepartamento();
+    }else{
+      this.isLogged=false;
 
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    } 
 }
 
 

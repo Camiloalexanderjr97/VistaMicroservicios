@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { SemilleroService } from './../Services/semillero.service';
 import { Semillero } from 'app/Modelos/Semillero';
 import { FacultadService } from './../Services/Facultad.service';
@@ -40,7 +41,7 @@ export class SemilleroComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
  
-  constructor(private SemilleroService: SemilleroService,  private _liveAnnouncer: LiveAnnouncer) {
+  constructor(private tokenService: TokenService,private router: Router, private SemilleroService: SemilleroService,  private _liveAnnouncer: LiveAnnouncer) {
     //_CargaScripts.Carga(["main3"]);
   }
   
@@ -154,11 +155,26 @@ mostrarIndi(){
 
  }
 
-
+isLogged=false;
 ngOnInit() {
-  this.listarSemillero();
-    /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
+    /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+  this.listarSemillero();
+    } else {
+      this.isLogged = false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
 }
 
   

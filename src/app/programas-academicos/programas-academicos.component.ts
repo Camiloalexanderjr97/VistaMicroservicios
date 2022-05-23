@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { element } from 'protractor';
 import { ViewChild } from "@angular/core";
 import { FacultadService } from "./../Services/Facultad.service";
@@ -64,17 +65,35 @@ export class ProgramasAcademicosComponent implements OnInit {
     private programaAcademicoService: ProgramaAcademicoService,
     private router: Router,
     icon: MatIconModule,
-    private facultadService: FacultadService
+    private facultadService: FacultadService,
+    private tokenService: TokenService
   ) {
     //_CargaScripts.Carga(["main3"]);
   }
 
+  isLogged=false;
 
   ngOnInit() {
     // this._CargaScripts.Carga(["mainTable"]);
 
-    this.listarProgramasAcademicos();
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
 
+    this.listarProgramasAcademicos();
+  
+    } else {
+      this.isLogged = false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
 
   }
 

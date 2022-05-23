@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { Router } from '@angular/router';
 import { UsuarioService } from './../Services/usuario.service';
 import { Component, OnInit } from '@angular/core';
@@ -13,7 +14,7 @@ export class UserProfileComponent implements OnInit {
 
 
   user: User = new User();
-  constructor(private usuarioService: UsuarioService, private router: Router) { }
+  constructor(private tokenService: TokenService, private usuarioService: UsuarioService, private router: Router) { }
 
  
 
@@ -33,7 +34,24 @@ export class UserProfileComponent implements OnInit {
     )
   }
 
+  isLogged=false;
   ngOnInit() {
+
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+    } else {
+      this.isLogged = false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
   }
 
   // addHemocomponente(inp) {

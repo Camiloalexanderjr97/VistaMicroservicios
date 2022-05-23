@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { Libros } from './../Modelos/Libros';
 import { LibrosService } from '../Services/Libros.service';
 // import { Libros } from '../Modelos/Libros';
@@ -49,16 +50,32 @@ export class LibrosComponent implements OnInit {
 
 
 
-  constructor(private libroService: LibrosService,private _liveAnnouncer: LiveAnnouncer,) {
+  constructor(private tokenService: TokenService,private router: Router,private libroService: LibrosService,private _liveAnnouncer: LiveAnnouncer,) {
     //_CargaScripts.Carga(["main3"]);
   }
   
 
-
+isLogged=false;
 ngOnInit() {
-  this.listarLibreriaLibros();
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
 
+  this.listarLibreriaLibros();
+   
+    } else {
+      this.isLogged = false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
 }
 
 

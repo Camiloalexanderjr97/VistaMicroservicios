@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { element } from 'protractor';
 import { GrupoService } from './../Services/grupo.service';
 import { Grupo } from './../Modelos/Grupo';
@@ -25,9 +26,9 @@ import { MatPaginator } from "@angular/material/paginator";
 export class GrupoComponent implements OnInit {
 
   grupos = new Grupo();
-  listarGrupos: Grupo[]=[];
-      
-   
+  listarGrupos: Grupo[] = [];
+
+
   displayedColumns: string[] = ["id", "nombre", "canIntegrantes", "fechaConformacion", "id_Semillero", "id_departamento"];
   dataSource: any;
 
@@ -35,32 +36,32 @@ export class GrupoComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private grupoService: GrupoService, private _liveAnnouncer: LiveAnnouncer) {
+  constructor(private tokenService: TokenService, private router: Router, private grupoService: GrupoService, private _liveAnnouncer: LiveAnnouncer) {
     //_CargaScripts.Carga(["main3"]);
   }
-  
+
 
 
   listarGrupo(): void {
-    this.grupoService.getGrupo().subscribe( (data: Grupo[]) => {
-        
+    this.grupoService.getGrupo().subscribe((data: Grupo[]) => {
 
-      for(let element of data){
-        element.id_departamento=element.departamento.name;
-        element.id_Semillero=element.semillero.nombre;
+
+      for (let element of data) {
+        element.id_departamento = element.departamento.name;
+        element.id_Semillero = element.semillero.nombre;
         this.listarGrupos.push(element);
       }
-        console.log(this.listarGrupos)
-        this.dataSource = new MatTableDataSource(this.listarGrupos);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-      },
+      console.log(this.listarGrupos)
+      this.dataSource = new MatTableDataSource(this.listarGrupos);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    },
       (error) => console.log(error),
       () => console.log("Complete")
     )
   }
 
-  
+
 
   /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {
@@ -76,51 +77,69 @@ export class GrupoComponent implements OnInit {
   }
 
 
-  
+
   filtrar(event: Event) {
     const filtro = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filtro.trim().toLowerCase();
   }
 
+  isLogged=false;
 
-ngOnInit() {
-  this.listarGrupo();
+  ngOnInit() {
+
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+
+      this.listarGrupo();
+    } else {
+      this.isLogged = false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
-}
+  }
 
 
-myControl = new FormControl();
-// options: User[] = [{nombre: 'Mary'}, {nombre: 'Shelley'}, {nombre: 'Igor'}];
-options: Facultad[] ;
-filteredOptions: Observable<Facultad[]>;
+  myControl = new FormControl();
+  // options: User[] = [{nombre: 'Mary'}, {nombre: 'Shelley'}, {nombre: 'Igor'}];
+  options: Facultad[];
+  filteredOptions: Observable<Facultad[]>;
 
 
-//Ocultar y mostrar paneles de agregar y listar
-mostrarListado: Boolean = true;
-mostrarAgregar: Boolean = false;
-mostrarEditar: Boolean = false;
+  //Ocultar y mostrar paneles de agregar y listar
+  mostrarListado: Boolean = true;
+  mostrarAgregar: Boolean = false;
+  mostrarEditar: Boolean = false;
 
-mostrarAgg() {
-  this.mostrarListado = false;
-  this.mostrarAgregar = true;
-  this.mostrarEditar = false;
-  this.listarGrupo();
-}
+  mostrarAgg() {
+    this.mostrarListado = false;
+    this.mostrarAgregar = true;
+    this.mostrarEditar = false;
+    this.listarGrupo();
+  }
 
-mostrarList() {
-  this.mostrarAgregar = false;
-  this.mostrarListado = true;
-  this.mostrarEditar = false;
-  this.listarGrupo();
-}
+  mostrarList() {
+    this.mostrarAgregar = false;
+    this.mostrarListado = true;
+    this.mostrarEditar = false;
+    this.listarGrupo();
+  }
 
-mostrarEdit() {
-  this.mostrarAgregar = false;
-  this.mostrarListado = false;
-  this.mostrarEditar = true;
-  this.listarGrupo();
-}
+  mostrarEdit() {
+    this.mostrarAgregar = false;
+    this.mostrarListado = false;
+    this.mostrarEditar = true;
+    this.listarGrupo();
+  }
 
 
 

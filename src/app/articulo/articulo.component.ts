@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { Component, OnInit } from '@angular/core';
 import { Articulos } from 'app/Modelos/Articulos';
 import { ArticuloService } from 'app/Services/articulo.service';
@@ -38,7 +39,7 @@ export class ArticuloComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator; 
 
 
-  constructor(private articuloService: ArticuloService,private _liveAnnouncer: LiveAnnouncer) {
+  constructor(private tokenService: TokenService, private router: Router,private articuloService: ArticuloService,private _liveAnnouncer: LiveAnnouncer) {
     //_CargaScripts.Carga(["main3"]);
   }
   
@@ -93,10 +94,27 @@ export class ArticuloComponent implements OnInit {
     }
   }
 
+  isLogged=false;
 ngOnInit() {
-  this.listarArticulo();
+
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;  
+      this.listarArticulo();
+    } else {
+      this.isLogged = false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
 }
 
 

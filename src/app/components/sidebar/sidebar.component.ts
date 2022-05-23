@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import { Component, OnInit } from '@angular/core';
 
 declare const $: any;
@@ -7,7 +8,7 @@ declare interface RouteInfo {
     icon: string;
     class: string;
 }
-export const ROUTES: RouteInfo[] = [
+export const ROUTESAdmin: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
     { path: '/user-profile', title: 'User Profile',  icon:'person', class: '' },
     { path: '/table-list', title: 'Usuarios',  icon:'format_list_bulleted', class: '' },
@@ -22,11 +23,33 @@ export const ROUTES: RouteInfo[] = [
     
     { path: '/SemilleroComponent', title: 'Semilleros',  icon:'content_paste', class: '' },
     { path: '/GrupoComponent', title: 'Grupos',  icon:'content_paste', class: '' },
-    { path: '/DepartamentoComponent', title: 'Departamentos',  icon:'content_paste', class: '' },
-    { path: '/icons', title: 'Icons',  icon:'bubble_chart', class: '' },
-    { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
-    { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
-    // { path: '/upgrade', title: 'Upgrade to PRO',  icon:'unarchive', class: 'active-pro' },
+    { path: '/DepartamentoComponent', title: 'Departamentos',  icon:'content_paste', class: '' }
+    // { path: '/icons', title: 'Icons',  icon:'bubble_chart', class: '' },
+    // { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
+    // { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
+    // // { path: '/upgrade', title: 'Upgrade to PRO',  icon:'unarchive', class: 'active-pro' },
+];
+
+export const ROUTESUser: RouteInfo[] = [
+  { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
+  { path: '/user-profile', title: 'User Profile',  icon:'person', class: '' },
+  { path: '/table-list', title: 'Usuarios',  icon:'format_list_bulleted', class: '' },
+  // { path: '/LibrosComponent', title: 'libros',  icon:'local_library', class: '' },
+  
+  // { path: '/ProductoComponent', title: 'productos',  icon:'content_paste', class: '' },
+  // { path: '/ArticuloComponent', title: 'Articulos',  icon:'content_paste', class: '' },
+
+  // // { path: '/Facultad', title: 'Facultad',  icon:'content_paste', class: '' },
+  // { path: '/ProgramasAcademicosComponent', title: 'Programas Academicos',  icon:'content_paste', class: '' },
+  // { path: '/facultad', title: 'Facultad',  icon:'pages', class: '' },
+  
+  // { path: '/SemilleroComponent', title: 'Semilleros',  icon:'content_paste', class: '' },
+  // { path: '/GrupoComponent', title: 'Grupos',  icon:'content_paste', class: '' },
+  // { path: '/DepartamentoComponent', title: 'Departamentos',  icon:'content_paste', class: '' },
+  // { path: '/icons', title: 'Icons',  icon:'bubble_chart', class: '' },
+  // { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
+  // { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
+  // { path: '/upgrade', title: 'Upgrade to PRO',  icon:'unarchive', class: 'active-pro' },
 ];
  
 @Component({
@@ -37,10 +60,18 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: any[];
 
-  constructor() { }
+  constructor(private tokenService: TokenService) { }
+
+
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem);
+    const roles = sessionStorage.getItem("rol_");
+    if(roles==='ROLE_ADMIN'){
+
+    this.menuItems = ROUTESAdmin.filter(menuItem => menuItem);
+    }else{
+      this.menuItems = ROUTESUser.filter(menuItem => menuItem);
+    }
   }
   isMobileMenu() {
       if ($(window).width() > 991) {

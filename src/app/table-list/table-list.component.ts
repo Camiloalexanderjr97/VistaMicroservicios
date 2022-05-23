@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import * as Chartist from 'chartist';
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { Router } from "@angular/router";
@@ -18,7 +19,7 @@ export class TableListComponent implements OnInit {
   user = new User();
   ListarUser: User[]=[];
   
-    constructor(private usuarioService: UsuarioService, private router: Router) {
+    constructor(private usuarioService: UsuarioService, private router: Router, private tokenService: TokenService) {
       //_CargaScripts.Carga(["main3"]);
     }
      listarUser(){
@@ -41,8 +42,25 @@ export class TableListComponent implements OnInit {
     )
 
     }
-    
+    isLogged= false;
   ngOnInit() {
-    this.listarUser();
+  
+
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+        this.listarUser();
+    } else {
+      this.isLogged = false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
   }
 }

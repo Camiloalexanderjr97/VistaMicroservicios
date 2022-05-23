@@ -1,3 +1,4 @@
+import { TokenService } from 'app/Services/JWT/token.service';
 import * as Chartist from 'chartist';
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
@@ -5,9 +6,10 @@ import { throwError } from 'rxjs';
 
 import { OwlOptions } from 'ngx-owl-carousel-o';
 // import Swal from "sweetalert2";
-declare var $: any;
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +17,14 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
+
+isLogged=false;
+
+
+
+
+
 
   customOptions: OwlOptions = {
     loop: true,
@@ -98,7 +108,32 @@ export class DashboardComponent implements OnInit {
 
       seq2 = 0;
   };
+  noLogin=false;
+  constructor(private tokenService: TokenService, private router: Router) { }
+
   ngOnInit() {
+
+// const token =this.tokenService.getToken
+    if(this.tokenService.getToken()){
+      this.isLogged=true;
+   
+    }else{
+      this.isLogged=false;
+
+
+      this.router.navigate(['/login']);
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      this.noLogin=true;
+      console.log(this.isLogged+"-2--"+this.noLogin);
+
+    } 
+
       const dataDailySalesChart: any = {
           labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
           series: [
@@ -107,76 +142,77 @@ export class DashboardComponent implements OnInit {
       };
  
 
-     const optionsDailySalesChart: any = {
-          lineSmooth: Chartist.Interpolation.cardinal({
-              tension: 0
-          }),
-          low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
-      }
+  //    const optionsDailySalesChart: any = {
+  //         lineSmooth: Chartist.Interpolation.cardinal({
+  //             tension: 0
+  //         }),
+  //         low: 0,
+  //         high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+  //         chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
+  //     }
 
-      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+  //     var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
 
-      this.startAnimationForLineChart(dailySalesChart);
-
-
-      /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
-
-      const dataCompletedTasksChart: any = {
-          labels: ['12p', '3p', '6p', '9p', '12p', '3a', '6a', '9a'],
-          series: [
-              [230, 750, 450, 300, 280, 240, 200, 190]
-          ]
-      };
-
-     const optionsCompletedTasksChart: any = {
-          lineSmooth: Chartist.Interpolation.cardinal({
-              tension: 0
-          }),
-          low: 0,
-          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: { top: 0, right: 0, bottom: 0, left: 0}
-      }
-
-      var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
-
-      // start animation for the Completed Tasks Chart - Line Chart
-      this.startAnimationForLineChart(completedTasksChart);
+  //     this.startAnimationForLineChart(dailySalesChart);
 
 
+  //     /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
 
-      /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+  //     const dataCompletedTasksChart: any = {
+  //         labels: ['12p', '3p', '6p', '9p', '12p', '3a', '6a', '9a'],
+  //         series: [
+  //             [230, 750, 450, 300, 280, 240, 200, 190]
+  //         ]
+  //     };
 
-      var datawebsiteViewsChart = {
-        labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
-        series: [
-          [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
+  //    const optionsCompletedTasksChart: any = {
+  //         lineSmooth: Chartist.Interpolation.cardinal({
+  //             tension: 0
+  //         }),
+  //         low: 0,
+  //         high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+  //         chartPadding: { top: 0, right: 0, bottom: 0, left: 0}
+  //     }
 
-        ]
-      };
-      var optionswebsiteViewsChart = {
-          axisX: {
-              showGrid: false
-          },
-          low: 0,
-          high: 1000,
-          chartPadding: { top: 0, right: 5, bottom: 0, left: 0}
-      };
-      var responsiveOptions: any[] = [
-        ['screen and (max-width: 640px)', {
-          seriesBarDistance: 5,
-          axisX: {
-            labelInterpolationFnc: function (value) {
-              return value[0];
-            }
-          }
-        }]
-      ];
-      var websiteViewsChart = new Chartist.Bar('#websiteViewsChart', datawebsiteViewsChart, optionswebsiteViewsChart, responsiveOptions);
+  //     var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
 
-      //start animation for the Emails Subscription Chart
-      this.startAnimationForBarChart(websiteViewsChart);
-  }
+  //     // start animation for the Completed Tasks Chart - Line Chart
+  //     this.startAnimationForLineChart(completedTasksChart);
+
+
+
+  //     /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+
+  //     var datawebsiteViewsChart = {
+  //       labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+  //       series: [
+  //         [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
+
+  //       ]
+  //     };
+  //     var optionswebsiteViewsChart = {
+  //         axisX: {
+  //             showGrid: false
+  //         },
+  //         low: 0,
+  //         high: 1000,
+  //         chartPadding: { top: 0, right: 5, bottom: 0, left: 0}
+  //     };
+  //     var responsiveOptions: any[] = [
+  //       ['screen and (max-width: 640px)', {
+  //         seriesBarDistance: 5,
+  //         axisX: {
+  //           labelInterpolationFnc: function (value) {
+  //             return value[0];
+  //           }
+  //         }
+  //       }]
+  //     ];
+  //     var websiteViewsChart = new Chartist.Bar('#websiteViewsChart', datawebsiteViewsChart, optionswebsiteViewsChart, responsiveOptions);
+
+  //     //start animation for the Emails Subscription Chart
+  //     this.startAnimationForBarChart(websiteViewsChart);
+  // }
+    }
 
 }
