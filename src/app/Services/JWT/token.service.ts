@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { authorities } from 'app/Modelos/JWT/authorities';
 
 
 const TOKEN_KEY = 'AuthToken';
@@ -12,7 +11,6 @@ export class TokenService {
 
     roles: Array<string> = [];
     constructor() { }
-    auth: authorities[];
     public setToken(token: string): void {
         window.sessionStorage.removeItem(TOKEN_KEY);
         window.sessionStorage.setItem(TOKEN_KEY, token);
@@ -31,19 +29,19 @@ export class TokenService {
         return sessionStorage.getItem(USERNAME_KEY);
     }
 
-    public setAuthorities(authorities: authorities[]): void {
+    public setAuthorities(authorities: string[]): void {
         window.sessionStorage.removeItem(AUTHORITIES_KEY);
         window.sessionStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));
     }
 
-    public getAuthorities(): authorities[] {
+    public getAuthorities(): any[] {
         // console.log(sessionStorage.getItem(AUTHORITIES_KEY));
         if (sessionStorage.getItem(AUTHORITIES_KEY)) {
            
-            this.auth=JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY));
+            this.roles=JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY));
                
         }
-        return this.auth;
+        return this.roles;
     }
 
     public logOut(): void{

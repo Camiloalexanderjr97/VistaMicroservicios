@@ -1,207 +1,456 @@
 <!-- <app-sidebar></app-sidebar> -->
 <div *ngIf="isLogged">
-<div class="main-content" *ngIf="mostrarListado">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header card-header-danger row">
-            <div col-6>
-              <h4 class="card-title"><b>productos registrados</b></h4>
-              <p class="card-category">productos registrados exitosamente.</p>
-            </div>
-            <div class="col-5"></div>
+  <div class="main-content" *ngIf="mostrarListado">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-danger row">
+              <div col-6>
+                <h4 class="card-title"><b>productos registrados</b></h4>
+                <p class="card-category">productos registrados exitosamente.</p>
+              </div>
+              <div class="col-5"></div>
 
-            <div class="col-3">
-              <div class="float-right">
-                <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
-                  <div class="float-left">
-                    <div class="input-group form-control-lg p-0">
-                      <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+              <div class="col-3">
+                <div class="float-right">
+                  <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
+                    <div class="float-left">
+                      <div class="input-group form-control-lg p-0">
+                        <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="float-right">
-                    <div id="accionBuscarReHo" class="d-inline-block">
-                      <button mat-mini-fab color="warn" type="button" (click)="mostrarList()" aria-placeholder="Listar">
-                        <mat-icon>menu</mat-icon>
-                      </button>
+                    <div class="float-right">
+                      <div id="accionBuscarReHo" class="d-inline-block">
+                        <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"
+                          aria-placeholder="Listar">
+                          <mat-icon>menu</mat-icon>
+                        </button>
+                      </div>
+                      <div id="accionBuscarReHo" class="d-inline-block" *ngIf="soloAdmin">
+                        <button mat-mini-fab color="warn" type="button" (click)="mostrarAgg()"
+                          aria-placeholder="Agregar">
+                          <mat-icon>plus_one</mat-icon>
+                        </button>
+                      </div>
                     </div>
-                    <div id="accionBuscarReHo" class="d-inline-block">
-                      <button mat-mini-fab color="warn" type="button" (click)="mostrarAgg()" aria-placeholder="Agregar">
-                        <mat-icon>plus_one</mat-icon>
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
+
+
+
+
+
+
+
+
+
+
+
+          <div class="row">
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Buscar</mat-label>
+                <input matInput (keyup)="filtrar($event)" placeholder="buscar" />
+              </mat-form-field>
+            </div>
+
+            <div class="col" style="width: fit-content; float: right;">
+              <form [formGroup]="filtroProducto" (ngSubmit)="filtrarPro()" class="demo-button">
+
+                <div class="row">
+                  <div class="col">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Enter a date range</mat-label>
+                      <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="StartDate" placeholder="Start date">
+                        <input matEndDate formControlName="EndDate" placeholder="End date">
+                      </mat-date-range-input>
+                      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+
+                      <mat-error *ngIf="filtroProducto.controls.StartDate.hasError('matStartDateInvalid')">Invalid start
+                        date</mat-error>
+                      <mat-error *ngIf="filtroProducto.controls.EndDate.hasError('matEndDateInvalid')">Invalid end date
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-1"></div>
+                  <div class="col">
+                    
+                    <mat-card-actions class="child">
+                      <button class="button" type="submit" mat-raised-button color="primary">Filtrar</button>
+                    </mat-card-actions>
+                    <br>
+                    <br>
+                    <mat-card-actions class="child">
+                      <button class="button" type="button" mat-raised-button color="primary" (click)="vaciarFiltro()" >Clean</button>
+                      
+                    </mat-card-actions>
+                  </div>
+
+                </div>
+
+
+              </form>
+            </div>
+          </div>
+
+
+          <table class="table" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+            class="mat-elevation-z8">
+            <!-- id Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id">
+                id
+              </th>
+              <td mat-cell *matCellDef="let producto">{{ producto.id }}</td>
+            </ng-container>
+
+            <!-- id nombre -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
+                Nombre
+              </th>
+              <td mat-cell *matCellDef="let producto">{{ producto.nombre }}</td>
+            </ng-container>
+
+            <!-- Nombre Cantidad -->
+
+            <ng-container matColumnDef="cantidad">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by cantidad">
+                Cantidad
+              </th>
+              <td mat-cell *matCellDef="let producto">{{ producto.cantidad }}</td>
+            </ng-container>
+
+            <!-- Nombre SubCategoria -->
+
+            <ng-container matColumnDef="subcategoria">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by subcategoria">
+                SubCategoria
+              </th>
+              <td mat-cell *matCellDef="let producto">
+                {{ producto.subcategoria }}
+              </td>
+            </ng-container>
+
+            <!-- Nombre fecha -->
+
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by fecha">
+                Fecha
+              </th>
+              <td mat-cell *matCellDef="let producto">
+                {{ producto.fecha | date: "dd/MM/yyyy" }}
+              </td>
+            </ng-container>
+
+            <!-- Nombre grupo -->
+
+            <ng-container matColumnDef="grupo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by grupo">
+                Grupo
+              </th>
+              <td mat-cell *matCellDef="let producto">{{ producto.grupo }}</td>
+            </ng-container>
+
+            <!-- Nombre programa -->
+
+            <ng-container matColumnDef="programa">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by programa">
+                Programa
+              </th>
+              <td mat-cell *matCellDef="let producto">{{ producto.programa }}</td>
+            </ng-container>
+
+            <!-- Nombre facultad.nombre -->
+            <ng-container matColumnDef="facultad">
+              <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header
+                sortActionDescription="Sort by facultad">
+                Facultad
+              </th>
+
+              <td mat-cell *matCellDef="let producto" class="row">
+                <div class="col-7">
+                  {{ producto.facultad }}
+                </div>
+
+                <div class="col-2" *ngIf="soloAdmin">
+                  <button mat-flat-button color="warn" (click)="enviarID(producto.id)"
+                    aria-label="Example icon button with a delete icon">
+                    <span class="material-icons">mode_edit</span>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Nombre Column -->
+            <ng-container>
+              <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
+                Editar
+              </th>
+              <td></td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+          </mat-paginator>
         </div>
-
-        <mat-form-field>
-          <mat-label>Buscar</mat-label>
-          <input matInput (keyup)="filtrar($event)" placeholder="buscar" />
-        </mat-form-field>
-
-        <table class="table" mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
-          class="mat-elevation-z8">
-          <!-- id Column -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id">
-              id
-            </th>
-            <td mat-cell *matCellDef="let producto">{{ producto.id }}</td>
-          </ng-container>
-
-          <!-- id nombre -->
-          <ng-container matColumnDef="nombre">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
-              Nombre
-            </th>
-            <td mat-cell *matCellDef="let producto">{{ producto.nombre }}</td>
-          </ng-container>
-
-          <!-- Nombre Cantidad -->
-
-          <ng-container matColumnDef="cantidad">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by cantidad">
-              Cantidad
-            </th>
-            <td mat-cell *matCellDef="let producto">{{ producto.cantidad }}</td>
-          </ng-container>
-
-          <!-- Nombre SubCategoria -->
-
-          <ng-container matColumnDef="subcategoria">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by subcategoria">
-              SubCategoria
-            </th>
-            <td mat-cell *matCellDef="let producto">
-              {{ producto.subcategoria }}
-            </td>
-          </ng-container>
-
-          <!-- Nombre fecha -->
-
-          <ng-container matColumnDef="fecha">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by fecha">
-              Fecha
-            </th>
-            <td mat-cell *matCellDef="let producto">
-              {{ producto.fecha | date: "dd/MM/yyyy" }}
-            </td>
-          </ng-container>
-
-          <!-- Nombre grupo -->
-
-          <ng-container matColumnDef="grupo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by grupo">
-              Grupo
-            </th>
-            <td mat-cell *matCellDef="let producto">{{ producto.grupo }}</td>
-          </ng-container>
-
-          <!-- Nombre programa -->
-
-          <ng-container matColumnDef="programa">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by programa">
-              Programa
-            </th>
-            <td mat-cell *matCellDef="let producto">{{ producto.programa }}</td>
-          </ng-container>
-
-          <!-- Nombre facultad.nombre -->
-          <ng-container matColumnDef="facultad">
-            <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by facultad">
-              Facultad
-            </th>
-
-            <td mat-cell *matCellDef="let producto" class="row">
-              <div class="col-7">
-                {{ producto.facultad }}
-              </div>
-
-              <div class="col-2">
-                <button mat-flat-button color="warn" (click)="enviarID(producto.id)"
-                  aria-label="Example icon button with a delete icon">
-                  <span class="material-icons">mode_edit</span>
-                </button>
-              </div>
-            </td>
-          </ng-container>
-
-          <!-- Nombre Column -->
-          <ng-container>
-            <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
-              Editar
-            </th>
-            <td></td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-          aria-label="Select page of periodic elements">
-        </mat-paginator>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Formulario Agregar -->
-<div class="agregar" *ngIf="mostrarAgregar">
-  <div class="agregar">
-    <div class="main-content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header card-header-danger row">
-                <div class="col-4">
-                  <h4 class="card-title">Create Producto</h4>
-                  <p class="card-category">Complete your params</p>
+  <!-- Formulario Agregar -->
+  <div class="agregar" *ngIf="mostrarAgregar">
+    <div class="agregar">
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger row">
+                  <div class="col-4">
+                    <h4 class="card-title">Create Producto</h4>
+                    <p class="card-category">Complete your params</p>
+                  </div>
+                  <div class="col-5"></div>
+                  <div class="col-3">
+                    <div class="float-right">
+                      <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
+                        <div class="float-left">
+                          <div class="input-group form-control-lg p-0">
+                            <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+                          </div>
+                        </div>
+                        <div class="float-right">
+                          <div id="accionBuscarReHo" class="d-inline-block">
+                            <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"
+                              aria-placeholder="Listar">
+                              <mat-icon>menu</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-5"></div>
-                <div class="col-3">
-                  <div class="float-right">
-                    <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
-                      <div class="float-left">
-                        <div class="input-group form-control-lg p-0">
-                          <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+                <div *ngIf="mostrarAgregarIndividual">
+
+                  <div class="card-body">
+                    <form (submit)="crearProgramaAcademico()">
+                      <div class="row">
+                        <div class="col-md-2">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="productos.id" matInput placeholder="Codigo" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="productos.nombre" matInput placeholder="Full Name" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="productos.cantidad" matInput placeholder="Cantidad" type="number" />
+                          </mat-form-field>
                         </div>
                       </div>
-                      <div class="float-right">
-                        <div id="accionBuscarReHo" class="d-inline-block">
-                          <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"
-                            aria-placeholder="Listar">
-                            <mat-icon>menu</mat-icon>
+
+                      <div class="row">
+                        <div class="col-md-2">
+                          <label for="wrapped">Sub Categoria</label>
+
+                          <select class="form-select" aria-label="Default select example"
+                            [(ngModel)]="productos.subcategoria">
+                            <option value="" selected disabled>Please select</option>
+
+                            <option *ngFor="let sub of listarSubCategorias" value="{{ sub.id }}">
+                              {{ sub.descripcion }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="productos.fecha" matInput placeholder="Fecha" type="date" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="wrapped">Grupo</label>
+
+                          <select class="form-select" aria-label="Default select example" [(ngModel)]="productos.grupo">
+                            <option value="" selected disabled>Please select</option>
+
+                            <option *ngFor="let grupo of ListarGrupos" value="{{ grupo.id }}">
+                              {{ grupo.nombre }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-2">
+                          <label for="wrapped">Programa Academico</label>
+
+                          <select class="form-select" aria-label="Default select example"
+                            [(ngModel)]="productos.programa">
+                            <option value="" selected disabled>Please select</option>
+
+                            <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
+                              {{ programa.nombre }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="wrapped">Facultad</label>
+
+                          <select class="form-select" aria-label="Default select example"
+                            [(ngModel)]="productos.facultad">
+                            <option value="" selected disabled>Please select</option>
+
+                            <option *ngFor="let facultad of ListarFacultad" value="{{ facultad.id }}">
+                              {{ facultad.nombre }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col clearfix">
+
+                        <button mat-raised-button type="submit" class="btn btn-danger pull-right">
+                          Create Product
+                        </button>
+                      </div>
+                      <div class="row">
+                        <div class="col clearfix">
+                          <button (click)="mostrarMas()" class="btn btn-danger pull-right">
+                            Cambiar A Masivo
                           </button>
                         </div>
                       </div>
+                      <div class="clearfix"></div>
+                    </form>
+                  </div>
+                </div>
+                <!-- Modal -->
+                <div *ngIf="mostrarAgregarMasivo" class="row">
+
+                  <div class="col-2">
+                    <div>
+                      <a href="../../assets/Files/prueba.xlsx" class="link-success pl-2 pt-2">
+                        <div>
+                          <img src="../../assets/Files/excel.png" width="40%" class="rounded mx-auto d-block" alt="">
+
+                        </div>
+                        <div>
+                          <span class="badge badge-success"> Descargar Plantilla
+                          </span>
+
+                        </div>
+                      </a>
+                    </div>
+                    <div class="clearfix">
+                      <button (click)="mostrarIndi()" class="btn btn-danger ">
+                        Cambiar A Individal
+                      </button>
+                    </div>
+
+
+                  </div>
+                  <div class="col-10">
+                    <form id="file-upload-form" class="uploader">
+                      <div class="form-group files">
+
+                        <input id="file-upload" type="file" (change)="onFileChange($event)" name="fileUpload"
+                          accept=".xls,.xlsx" />
+                      </div>
+
+                      <label for="file-upload" id="file-drag">
+                        <img id="file-image" src="#" alt="Preview" class="hidden">
+                        <div id="start">
+                          <i class="fa fa-download" aria-hidden="true"></i>
+                          <div>Select a file or drag here</div>
+                          <div id="notimage" class="hidden">Please select an Document </div>
+                          <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+                        </div>
+                        <div id="response" class="hidden">
+                          <div id="messages"></div>
+                          <progress class="progress" id="file-progress" value="0">
+                            <span>0</span>%
+                          </progress>
+                        </div>
+                      </label>
                     </form>
                   </div>
                 </div>
               </div>
-              <div *ngIf="mostrarAgregarIndividual">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+
+  <!-- Formulario Editar -->
+
+  <div *ngIf="mostrarEditar">
+    <div>
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger row">
+                  <div class="col-4">
+                    <h4 class="card-title">Edit Producto</h4>
+                    <p class="card-category">Complete your params</p>
+                  </div>
+                  <div class="col-5"></div>
+                  <div class="col-3">
+                    <div class="float-right">
+                      <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
+                        <div class="float-left">
+                          <div class="input-group form-control-lg p-0">
+                            <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+                          </div>
+                        </div>
+                        <div class="float-right">
+                          <div id="accionBuscarReHo" class="d-inline-block">
+                            <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"
+                              aria-placeholder="Listar">
+                              <mat-icon>menu</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
                 <div class="card-body">
-                  <form (submit)="crearProgramaAcademico()">
+                  <form (submit)="editarProducto()">
                     <div class="row">
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="productos.id" matInput placeholder="Codigo" type="text" />
+                          <input [(ngModel)]="productoN.id" matInput placeholder="Codigo" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="productos.nombre" matInput placeholder="Full Name" type="text" />
+                          <input [(ngModel)]="productoN.nombre" matInput placeholder="Full Name" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="productos.cantidad" matInput placeholder="Cantidad" type="number" />
+                          <input [(ngModel)]="productoN.cantidad" matInput placeholder="Cantidad" type="number" />
                         </mat-form-field>
                       </div>
                     </div>
@@ -211,7 +460,7 @@
                         <label for="wrapped">Sub Categoria</label>
 
                         <select class="form-select" aria-label="Default select example"
-                          [(ngModel)]="productos.subcategoria">
+                          [(ngModel)]="productoN.subcategoria">
                           <option value="" selected disabled>Please select</option>
 
                           <option *ngFor="let sub of listarSubCategorias" value="{{ sub.id }}">
@@ -222,13 +471,13 @@
 
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="productos.fecha" matInput placeholder="Fecha" type="date" />
+                          <input [(ngModel)]="productoN.fecha" matInput placeholder="Fecha" type="date" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <label for="wrapped">Grupo</label>
 
-                        <select class="form-select" aria-label="Default select example" [(ngModel)]="productos.grupo">
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="productoN.grupo">
                           <option value="" selected disabled>Please select</option>
 
                           <option *ngFor="let grupo of ListarGrupos" value="{{ grupo.id }}">
@@ -243,7 +492,7 @@
                         <label for="wrapped">Programa Academico</label>
 
                         <select class="form-select" aria-label="Default select example"
-                          [(ngModel)]="productos.programa">
+                          [(ngModel)]="productoN.programa">
                           <option value="" selected disabled>Please select</option>
 
                           <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
@@ -255,7 +504,7 @@
                         <label for="wrapped">Facultad</label>
 
                         <select class="form-select" aria-label="Default select example"
-                          [(ngModel)]="productos.facultad">
+                          [(ngModel)]="productoN.facultad">
                           <option value="" selected disabled>Please select</option>
 
                           <option *ngFor="let facultad of ListarFacultad" value="{{ facultad.id }}">
@@ -264,206 +513,18 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col clearfix">
 
-                      <button mat-raised-button type="submit" class="btn btn-danger pull-right">
-                        Create Product
-                      </button>
-                    </div>
-                    <div class="row">
-                      <div class="col clearfix">
-                        <button (click)="mostrarMas()" class="btn btn-danger pull-right">
-                          Cambiar A Masivo
-                        </button>
-                      </div>
-                    </div>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right">
+                      Editar Product
+                    </button>
                     <div class="clearfix"></div>
                   </form>
                 </div>
               </div>
-              <!-- Modal -->
-              <div *ngIf="mostrarAgregarMasivo" class="row">
-
-                <div class="col-2">
-                  <div>
-                    <a href="../../assets/Files/prueba.xlsx" class="link-success pl-2 pt-2">
-                      <div>
-                        <img src="../../assets/Files/excel.png" width="40%" class="rounded mx-auto d-block" alt="">
-
-                      </div>
-                      <div>
-                        <span class="badge badge-success"> Descargar Plantilla
-                        </span>
-
-                      </div>
-                    </a>
-                  </div>
-                  <div class="clearfix">
-                    <button (click)="mostrarIndi()" class="btn btn-danger ">
-                      Cambiar A Individal
-                    </button>
-                  </div>
-
-
-                </div>
-                <div class="col-10">
-                  <form id="file-upload-form" class="uploader">
-                    <div class="form-group files">
-
-                      <input id="file-upload" type="file" (change)="onFileChange($event)" name="fileUpload"
-                        accept=".xls,.xlsx" />
-                    </div>
-
-                    <label for="file-upload" id="file-drag">
-                      <img id="file-image" src="#" alt="Preview" class="hidden">
-                      <div id="start">
-                        <i class="fa fa-download" aria-hidden="true"></i>
-                        <div>Select a file or drag here</div>
-                        <div id="notimage" class="hidden">Please select an Document </div>
-                        <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
-                      </div>
-                      <div id="response" class="hidden">
-                        <div id="messages"></div>
-                        <progress class="progress" id="file-progress" value="0">
-                          <span>0</span>%
-                        </progress>
-                      </div>
-                    </label>
-                  </form>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-
-<!-- Formulario Editar -->
-
-<div *ngIf="mostrarEditar">
-  <div>
-    <div class="main-content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header card-header-danger row">
-                <div class="col-4">
-                  <h4 class="card-title">Edit Producto</h4>
-                  <p class="card-category">Complete your params</p>
-                </div>
-                <div class="col-5"></div>
-                <div class="col-3">
-                  <div class="float-right">
-                    <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
-                      <div class="float-left">
-                        <div class="input-group form-control-lg p-0">
-                          <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
-                        </div>
-                      </div>
-                      <div class="float-right">
-                        <div id="accionBuscarReHo" class="d-inline-block">
-                          <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"
-                            aria-placeholder="Listar">
-                            <mat-icon>menu</mat-icon>
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <form (submit)="editarProducto()">
-                  <div class="row">
-                    <div class="col-md-2">
-                      <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="productoN.id" matInput placeholder="Codigo" type="text" />
-                      </mat-form-field>
-                    </div>
-                    <div class="col-md-4">
-                      <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="productoN.nombre" matInput placeholder="Full Name" type="text" />
-                      </mat-form-field>
-                    </div>
-                    <div class="col-md-4">
-                      <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="productoN.cantidad" matInput placeholder="Cantidad" type="number" />
-                      </mat-form-field>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-2">
-                      <label for="wrapped">Sub Categoria</label>
-
-                      <select class="form-select" aria-label="Default select example"
-                        [(ngModel)]="productoN.subcategoria">
-                        <option value="" selected disabled>Please select</option>
-
-                        <option *ngFor="let sub of listarSubCategorias" value="{{ sub.id }}">
-                          {{ sub.descripcion }}
-                        </option>
-                      </select>
-                    </div>
-
-                    <div class="col-md-4">
-                      <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="productoN.fecha" matInput placeholder="Fecha" type="date" />
-                      </mat-form-field>
-                    </div>
-                    <div class="col-md-4">
-                      <label for="wrapped">Grupo</label>
-
-                      <select class="form-select" aria-label="Default select example" [(ngModel)]="productoN.grupo">
-                        <option value="" selected disabled>Please select</option>
-
-                        <option *ngFor="let grupo of ListarGrupos" value="{{ grupo.id }}">
-                          {{ grupo.nombre }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-2">
-                      <label for="wrapped">Programa Academico</label>
-
-                      <select class="form-select" aria-label="Default select example" [(ngModel)]="productoN.programa">
-                        <option value="" selected disabled>Please select</option>
-
-                        <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
-                          {{ programa.nombre }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-md-4">
-                      <label for="wrapped">Facultad</label>
-
-                      <select class="form-select" aria-label="Default select example" [(ngModel)]="productoN.facultad">
-                        <option value="" selected disabled>Please select</option>
-
-                        <option *ngFor="let facultad of ListarFacultad" value="{{ facultad.id }}">
-                          {{ facultad.nombre }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <button mat-raised-button type="submit" class="btn btn-danger pull-right">
-                    Editar Product
-                  </button>
-                  <div class="clearfix"></div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 </div>

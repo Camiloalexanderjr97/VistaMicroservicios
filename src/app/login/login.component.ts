@@ -11,7 +11,6 @@ import { User } from "app/Modelos/User";
 import { UserAuthService } from "app/Services/user-auth.service";
 import { TokenService } from 'app/Services/JWT/token.service';
 import Swal from 'sweetalert2';
-import { authorities } from 'app/Modelos/JWT/authorities';
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -26,9 +25,8 @@ export class LoginComponent implements OnInit {
   loginUsuario: LoginUsuario;
   username: string;
   password: string;
-  roles: string[] = [];
+  roles: any[] = [];
   errMsj: String[];
-  auth: authorities[];
   constructor(private userauthService: UserAuthService, private router: Router,
     private tokenService: TokenService, private authService: AuthService) {
 
@@ -40,7 +38,7 @@ export class LoginComponent implements OnInit {
     if (this.tokenService.getToken()) {
       this.isLogged = true;
       this.isLoginFail = false;
-      this.auth = this.tokenService.getAuthorities();
+      this.roles = this.tokenService.getAuthorities();
 
     }
 
@@ -57,14 +55,29 @@ export class LoginComponent implements OnInit {
         this.tokenService.setUserName(this.username);
         // console.log(this.usern ame);
         // console.log(data.authorities);
-
+ 
         this.tokenService.setAuthorities(data.authorities);
          this.tokenService.getAuthorities();
          console.log(this.tokenService.getAuthorities());
 
+         const roles = this.tokenService.getAuthorities();
+ 
+          for(let element of roles){
+
+            if(element.authority==='ROLE_ADMIN'){
+              sessionStorage.setItem("rol_", "ROLE_ADMIN");
+             }
+          }
+
+        //  roles.forEach(rol => {
+        //      if(rol.nombre==='ROLE_ADMIN'){
+        //       sessionStorage.setItem("rol_", "ROLE_ADMIN");
+        //       console.log("entra----------")
+        //      }
+        //      });
+
         // this.aut.forEach(rol => {
         //   if (rol === 'ROLE_ADMIN') {
-            sessionStorage.setItem("rol_", "ROLE_ADMIN");
 
           //   }
           // });

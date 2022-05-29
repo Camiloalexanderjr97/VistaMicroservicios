@@ -78,8 +78,16 @@ export class FacultadsComponent implements OnInit {
   }
 
   isLogged = false;
+  soloAdmin=false;
   ngOnInit() {
 
+    const rol = sessionStorage.getItem("rol_");
+    if(rol==='ROLE_ADMIN'){
+      this.soloAdmin=true;
+
+    }else{
+      this.soloAdmin=false;
+    }  
 
 
     if (this.tokenService.getToken()) {

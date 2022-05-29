@@ -22,7 +22,7 @@ import { DepartamentoComponent } from 'app/departamento/departamento.component';
 // import { LibrosComponent } from 'app/libros/libros.component';
 
 // import { ProgramasAcademicosComponent}
-
+import { ProdGuardService as guard } from 'guards/pro-guard.service';
 export const AdminLayoutRoutes: Routes = [
     // {
     //   path: '',
@@ -66,21 +66,21 @@ export const AdminLayoutRoutes: Routes = [
     //         component: UpgradeComponent
     //     }]
     // }
-    { path: 'dashboard',      component: DashboardComponent },
-    { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'table-list',     component: TableListComponent },
-    { path: 'facultad',     component: FacultadsComponent },
-    { path: 'icons',          component: IconsComponent },
-    { path: 'maps',           component: MapsComponent },
-    { path: 'notifications',  component: NotificationsComponent },
+    { path: 'dashboard',      component: DashboardComponent, canActivate: [guard], data: { expectedRol:['admin', 'user']} },
+    { path: 'user-profile',   component: UserProfileComponent ,canActivate: [guard], data: { expectedRol:['admin']} },
+    { path: 'table-list',     component: TableListComponent,canActivate: [guard], data: { expectedRol:['admin']} },
+    { path: 'facultad',     component: FacultadsComponent,canActivate: [guard], data: { expectedRol:['admin']} },
+    // { path: 'icons',          component: IconsComponent ,canActivate: [guard], data: { expectedRol:['admin']} },
+    // { path: 'maps',           component: MapsComponent ,canActivate: [guard], data: { expectedRol:['admin']} },
+    // { path: 'notifications',  component: NotificationsComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
     // { path: 'upgrade',        component: UpgradeComponent },
-    { path: 'ProgramasAcademicosComponent',        component: ProgramasAcademicosComponent },
-    { path: 'LibrosComponent', component: LibrosComponent},
-    { path: 'RegisterComponent', component: RegisterComponent},
-    { path: 'ArticuloComponent', component: ArticuloComponent},
-    { path: 'ProductoComponent', component: ProductoComponent},
-    { path: 'SemilleroComponent', component: SemilleroComponent},
-    { path: 'GrupoComponent', component: GrupoComponent},
-    { path: 'DepartamentoComponent', component: DepartamentoComponent}
+    { path: 'ProgramasAcademicosComponent',        component: ProgramasAcademicosComponent ,canActivate: [guard], data: { expectedRol:['admin']} },
+    { path: 'LibrosComponent', component: LibrosComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
+    { path: 'RegisterComponent', component: RegisterComponent,canActivate: [guard], data: { expectedRol:['admin']} },
+    { path: 'ArticuloComponent', component: ArticuloComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
+    { path: 'ProductoComponent', component: ProductoComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
+    { path: 'SemilleroComponent', component: SemilleroComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
+    { path: 'GrupoComponent', component: GrupoComponent,canActivate: [guard], data: { expectedRol:['admin', ]} },
+    { path: 'DepartamentoComponent', component: DepartamentoComponent,canActivate: [guard], data: { expectedRol:['admin']} }
     
 ];

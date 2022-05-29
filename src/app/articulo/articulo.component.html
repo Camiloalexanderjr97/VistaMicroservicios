@@ -27,7 +27,7 @@
                           <mat-icon>menu</mat-icon>
                         </button>
                       </div>
-                      <div id="accionBuscarReHo" class="d-inline-block">
+                      <div id="accionBuscarReHo" class="d-inline-block" *ngIf="soloAdmin">
                         <button mat-mini-fab color="warn" type="button" (click)="mostrarAgg()"
                           aria-placeholder="Agregar">
                           <mat-icon>plus_one</mat-icon>
@@ -38,12 +38,60 @@
                 </div>
               </div>
             </div>
+          </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Buscar</mat-label>
+                  <input matInput (keyup)="filtrar($event)" placeholder="buscar" />
+                </mat-form-field>
+              </div>
 
-            <mat-form-field>
-              <mat-label>Buscar</mat-label>
-              <input matInput (keyup)="filtrar($event)" placeholder="buscar" />
-            </mat-form-field>
+              <div class="col" style="width: fit-content; float: right;">
+                <form [formGroup]="filtroProducto" (ngSubmit)="filtrarPro()" class="demo-button">
 
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Enter a date range</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                          <input matStartDate formControlName="StartDate" placeholder="Start date">
+                          <input matEndDate formControlName="EndDate" placeholder="End date">
+                        </mat-date-range-input>
+                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+
+                        <mat-error *ngIf="filtroProducto.controls.StartDate.hasError('matStartDateInvalid')">Invalid
+                          start
+                          date</mat-error>
+                        <mat-error *ngIf="filtroProducto.controls.EndDate.hasError('matEndDateInvalid')">Invalid end
+                          date
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-1"></div>
+                    <div class="col">
+
+                      <mat-card-actions class="child">
+                        <button class="button" type="submit" mat-raised-button color="primary">Filtrar</button>
+                      </mat-card-actions>
+                      <br>
+                      <br>
+                      <mat-card-actions class="child">
+                        <button class="button" type="button" mat-raised-button color="primary"
+                          (click)="vaciarFiltro()">Clean</button>
+
+                      </mat-card-actions>
+                    </div>
+
+                  </div>
+
+
+                </form>
+              </div>
+            </div>
+          
             <table class="table" mat-table [dataSource]="dataSource" matSort
               (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
               <!-- id id_articulo -->
@@ -178,7 +226,7 @@
                     </a>
                   </div>
 
-                  <div class="col-1">
+                  <div class="col-1" *ngIf="soloAdmin">
                     <button mat-flat-button color="warn" (click)="enviarID(articulos.id_articulo)"
                       aria-label="Example icon button with a delete icon">
                       <span class="material-icons">mode_edit</span>
@@ -205,7 +253,7 @@
         </div>
       </div>
     </div>
-  </div>
+  
 
   <!-- Formulario Agregar -->
 

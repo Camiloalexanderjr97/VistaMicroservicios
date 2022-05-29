@@ -156,8 +156,16 @@ mostrarIndi(){
  }
 
 isLogged=false;
+soloAdmin=false;
 ngOnInit() {
 
+  const rol = sessionStorage.getItem("rol_");
+  if(rol==='ROLE_ADMIN'){
+    this.soloAdmin=true;
+
+  }else{
+    this.soloAdmin=false;
+  }  
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
     if (this.tokenService.getToken()) {
       this.isLogged = true;

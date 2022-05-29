@@ -11,12 +11,13 @@
                   <div class="card-body">
                     <form (submit)="register()">
                         <div class="row">
-                          <div class="col-md-6">
+                          <div class="col">
                             <mat-form-field class="example-full-width">
                               <input [(ngModel)]="user.name" matInput placeholder="Full Name" type="text">
                             </mat-form-field>
                           </div>
-                          <h3>Rol</h3>
+                          <div class="col">
+                            <h3>Rol</h3>
                           <mat-form-field appearance="fill" placeholder="Rol">
                             
                             <mat-select  required [(ngModel)]="user.idRol"  > 
@@ -28,6 +29,8 @@
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
+                          </div>
+                          
                       </div>
                           <div class="row">
                              

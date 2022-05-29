@@ -17,7 +17,7 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { AfterViewInit } from "@angular/core";
 import { MatSort, Sort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { FormControl } from "@angular/forms";
+import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
@@ -48,15 +48,30 @@ export class LibrosComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  filtroProducto: any;
 
 
-  constructor(private tokenService: TokenService,private router: Router,private libroService: LibrosService,private _liveAnnouncer: LiveAnnouncer,) {
+  constructor( private fb: FormBuilder,private tokenService: TokenService,private router: Router,private libroService: LibrosService,private _liveAnnouncer: LiveAnnouncer,) {
     //_CargaScripts.Carga(["main3"]);
+
+    this.filtroProducto = this.fb.group({
+      StartDate: ['', Validators.required],
+      EndDate: ['', Validators.required],
+    })
   }
   
 
 isLogged=false;
-ngOnInit() {
+soloAdmin=false;
+  ngOnInit() {
+
+    const rol = sessionStorage.getItem("rol_");
+    if(rol==='ROLE_ADMIN'){
+      this.soloAdmin=true;
+
+    }else{
+      this.soloAdmin=false;
+    }  
     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
     if (this.tokenService.getToken()) {
       this.isLogged = true;
@@ -97,7 +112,6 @@ ngOnInit() {
         
         this.listarLibreria = data ;
        
-        console.log(this.listarLibreria);
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -113,8 +127,38 @@ ngOnInit() {
     this.dataSource.filter = filtro.trim().toLowerCase();
   }
 
+  filtrarPro() {
+    const x = (event.target as HTMLInputElement).value;
+    const fechaIni = this.formatearFecha(this.filtroProducto.value.StartDate);
+    const fechaFin = this.formatearFecha(this.filtroProducto.value.EndDate);
+    console.log(fechaIni + "-------Fecha Inicio"+this.filtroProducto.value.StartDate);
+    console.log(fechaFin + "-------Fecha FIn");
+    const data:Libros[]=[];
+    for(let element of this.listarLibreria){ 
 
+      console.log(new Date(element.fecha_publicacion_libro).getTime())
+      if((new Date(element.fecha_publicacion_libro).getTime()>=new Date(fechaIni).getTime())&& ( new Date(element.fecha_publicacion_libro).getTime()<=new Date(fechaFin).getTime())){
+        data.push(element);
+      
+      }
+    }
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   
+  }
+  vaciarFiltro(){
+    this.filtroProducto.reset();
+    this.listarLibreriaLibros();
+  }
+
+  formatearFecha(date: Date): string {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return `${year}-${month}-${day}`;
+  }
   crearLibros() {
     alert(this.libros.id_libro);
 

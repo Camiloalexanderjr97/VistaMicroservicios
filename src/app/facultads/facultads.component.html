@@ -26,7 +26,7 @@
                           <mat-icon>menu</mat-icon>
                         </button>
                       </div>
-                      <div id="accionBuscarReHo" class="d-inline-block">
+                      <div id="accionBuscarReHo" class="d-inline-block" *ngIf="soloAdmin">
                         <button mat-mini-fab color="warn" type="button" (click)="mostrarAgg()"
                           aria-placeholder="Agregar">
                           <mat-icon>plus_one</mat-icon>
@@ -73,7 +73,7 @@
                   {{ facultad.nombre }}
                 </div>
 
-                <div class="col-2">
+                <div class="col-2" *ngIf="soloAdmin">
                   <button mat-flat-button color="warn" (click)="enviarID(facultad.id)"
                     aria-label="Example icon button with a delete icon">
                     <span class="material-icons">mode_edit</span>

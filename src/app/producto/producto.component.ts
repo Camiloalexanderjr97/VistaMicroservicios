@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { TokenService } from 'app/Services/JWT/token.service';
 import { GrupoService } from './../Services/grupo.service';
 import { ProgramaAcademico } from "./../Modelos/ProgramaAcademico";
@@ -15,7 +16,7 @@ import { CargarScriptsService } from "cargar-scripts.service";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { MatSort, Sort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { FormControl } from "@angular/forms";
+import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
@@ -35,7 +36,7 @@ export class ProductoComponent implements OnInit {
   productos = new Producto();
   productoN = new Producto();
   listarProductos: Producto[] = [];
-  ListarProgramas: ProgramaAcademico[]=[];
+  ListarProgramas: ProgramaAcademico[] = [];
 
   subCategoria = new subCategorias();
   listarSubCategorias: subCategorias[] = [];
@@ -60,8 +61,9 @@ export class ProductoComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  filtroProducto: any;
   constructor(
+    private fb: FormBuilder,
     private facultadService: FacultadService,
     private subCategoriaService: SubCategoriaService,
     private productoService: ProductoService,
@@ -72,17 +74,30 @@ export class ProductoComponent implements OnInit {
     private grupoService: GrupoService,
     private tokenService: TokenService
   ) {
+    this.filtroProducto = this.fb.group({
+      StartDate: ['', Validators.required],
+      EndDate: ['', Validators.required],
+    })
     //_CargaScripts.Carga(["main3"]);
   }
 
-  isLogged=false;
 
+  isLogged = false;
+
+  soloAdmin=false;
   ngOnInit() {
 
+    const rol = sessionStorage.getItem("rol_");
+    if(rol==='ROLE_ADMIN'){
+      this.soloAdmin=true;
+
+    }else{
+      this.soloAdmin=false;
+    }  
     if (this.tokenService.getToken()) {
       this.isLogged = true;
 
-    this.listarProducto();
+      this.listarProducto();
     } else {
       this.isLogged = false;
 
@@ -117,19 +132,16 @@ export class ProductoComponent implements OnInit {
         for (let elemento of data) {
 
 
-          this.subCategoriaService.getSubCategoriaById(elemento.subcategoria).subscribe((subcategoria: subCategorias)=>
-          {
-            elemento.subcategoria=subcategoria.descripcion;
+          this.subCategoriaService.getSubCategoriaById(elemento.subcategoria).subscribe((subcategoria: subCategorias) => {
+            elemento.subcategoria = subcategoria.descripcion;
           })
-          this.grupoService.getGrupoById(elemento.grupo).subscribe((grupo: Grupo)=>{
+          this.grupoService.getGrupoById(elemento.grupo).subscribe((grupo: Grupo) => {
 
             elemento.grupo = grupo.nombre;
           })
 
 
-          this.programaAcademicoService
-            .getProgramaAcademicoById(elemento.programa)
-            .subscribe((programa: ProgramaAcademico) => {
+          this.programaAcademicoService.getProgramaAcademicoById(elemento.programa).subscribe((programa: ProgramaAcademico) => {
               elemento.programa = programa.nombre;
             });
 
@@ -168,6 +180,31 @@ export class ProductoComponent implements OnInit {
     this.dataSource.filter = filtro.trim().toLowerCase();
   }
 
+  filtrarPro() {
+    const x = (event.target as HTMLInputElement).value;
+    const fechaIni = this.formatearFecha(this.filtroProducto.value.StartDate);
+    const fechaFin = this.formatearFecha(this.filtroProducto.value.EndDate);
+    console.log(fechaIni + "-------Fecha Inicio"+this.filtroProducto.value.StartDate);
+    console.log(fechaFin + "-------Fecha FIn");
+    const data:Producto[]=[];
+    for(let element of this.listarProductos){ 
+
+      console.log(new Date(element.fecha).getTime())
+      if((new Date(element.fecha).getTime()>=new Date(fechaIni).getTime())&& ( new Date(element.fecha).getTime()<=new Date(fechaFin).getTime())){
+        data.push(element);
+      
+      }
+    }
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  
+  }
+  vaciarFiltro(){
+    this.filtroProducto.reset();
+    this.listarProducto();
+  }
+
   crearProgramaAcademico() {
     this.productos.facultad;
     var splitted = this.productos.facultad.split("-", 1);
@@ -175,16 +212,16 @@ export class ProductoComponent implements OnInit {
 
     alert(
       this.productos.facultad +
-        "-" +
-        this.productos.id +
-        "-" +
-        this.productos.nombre
+      "-" +
+      this.productos.id +
+      "-" +
+      this.productos.nombre
     );
 
     this.productoService.addProducto(this.productos).subscribe(
       (data: Producto) => {
         this.productos = data;
-        
+
         Swal.fire("Register Success!", "Registrado correctamente", "success");
         this.mostrarList();
       },
@@ -199,12 +236,12 @@ export class ProductoComponent implements OnInit {
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
-    return `${year}/${month}/${day}`;
+    return `${year}-${month}-${day}`;
   }
   date: Date;
 
   editarProducto() {
-    this.date = new Date(this.formatearFecha(this.productoN.fecha));
+    this.date = new Date(this.productoN.fecha);
 
     this.productoN.fecha = this.date;
     alert(this.productoN + "---" + this.productoN.fecha);
@@ -215,16 +252,16 @@ export class ProductoComponent implements OnInit {
 
     alert(
       this.productoN.facultad +
-        "-" +
-        this.productoN.id +
-        "-" +
-        this.productoN.cantidad
+      "-" +
+      this.productoN.id +
+      "-" +
+      this.productoN.cantidad
     );
 
     this.productoService.editProducto(this.productoN).subscribe(
       (data: Producto) => {
         this.productoN = data;
-      
+
         Swal.fire("Register Success!", "Actualizado correctamente", "success");
         this.mostrarList();
       },
@@ -244,13 +281,13 @@ export class ProductoComponent implements OnInit {
   //Ocultar y mostrar paneles de agregar y listar
   mostrarListado: Boolean = true;
   mostrarAgregar: Boolean = false;
-  mostrarEditar: Boolean = false;  
-mostrarAgregarIndividual: Boolean= false;
-mostrarAgregarMasivo: Boolean=false;
+  mostrarEditar: Boolean = false;
+  mostrarAgregarIndividual: Boolean = false;
+  mostrarAgregarMasivo: Boolean = false;
 
 
   mostrarAgg() {
-    
+
     this.listarFacultades();
     this.listarSubCategoriasMostrar();
     this.listadoGrupos();
@@ -265,17 +302,17 @@ mostrarAgregarMasivo: Boolean=false;
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.mostrarAgregar = true;
-  
+
         this.mostrarListado = false;
         this.mostrarEditar = false;
-          this.mostrarIndi();
+        this.mostrarIndi();
       } else if (result.isDenied) {
         this.mostrarAgregar = true;
-  
-  
+
+
         this.mostrarListado = false;
         this.mostrarEditar = false;
-  
+
         this.mostrarMas();
       }
     })
@@ -301,18 +338,18 @@ mostrarAgregarMasivo: Boolean=false;
     this.listadoProgramas();
   }
 
-  mostrarMas(){
+  mostrarMas() {
 
-    this.mostrarAgregarMasivo=true;
-    this.mostrarAgregarIndividual=false;
+    this.mostrarAgregarMasivo = true;
+    this.mostrarAgregarIndividual = false;
   }
-  
-  mostrarIndi(){
-    this.mostrarAgregarIndividual=true;
-    this.mostrarAgregarMasivo=false;    
-  
-   }
-  
+
+  mostrarIndi() {
+    this.mostrarAgregarIndividual = true;
+    this.mostrarAgregarMasivo = false;
+
+  }
+
 
   //Editat Programa Academico
 
@@ -333,9 +370,7 @@ mostrarAgregarMasivo: Boolean=false;
 
   //Listar subCategorias para agregar en el list
   listarSubCategoriasMostrar() {
-    this.subCategoriaService
-      .getSubCategorias()
-      .subscribe((data: subCategorias[]) => {
+    this.subCategoriaService.getSubCategorias().subscribe((data: subCategorias[]) => {
         this.listarSubCategorias = data;
         console.log(this.listarSubCategorias);
       });
@@ -364,72 +399,72 @@ mostrarAgregarMasivo: Boolean=false;
   }
 
 
-  listadoGrupos(){
-    this.grupoService.getGrupo().subscribe((data: Grupo[])=>{
-      this.ListarGrupos=data;
-    })
-  }
-  
-  listadoProgramas(){
-    this.programaAcademicoService.getProgramasAcademicos().subscribe((data: ProgramaAcademico[])=>{
-      this.ListarProgramas=data;
+  listadoGrupos() {
+    this.grupoService.getGrupo().subscribe((data: Grupo[]) => {
+      this.ListarGrupos = data;
     })
   }
 
-  
-onFileChange(evt: any){
-  const target: DataTransfer = <DataTransfer>(evt.target);
-  const reader: FileReader = new FileReader();
-  reader.onload=(e: any)=>{
-    const bstr: String =e.target.result;
-
-    const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary'});
-
-    const wsname : string = wb.SheetNames[0];
-    const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+  listadoProgramas() {
+    this.programaAcademicoService.getProgramasAcademicos().subscribe((data: ProgramaAcademico[]) => {
+      this.ListarProgramas = data;
+    })
+  }
 
 
+  onFileChange(evt: any) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+      const bstr: String = e.target.result;
 
-    wb.SheetNames.forEach(sheet =>{
-      this.listarProductos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
-      // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-     
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
 
-      Swal.fire({
-        title: 'Do you want to save the changes?',
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Save',
-        denyButtonText: `Don't save`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+
+
+      wb.SheetNames.forEach(sheet => {
+        this.listarProductos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
+        // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
+
+
+        Swal.fire({
+          title: 'Do you want to save the changes?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Save',
+          denyButtonText: `Don't save`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
 
             this.productoService.agregarListado(this.listarProductos).subscribe(
-        (data: any) => {
-          this.listarProductos = data;
-          console.log(data);
-          Swal.fire("Register Success!", "Registrado correctamente", "success");
-         this.mostrarList();
-        },
-        (error) =>
-          Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
-        () => console.log("Complete")
-      );
-        } else if (result.isDenied) {
-          Swal.fire('Changes are not saved', '', 'info')
-          this.mostrarList();
-        }
+              (data: any) => {
+                this.listarProductos = data;
+                console.log(data);
+                Swal.fire("Register Success!", "Registrado correctamente", "success");
+                this.mostrarList();
+              },
+              (error) =>
+                Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+              () => console.log("Complete")
+            );
+          } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info')
+            this.mostrarList();
+          }
+        })
+
+
+
+
       })
+    };
+    reader.readAsBinaryString(target.files[0]);
 
-
-
-    
-    }) 
-  };
-  reader.readAsBinaryString(target.files[0]);
-
-}
+  }
 
 
 }

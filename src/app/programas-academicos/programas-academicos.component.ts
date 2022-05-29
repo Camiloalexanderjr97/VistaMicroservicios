@@ -72,9 +72,16 @@ export class ProgramasAcademicosComponent implements OnInit {
   }
 
   isLogged=false;
-
+  soloAdmin=false;
   ngOnInit() {
-    // this._CargaScripts.Carga(["mainTable"]);
+
+    const rol = sessionStorage.getItem("rol_");
+    if(rol==='ROLE_ADMIN'){
+      this.soloAdmin=true;
+
+    }else{
+      this.soloAdmin=false;
+    }          
 
     if (this.tokenService.getToken()) {
       this.isLogged = true;
@@ -96,6 +103,7 @@ export class ProgramasAcademicosComponent implements OnInit {
     }
 
   }
+
 
 
 
