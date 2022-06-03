@@ -1,4 +1,8 @@
 <div *ngIf="isLogged">
+
+
+
+
   <div class="main-content">
     <div class="container-fluid">
       <div class="row">
@@ -27,9 +31,9 @@
                       <td>{{ user.name }}</td>
                       <td>{{ user.username }}</td>
                       <td>{{ user.password }}</td>
-                      <td>{{ user.rol.name }}</td>
+                      <td>{{ user.rol }}</td>
                       <td>
-                        <button mat-flat-button color="warn" (click)="deleteUser(user.id)"
+                        <button mat-flat-button color="warn" (click)="edit(user.id)"
                           aria-label="Example icon button with a delete icon">
                           <span class="material-icons">mode_edit</span>
                         </button>

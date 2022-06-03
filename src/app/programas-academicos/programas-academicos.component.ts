@@ -121,18 +121,21 @@ export class ProgramasAcademicosComponent implements OnInit {
   }
 
   listarProgramasAcademicos() {
+    this.ListarProgramas.length=0;
     this.programaAcademicoService
       .getProgramasAcademicos()
       .subscribe((data: ProgramaAcademico[]) => {
-        this.ListarProgramas=data;
-        for(let element of this.ListarProgramas){
-          console.log(element.facultad)
+      
+        for(let element of data){
+          element.facultad=element.idFacultad.nombre;
+       
+
           // element.facultad=element.id_facultad.nombre;
           // alert(element.id_facultad.nombre)
+          this.ListarProgramas.push(element);
         }
 
-        console.log(this.ListarProgramas);
-        this.dataSource = new MatTableDataSource(data);
+        this.dataSource = new MatTableDataSource(  this.ListarProgramas);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       });
@@ -288,8 +291,7 @@ enviarID(id){
       this.programaAcademico = new ProgramaAcademico();
       
       this.programaAcademico=data;
-      console.log(data);
-      alert(data.id);
+     
     },
     (error) =>
       Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
@@ -350,7 +352,7 @@ onFileChange(evt: any){
     wb.SheetNames.forEach(sheet =>{
       this.ListarProgramas = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
       // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-     
+     console.log(this.ListarProgramas);
 
       Swal.fire({
         title: 'Do you want to save the changes?',
@@ -364,7 +366,6 @@ onFileChange(evt: any){
 
             this.programaAcademicoService.agregarListado(this.ListarProgramas).subscribe(
         (data: any) => {
-          this.programaAcademico = data;
           console.log(data);
           Swal.fire("Register Success!", "Registrado correctamente", "success");
          this.mostrarList();

@@ -2,7 +2,7 @@
 
 export class Libros {
   id_libro?: String;
-  titulo_libro?: String;
+  titulo_libro?: String; 
   numero_capitulos_libro?: String;
   autores_libro?: String; 
   fecha_publicacion_libro?: Date;

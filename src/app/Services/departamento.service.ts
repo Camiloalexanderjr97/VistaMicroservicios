@@ -22,7 +22,7 @@ export class DepartamentoService {
   }
 
   //get un Departamento
-  getDepartamentoById(id: string): Observable<any> {
+  getDepartamentoById(id: String): Observable<any> {
     return this.http.get<any>(this.url + "/getDepartamento/" + id);
   }
 

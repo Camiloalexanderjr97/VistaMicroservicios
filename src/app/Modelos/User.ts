@@ -5,6 +5,6 @@ export class User {
   name?: string;
   username?: string;
   password?: string;
-  rol?:Rol;
-  idRol: Number; 
+  roles?:any[];
+  rol: String; 
 }

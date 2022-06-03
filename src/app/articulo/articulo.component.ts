@@ -30,7 +30,7 @@ export class ArticuloComponent implements OnInit {
 
 
     
-  displayedColumns: string[] = ["id_articulo", "nombre_revista","titulo_articulo","autores_articulo","anio_articulo","mes_articulo","volumen_articulo","pagina_inical","pagina_final","issn_articulo","doi_articulo","url_articulo"];
+  displayedColumns: string[] = ["id_articulo", "nombre_revista","titulo_articulo","autores_articulo","fecha_articulo","volumen_articulo","pagina_inical","pagina_final","issn_articulo","doi_articulo","url_articulo"];
 
   dataSource: any;
 
@@ -311,7 +311,7 @@ onFileChange(evt: any){
     wb.SheetNames.forEach(sheet =>{
       this.listarArticulos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
       // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-     
+      console.log(this.listarArticulos );
 
       Swal.fire({
         title: 'Do you want to save the changes?',
@@ -322,7 +322,7 @@ onFileChange(evt: any){
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-
+       
             this.articuloService.agregarListado(this.listarArticulos).subscribe(
         (data: any) => {
           this.listarArticulos = data;

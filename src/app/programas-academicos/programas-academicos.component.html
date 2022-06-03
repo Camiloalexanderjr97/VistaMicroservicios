@@ -78,10 +78,11 @@
             <ng-container matColumnDef="facultad">
               <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header
                 sortActionDescription="Sort by facultad">
+                Facultad
               </th>
 
               <td mat-cell *matCellDef="let programaAcademico" class="row">
-                <div class="col-10">{{programaAcademico.id_facultad.nombre}</div>
+                <div class="col-10">{{programaAcademico.facultad}}</div>
 
                 <div class="col-2" *ngIf="soloAdmin">
                   <button mat-flat-button color="warn" (click)="enviarID(programaAcademico.id)"

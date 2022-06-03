@@ -9,7 +9,7 @@ import {Articulos} from "../Modelos/Articulos";
   providedIn: "root",
 })
 export class ArticuloService {
-  private url = `${urlArticulo}/art/`;
+  private url = `${urlArticulo}/art`;
   // private url2 = `${urlArticulo}/file`;
 
 

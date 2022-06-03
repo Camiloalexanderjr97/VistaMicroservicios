@@ -7,11 +7,13 @@ export class Grupo {
       
   id?: String;
   nombre?: String;
-  canIntegrantes?: String;
-  fechaConformacion?: String;
-  id_Semillero?: String;
+  sigla?: String;
+  director?: String;
+  canIntegrantes?: number;
+  fechaConformacion?: Date;
+  semillero?: number;
   id_departamento?: String;
-  semillero?: Semillero;
+  lineaInvestigacion?: String;
   departamento?: Departamento;
 
 

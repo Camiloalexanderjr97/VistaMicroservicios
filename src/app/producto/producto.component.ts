@@ -428,7 +428,7 @@ export class ProductoComponent implements OnInit {
       wb.SheetNames.forEach(sheet => {
         this.listarProductos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
         // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-
+console.log(this.listarProductos);
 
         Swal.fire({
           title: 'Do you want to save the changes?',

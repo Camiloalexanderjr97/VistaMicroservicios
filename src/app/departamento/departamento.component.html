@@ -74,17 +74,25 @@
               <td mat-cell *matCellDef="let Departamento"> {{Departamento.id}} </td>
             </ng-container>
 
-            <!-- Nombre Column -->
             <ng-container matColumnDef="name">
-
-              <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
                 Nombre
+              </th>
+              <td mat-cell *matCellDef="let Departamento"> {{Departamento.name}} </td>
+            </ng-container>
+
+            <!-- Nombre Column -->
+            <ng-container matColumnDef="programa">
+
+              <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header
+                sortActionDescription="Sort by programa">
+                Programa Academico
               </th>
 
               <td mat-cell *matCellDef="let Departamento" class="row">
                 <div class="col-10">
 
-                  {{Departamento.name}}
+                  {{Departamento.programa}}
 
 
                 </div>
@@ -164,37 +172,32 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form (submit)="crearDepartamento()">
+                  <form (submit)="editarDepartamento()">
                     <div class="row">
 
 
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="Departamento.id" matInput placeholder="Codigo" type="text" />
+                          <input [(ngModel)]="departamentos.id" matInput placeholder="Codigo" type="number" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="Departamento.nombre" matInput placeholder="Full Name" type="text" />
+                          <input [(ngModel)]="departamentos.name" matInput placeholder="Full Name" type="text" />
                         </mat-form-field>
                       </div>
-                      <h3>Departamento</h3>
+                      <div class="col">
+                        <label for="wrapped">Programa Academico</label>
 
-                      <form class="example-form">
-                        <mat-form-field class="example-full-width" appearance="fill">
-                          <mat-label>Assignee</mat-label>
+                        <select class="form-select" aria-label="Default select example"
+                          [(ngModel)]="departamentos.progAcademico">
+                          <option value="" selected disabled>Please select</option>
 
-                          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                            [(ngModel)]="Departamento.nombre">
-                          <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option [value]="option.id+'-'+option.nombre"
-                              *ngFor="let option of filteredOptions | async">
-                              {{option.id}}-{{option.nombre}}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                      </form>
-
+                          <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
+                            {{ programa.nombre }}
+                          </option>
+                        </select>
+                      </div>
 
 
                     </div>
@@ -255,35 +258,29 @@
                   <form (submit)="crearDepartamento()">
                     <div class="row">
 
+
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-
-                          <input [(ngModel)]="Departamento.id" matInput placeholder="Codigo" type="text" />
+                          <input [(ngModel)]="departamentos.id" matInput placeholder="Codigo" type="number" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="Departamento.nombre" matInput placeholder="Nombre Departamento"
-                            type="text" />
+                          <input [(ngModel)]="departamentos.name" matInput placeholder="Full Name" type="text" />
                         </mat-form-field>
                       </div>
-                      <h3>Departamento</h3>
+                      <div class="col">
+                        <label for="wrapped">Programa Academico</label>
 
-                      <form class="example-form">
-                        <mat-form-field class="example-full-width" appearance="fill">
-                          <mat-label>{{Departamento.Departamento}}</mat-label>
+                        <select class="form-select" aria-label="Default select example"
+                          [(ngModel)]="departamentos.progAcademico">
+                          <option value="" selected disabled>Please select</option>
 
-                          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                            [(ngModel)]="Departamento.Departamento">
-                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
-                            <mat-option [value]="option.id+'-'+option.nombre"
-                              *ngFor="let option of filteredOptions | async">
-                              {{option.id}}-{{option.nombre}}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                      </form>
-
+                          <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
+                            {{ programa.nombre }}
+                          </option>
+                        </select>
+                      </div>
 
 
                     </div>

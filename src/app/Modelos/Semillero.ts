@@ -3,8 +3,10 @@
 export class Semillero {
       
   id?: String;
+  sigla?: String;
   nombre?: String;
-  canGrupos?: String;
-  fechaConformacion?: String;
+  canGrupos?: number;
+  canEstudiantes: number;
+  fechaConformacion?: Date;
     
 }

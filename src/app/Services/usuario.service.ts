@@ -9,30 +9,25 @@ import {urlUser } from "../../environments/environment";
   providedIn: "root",
 })
 export class UsuarioService {
-  private url = `${urlUser}/api/users`;
-  private url2 = `${urlUser}/file`;
+  private url = `${urlUser}/auth`;
 
 
   constructor(private http: HttpClient, private router: Router) {}
 
   //getUsuarios
   getUsuario(): Observable<User[]> {
-    return this.http.get<User[]>(this.url);
+    return this.http.get<User[]>(this.url+"/users");
   }
 
   //get un User
-  getUser(id: string): Observable<any> {
-    return this.http.get<any>(this.url + "/" + id);
+  getUserById(id: string): Observable<any> {
+    return this.http.get<any>(this.url + "/users/buscar/" + id);
   }
 
-  //get un User
-  getSignatureUser(id: string): Observable<any> {
-    return this.http.get<any>(this.url2 + "/id/" + id);
-  }
 
   //agregar un User
   addUser(User: User) {
-    return this.http.post(this.url + "/save", User);
+    return this.http.post(this.url + "/nuevo", User);
   }
 
   //eliminar
@@ -46,7 +41,7 @@ export class UsuarioService {
   }
 
   //modificar un User
-  editUser(User: User) {
-    return this.http.put(this.url + "/{id}", User);
+  editUser(user: User) {
+    return this.http.put(this.url + "/editar/"+user.id, user);
   }
 }

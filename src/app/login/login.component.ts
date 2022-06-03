@@ -8,7 +8,6 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { User } from "app/Modelos/User";
-import { UserAuthService } from "app/Services/user-auth.service";
 import { TokenService } from 'app/Services/JWT/token.service';
 import Swal from 'sweetalert2';
 @Component({
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit {
   password: string;
   roles: any[] = [];
   errMsj: String[];
-  constructor(private userauthService: UserAuthService, private router: Router,
+  constructor( private router: Router,
     private tokenService: TokenService, private authService: AuthService) {
 
   }

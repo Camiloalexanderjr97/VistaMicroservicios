@@ -2,7 +2,8 @@
 
 export class Departamento {
       
-  id?: String;
+  id?: any;
   name?: String;
-
+  progAcademico: number;
+  programa: String;
 }

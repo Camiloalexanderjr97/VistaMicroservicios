@@ -1,3 +1,5 @@
+import { DepartamentoService } from './../Services/departamento.service';
+import { Departamento } from 'app/Modelos/Departamento';
 import { TokenService } from 'app/Services/JWT/token.service';
 import { element } from 'protractor';
 import { GrupoService } from './../Services/grupo.service';
@@ -27,28 +29,27 @@ export class GrupoComponent implements OnInit {
 
   grupos = new Grupo();
   listarGrupos: Grupo[] = [];
-
-
-  displayedColumns: string[] = ["id", "nombre", "canIntegrantes", "fechaConformacion", "id_Semillero", "id_departamento"];
+  ListarDepartamentos: Departamento[]=[];
+  displayedColumns: string[] = ["id", "sigla", "nombre","director", "canIntegrantes", "fechaConformacion", "semillero", "lineaInvestigacion","id_departamento"];
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private tokenService: TokenService, private router: Router, private grupoService: GrupoService, private _liveAnnouncer: LiveAnnouncer) {
+  constructor(private departamentoService: DepartamentoService,private tokenService: TokenService, private router: Router, private grupoService: GrupoService, private _liveAnnouncer: LiveAnnouncer) {
     //_CargaScripts.Carga(["main3"]);
   }
 
 
 
   listarGrupo(): void {
+    this.listarGrupos.length=0;
     this.grupoService.getGrupo().subscribe((data: Grupo[]) => {
 
 
       for (let element of data) {
         element.id_departamento = element.departamento.name;
-        element.id_Semillero = element.semillero.nombre;
         this.listarGrupos.push(element);
       }
       console.log(this.listarGrupos)
@@ -132,7 +133,7 @@ export class GrupoComponent implements OnInit {
     this.mostrarListado = false;
     this.mostrarAgregar = true;
     this.mostrarEditar = false;
-    this.listarGrupo();
+    this.listadoDepartamentos();
   }
 
   mostrarList() {
@@ -146,9 +147,41 @@ export class GrupoComponent implements OnInit {
     this.mostrarAgregar = false;
     this.mostrarListado = false;
     this.mostrarEditar = true;
-    this.listarGrupo();
+    this.listadoDepartamentos();
   }
 
+
+  listadoDepartamentos() {
+    this.departamentoService.getDepartamento().subscribe((data: Departamento[]) => {
+      this.ListarDepartamentos = data;
+    })
+  }
+
+  creargrupo(){
+
+    this.departamentoService.getDepartamentoById(this.grupos.id_departamento).subscribe(
+      (data: Departamento) => {
+        this.grupos.departamento = data;
+        console.log(data);
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+
+    console.log(this.grupos);
+    this.grupoService.addGrupo(this.grupos).subscribe(
+      (data: Grupo) => {
+        this.grupos = data;
+
+        Swal.fire("Register Success!", "Registrado correctamente", "success");
+        this.mostrarList();
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+  }
 
 
 }

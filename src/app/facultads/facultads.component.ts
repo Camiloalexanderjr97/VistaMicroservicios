@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { TokenService } from 'app/Services/JWT/token.service';
 import { FacultadService } from './../Services/Facultad.service';
 import { Facultad } from '../Modelos/Facultad';
@@ -182,7 +183,7 @@ export class FacultadsComponent implements OnInit {
 
   }
 
-
+list: string='';
   onFileChange(evt: any) {
     const target: DataTransfer = <DataTransfer>(evt.target);
     const reader: FileReader = new FileReader();
@@ -212,10 +213,17 @@ export class FacultadsComponent implements OnInit {
           if (result.isConfirmed) {
 
             this.facultadService.agregarListado(this.ListarFacultad).subscribe(
-              (data: any) => {
+              (data: any[]) => {
                 this.ListarFacultad = data;
                 console.log(data);
-                Swal.fire("Register Success!", "Registrado correctamente", "success");
+                for(let element of data){
+                  this.list+=element+"\n";
+                }
+             
+
+
+
+                Swal.fire("Register Success!", this.list, "success");
                 this.mostrarList();
               },
               (error) =>

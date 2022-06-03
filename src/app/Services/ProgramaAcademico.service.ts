@@ -8,7 +8,7 @@ import {urlProgramaAcedmico } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class ProgramaAcademicoService {
 
   private url = `${urlProgramaAcedmico}/api/programas-acad`;
@@ -23,7 +23,7 @@ export class ProgramaAcademicoService {
   }
 
   //get un ProgramaAcademico
-  getProgramaAcademicoById(id: String): Observable<any> {
+  getProgramaAcademicoById(id: any): Observable<ProgramaAcademico> {
     // console.log(id):
 
     return this.http.get<any>(this.url + "/buscarBy/" + id);

@@ -15,7 +15,6 @@ import { UserProfileComponent } from '../../user-profile/user-profile.component'
 import { TableListComponent } from '../../table-list/table-list.component';
 // import { facultadComponent } from '../../Facultad/FacultadsComponent.component';
 import { LibrosComponent } from './../../libros/libros.component';
-import { RegisterComponent } from 'app/register/register.component';
 import { ProductoComponent } from 'app/producto/producto.component';
 
 
@@ -62,7 +61,6 @@ import { MaterialModule } from 'app/material-module';
     IconsComponent,
     MapsComponent,
     NotificationsComponent,
-    RegisterComponent,
     ProductoComponent,
     SemilleroComponent,
     DepartamentoComponent,

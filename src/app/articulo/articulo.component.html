@@ -138,25 +138,18 @@
 
               <!-- Nombre anio_articulo -->
 
-              <ng-container matColumnDef="anio_articulo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by anio_articulo">
-                  Año
+              <ng-container matColumnDef="fecha_articulo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by fecha_articulo">
+                  Fecha
                 </th>
                 <td mat-cell *matCellDef="let articulos">
-                  {{ articulos.anio_articulo }}
+                  {{ articulos.fecha_articulo | date: 'dd/MM/yyyy'}} 
                 </td>
               </ng-container>
 
               <!-- Nombre mes_articulo -->
 
-              <ng-container matColumnDef="mes_articulo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by mes_articulo">
-                  Mes
-                </th>
-                <td mat-cell *matCellDef="let articulos">
-                  {{ articulos.mes_articulo }}
-                </td>
-              </ng-container>
+         
 
               <!-- Nombre volumen_articulo -->
 
@@ -293,76 +286,86 @@
 
                 <div *ngIf="mostrarAgregarIndividual">
                   <div class="card-body">
-                    <form (submit)="crear()">
+                    <form (submit)="crearArticulo()">
                       <div class="row">
                         <div class="col-md-2">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.id_libro" matInput placeholder="Codigo" type="text" />
+                            <input [(ngModel)]="articulos.id_articulo" matInput placeholder="Codigo" type="text" />
                           </mat-form-field>
                         </div>
                         <div class="col-md-4">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.titulo_libro" matInput placeholder="Titulo" type="text" />
+                            <input [(ngModel)]="articulos.nombre_revista" matInput placeholder="Nombre Revista" type="text" />
                           </mat-form-field>
                         </div>
                         <div class="col-md-4">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.numero_capitulos_libro" matInput placeholder="Capitulos"
-                              type="number" />
-                          </mat-form-field>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-2">
-                          <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.autores_libro" matInput placeholder="Autor" type="text" />
-                          </mat-form-field>
-                        </div>
-
-                        <div class="col-md-4">
-                          <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.fecha_publicacion_libro" matInput
-                              placeholder="Fecha Publicacion" type="date" />
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                          <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.lugar_publicacion_libro" matInput
-                              placeholder="Lugar Publicacion" type="text" />
-                          </mat-form-field>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-4">
-                          <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.certificado_creditos_libro" matInput
-                              placeholder="Certificacion Creditos" type="text" />
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                          <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.editorial_libro" matInput placeholder="Editorial"
+                            <input [(ngModel)]="articulos.titulo_articulo" matInput placeholder="Titulo"
                               type="text" />
                           </mat-form-field>
                         </div>
-                        <div class="col-md-4">
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.isbn_libro" matInput placeholder="Isbn" type="text" />
+                            <input [(ngModel)]="articulos.autores_articulo" matInput placeholder="Autor" type="text" />
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.fecha_articulo" matInput
+                              placeholder="Fecha Publicacion" type="date" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.volumen_articulo" matInput
+                              placeholder="Volumen" type="text" />
+                          </mat-form-field>
+                        </div>
+                     
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.pagina_inical" matInput
+                              placeholder="Pagina Inicial" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.pagina_final" matInput placeholder="Pagina Final"
+                              type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.issn_articulo" matInput placeholder="ISSN" type="text" />
                           </mat-form-field>
                         </div>
                       </div>
-                      <div class="col-md-4">
-                        <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="articulos.certificado_investigacion_libro" matInput
-                            placeholder="Certificado Investigacion" type="text" />
-                        </mat-form-field>
+                      <div class="row">
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.doi_articulo" matInput
+                              placeholder="DOI" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.url_articulo" matInput
+                              placeholder="URL" type="text" />
+                          </mat-form-field>
+                        </div>
                       </div>
+                    
 
                       <div class="col clearfix">
                         <button mat-raised-button type="submit" class="btn btn-danger pull-right">
-                          Create Libro
+                          Create Article
                         </button>
                       </div>
 
@@ -386,8 +389,8 @@
                 <div *ngIf="mostrarAgregarMasivo" class="row">
 
                   <div class="col-2">
-                    <div>
-                      <a href="../../assets/Files/prueba.xlsx" class="link-success pl-2 pt-2">
+                    <div> 
+                      <a href="../../assets/Files/PlantillaAddMasivaArticulo (1).xlsx" class="link-success pl-2 pt-2">
                         <div>
                           <img src="../../assets/Files/excel.png" width="40%" class="rounded mx-auto d-block" alt="">
 
@@ -441,4 +444,4 @@
       </div>
     </div>
   </div>
-</div>s
+</div>

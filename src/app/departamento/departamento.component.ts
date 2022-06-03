@@ -1,3 +1,6 @@
+import { ProgramaAcademico } from './../Modelos/ProgramaAcademico';
+import { element } from 'protractor';
+import { ProgramaAcademicoService } from './../Services/ProgramaAcademico.service';
 import { TokenService } from 'app/Services/JWT/token.service';
 import { DepartamentoService } from './../Services/departamento.service';
 // import { Component, OnInit } from '@angular/core';
@@ -30,9 +33,10 @@ export class DepartamentoComponent implements OnInit {
   departamentos = new Departamento();
   listarDepartamentos: Departamento[]=[];
 
+  ListarProgramas: ProgramaAcademico[]=[];
 
     
-  displayedColumns: string[] = ["id", "name"];
+  displayedColumns: string[] = ["id", "name","programa"];
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -43,18 +47,31 @@ export class DepartamentoComponent implements OnInit {
 
   
 
-  constructor(private tokenService: TokenService, private router: Router,private departamentoService: DepartamentoService,private _liveAnnouncer: LiveAnnouncer) {
+  constructor(private tokenService: TokenService, private router: Router,private departamentoService: DepartamentoService,private programaAcademicoService: ProgramaAcademicoService, private _liveAnnouncer: LiveAnnouncer) {
     //_CargaScripts.Carga(["main3"]);
   }
   
 
 
   listarDepartamento(): void {
-    this.departamentoService.getDepartamento().subscribe( (data: any) => {
+    this.listarDepartamentos.length=0;
+    this.departamentoService.getDepartamento().subscribe( (data: Departamento[]) => {
         
-        this.listarDepartamentos = data ;
-        console.log(data.nombre)
-        this.dataSource = new MatTableDataSource(data);
+
+      for(let element of data){
+
+        this.programaAcademicoService.getProgramaAcademicoById(element.progAcademico).subscribe( (prog: ProgramaAcademico) => {
+          element.programa=prog.nombre;
+        },
+        (error) => console.log(error),
+        () => console.log("Complete")
+      )
+      this.listarDepartamentos.push(element);
+
+      }
+
+     
+        this.dataSource = new MatTableDataSource(this.listarDepartamentos);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       },
@@ -63,7 +80,13 @@ export class DepartamentoComponent implements OnInit {
     )
   }
 
-  
+  listadoProgramas() {
+    this.programaAcademicoService.getProgramasAcademicos().subscribe((data: ProgramaAcademico[]) => {
+      this.ListarProgramas = data;
+      console.log(data);
+    })
+  }
+
 
 /** Announce the change in sort state for assistive technology. */
 announceSortChange(sortState: Sort) {
@@ -134,7 +157,8 @@ mostrarAgg() {
   this.mostrarListado = false;
   this.mostrarAgregar = true;
   this.mostrarEditar = false;
-  this.listarDepartamento();
+  this.listadoProgramas();
+
 }
 
 mostrarList() {
@@ -151,6 +175,47 @@ mostrarEdit() {
   this.listarDepartamento();
 }
 
+crearDepartamento(){
+
+    this.departamentoService.addDepartamento(this.departamentos).subscribe(
+      (data: Departamento) => {
+        this.departamentos = data;
+
+        Swal.fire("Register Success!", "Registrado correctamente", "success");
+        this.mostrarList();
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+  }
+  enviarID(id){
+      this.mostrarEdit();
+      this.listadoProgramas();
+      this.departamentoService.getDepartamentoById(id).subscribe(
+        (data: Departamento) => {
+          this.departamentos = data;
+          
+          console.log(data);
+        },
+        (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
+        () => console.log("Complete")
+      );
+    }
+    
+    editarDepartamento(){
+      this.departamentoService.editDepartamento(this.departamentos).subscribe(
+        (data: Departamento) => {
+          this.departamentos = data;
+  
+          Swal.fire("Register Success!", "Editado correctamente", "success");
+          this.mostrarList();
+        },
+        (error) =>
+          Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+        () => console.log("Complete")
+      );
+    }
 
 
 }

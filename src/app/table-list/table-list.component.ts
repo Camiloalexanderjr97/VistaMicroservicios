@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { TokenService } from 'app/Services/JWT/token.service';
 import * as Chartist from 'chartist';
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
@@ -6,7 +7,7 @@ import { User } from "app/Modelos/User";
 // import SignaturePad from "signature_pad";
 // import { CargarScriptsService } from "../cargar-scripts.service";
 import { UsuarioService } from "app/Services/usuario.service";
-import { UserAuthService } from "app/Services/user-auth.service";
+
 import Swal from 'sweetalert2';
 // import Swal from "sweetalert2";
 declare var $: any;
@@ -23,8 +24,21 @@ export class TableListComponent implements OnInit {
       //_CargaScripts.Carga(["main3"]);
     }
      listarUser(){
-      this.usuarioService.getUsuario().subscribe((data: any) => {
-        this.ListarUser = data;
+       this.ListarUser=[];
+      this.usuarioService.getUsuario().subscribe((data: User[]) => {
+        for(let element of data){
+          element.rol="User";
+
+          for(let dato of  element.roles){
+            if(dato.rolNombre==='ROLE_ADMIN'){
+            element.rol="Admin";
+            }
+              
+            
+          }
+          this.ListarUser.push(element);
+        }
+
         console.log(this.ListarUser);
       });
     }
@@ -40,7 +54,20 @@ export class TableListComponent implements OnInit {
       (error) => Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")
     )
+    
 
+    }
+
+    edit(id: any){
+      console.log(id);
+      this.usuarioService.getUserById(id).subscribe( (data: any) => {
+        
+        console.log(data)
+        this.user=data;
+      },
+      (error) => Swal.fire("No Found!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    )
     }
     isLogged= false;
   ngOnInit() {

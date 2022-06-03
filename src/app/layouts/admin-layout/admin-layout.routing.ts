@@ -4,7 +4,6 @@ import { SemilleroComponent } from './../../semillero/semillero.component';
 import { Component } from '@angular/core';
 import { LibrosComponent } from './../../libros/libros.component';
 import { Routes } from '@angular/router';
-import { RegisterComponent } from 'app/register/register.component';
 import { ProductoComponent } from 'app/producto/producto.component';
 
 
@@ -76,7 +75,6 @@ export const AdminLayoutRoutes: Routes = [
     // { path: 'upgrade',        component: UpgradeComponent },
     { path: 'ProgramasAcademicosComponent',        component: ProgramasAcademicosComponent ,canActivate: [guard], data: { expectedRol:['admin']} },
     { path: 'LibrosComponent', component: LibrosComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
-    { path: 'RegisterComponent', component: RegisterComponent,canActivate: [guard], data: { expectedRol:['admin']} },
     { path: 'ArticuloComponent', component: ArticuloComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
     { path: 'ProductoComponent', component: ProductoComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
     { path: 'SemilleroComponent', component: SemilleroComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
