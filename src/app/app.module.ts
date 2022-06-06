@@ -11,7 +11,7 @@ import { DataTablesModule } from "angular-datatables";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 
-import { AppRoutingModule } from "./app.routing";
+import { AppRoutingModule } from "./app.routing"; 
 import { ComponentsModule } from "./components/components.module";
 
 import { AppComponent } from "./app.component";

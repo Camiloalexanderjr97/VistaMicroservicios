@@ -38,7 +38,6 @@ export class LibrosService {
 
   //eliminar
   deleteLibros(id: string): Observable<any> {
-    console.log("eliminar" + id);
     return this.http.delete<any>(this.url + "/deleteLib/" + id);
   }
 

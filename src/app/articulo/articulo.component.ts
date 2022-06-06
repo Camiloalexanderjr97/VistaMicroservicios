@@ -55,8 +55,6 @@ export class ArticuloComponent implements OnInit {
     this.articuloService.getArticulos().subscribe( (data: any) => {
         
         this.listarArticulos = data ;
-        console.log(data.nombre)
-        console.log(this.listarArticulos)
 
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
@@ -244,7 +242,6 @@ editarArticulo() {
     .subscribe(
       (data: Articulos) => {
         this.articulos = data;
-        console.log(data);
         Swal.fire("Register Success!", "Actualizado correctamente", "success");
        this.mostrarList();
       },
@@ -275,21 +272,27 @@ enviarID(id){
 }
 
 EliminarArticulo(id){
-  alert(id);
- 
+  Swal.fire({
+    title: 'Do you want to Delete?',
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonText: 'Delete',
+    denyButtonText: `Don't Delete`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
 
-  this.articuloService.deleteArticulo(id).subscribe(
-    (data: Articulos) => {
-      this.articulos = new Articulos();
       
-      this.articulos=data;
-      console.log(data);
-    },
-    (error) =>
-      Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
-    () => console.log("Complete")
-  );
-  this.mostrarList;
+  this.articuloService.deleteArticulo(id).subscribe();
+
+
+    } else if (result.isDenied) {
+      Swal.fire('Product are not deleted', '', 'info')
+   
+    }
+    this.mostrarList();
+  })
+
 
 }
 
@@ -311,8 +314,7 @@ onFileChange(evt: any){
     wb.SheetNames.forEach(sheet =>{
       this.listarArticulos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
       // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-      console.log(this.listarArticulos );
-
+    
       Swal.fire({
         title: 'Do you want to save the changes?',
         showDenyButton: true,
@@ -326,7 +328,7 @@ onFileChange(evt: any){
             this.articuloService.agregarListado(this.listarArticulos).subscribe(
         (data: any) => {
           this.listarArticulos = data;
-          console.log(data);
+          
           Swal.fire("Register Success!", "Registrado correctamente", "success");
          this.mostrarList();
         },

@@ -228,7 +228,7 @@ export class SemilleroComponent implements OnInit {
       wb.SheetNames.forEach((sheet) => {
         this.listarSemilleros = XLSX.utils.sheet_to_json(wb.Sheets[sheet]);
         // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-
+console.log(this.listarSemilleros);
         Swal.fire({
           title: "Do you want to save the changes?",
           showDenyButton: true,

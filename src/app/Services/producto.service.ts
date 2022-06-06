@@ -37,15 +37,14 @@ export class ProductoService {
 
   //eliminar
   deleteProducto(id: string): Observable<any> {
-    console.log("eliminar" + id);
-    return this.http.delete<any>(this.url + "/" + id);
+    return this.http.delete<any>(this.url + "/deleteProd/" + id);
   }
 
   // login(Producto: Producto): Observable<boolean> {
   //   return this.http.post<any>(`${this.url}/login`, Producto);
   // }
  
-  //modificar un Producto
+  //modificar un Producto 
   editProducto(producto: Producto) {
     return this.http.put(this.url + "/editProd/"+producto.id, producto);
   }

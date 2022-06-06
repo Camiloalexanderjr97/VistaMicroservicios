@@ -389,7 +389,7 @@
                 <div *ngIf="mostrarAgregarMasivo" class="row">
 
                   <div class="col-2">
-                    <div> 
+                    <div>  
                       <a href="../../assets/Files/PlantillaAddMasivaArticulo (1).xlsx" class="link-success pl-2 pt-2">
                         <div>
                           <img src="../../assets/Files/excel.png" width="40%" class="rounded mx-auto d-block" alt="">
@@ -444,4 +444,146 @@
       </div>
     </div>
   </div>
+
+
+    <!-- Formulario Editar -->
+
+    <div class="agregar" *ngIf="mostrarEditar">
+      <div class="agregar">
+        <div class="main-content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header card-header-danger row">
+                    <div class="col-4">
+                      <h4 class="card-title">Editar Articulo</h4>
+                      <p class="card-category">Complete your params</p>
+                    </div>
+                    <div class="col-5"></div>
+                    <div class="col-3">
+                      <div class="float-right">
+                        <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
+                          <div class="float-left">
+                            <div class="input-group form-control-lg p-0">
+                              <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+                            </div>
+                          </div>
+                          <div class="float-right">
+                            <div id="accionBuscarReHo" class="d-inline-block">
+                              <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"
+                                aria-placeholder="Listar">
+  
+  
+                                <mat-icon>menu</mat-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <form (submit)="crearArticulo()">
+                      <div class="row">
+                        <div class="col-md-2">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.id_articulo" matInput placeholder="Codigo" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.nombre_revista" matInput placeholder="Nombre Revista" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.titulo_articulo" matInput placeholder="Titulo"
+                              type="text" />
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.autores_articulo" matInput placeholder="Autor" type="text" />
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.fecha_articulo" matInput
+                              placeholder="Fecha Publicacion" type="date" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.volumen_articulo" matInput
+                              placeholder="Volumen" type="text" />
+                          </mat-form-field>
+                        </div>
+                     
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.pagina_inical" matInput
+                              placeholder="Pagina Inicial" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.pagina_final" matInput placeholder="Pagina Final"
+                              type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.issn_articulo" matInput placeholder="ISSN" type="text" />
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.doi_articulo" matInput
+                              placeholder="DOI" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input [(ngModel)]="articulos.url_articulo" matInput
+                              placeholder="URL" type="text" />
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    
+
+                      <div class="col clearfix">
+                        <button mat-raised-button type="submit" class="btn btn-danger pull-right">
+                          Create Article
+                        </button>
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col clearfix">
+                          <button (click)="mostrarMas()" class="btn btn-danger pull-right">
+                            Cambiar A Masivo
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="clearfix"></div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>

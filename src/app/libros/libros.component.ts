@@ -299,6 +299,32 @@ enviarID(id){
 
 }
 
+enviarID_Eliminar(id) {
+
+  Swal.fire({
+    title: 'Do you want to Delete?',
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonText: 'Delete',
+    denyButtonText: `Don't Delete`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+
+      this.libroService.deleteLibros(id).subscribe(()=>{
+    
+      }, (error) =>
+      Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
+    () => console.log("Complete"))
+      } else if (result.isDenied) {
+      Swal.fire('Libro are not deleted', '', 'info')
+
+    }
+   
+  })
+ this.mostrarList();
+}
+
 
 onFileChange(evt: any){
   const target: DataTransfer = <DataTransfer>(evt.target);

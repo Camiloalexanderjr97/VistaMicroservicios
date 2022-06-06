@@ -1,11 +1,11 @@
 import { element } from 'protractor';
 import { TokenService } from 'app/Services/JWT/token.service';
-import { GrupoService } from './../Services/grupo.service';
-import { ProgramaAcademico } from "./../Modelos/ProgramaAcademico";
-import { ProgramaAcademicoService } from "./../Services/ProgramaAcademico.service";
-import { Facultad } from "./../Modelos/Facultad";
-import { FacultadService } from "./../Services/Facultad.service";
-import { SubCategoriaService } from "./../Services/SubCategoria.service";
+import { GrupoService } from '../Services/grupo.service';
+import { ProgramaAcademico } from "../Modelos/ProgramaAcademico";
+import { ProgramaAcademicoService } from "../Services/ProgramaAcademico.service";
+import { Facultad } from "../Modelos/Facultad";
+import { FacultadService } from "../Services/Facultad.service";
+import { SubCategoriaService } from "../Services/SubCategoria.service";
 import { Producto } from "app/Modelos/Producto";
 import { ProductoService } from "app/Services/producto.service";
 import { ViewChild } from "@angular/core";
@@ -23,6 +23,12 @@ import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from "app/Modelos/SubCategorias";
 import { Grupo } from 'app/Modelos/Grupo';
 import * as XLSX from 'xlsx';
+// import { single } from './data';
+
+interface productoNuevo {
+  name: any;
+  value: any;
+}
 
 declare var $;
 var DataTable = require("datatables.net");
@@ -40,6 +46,7 @@ export class ProductoComponent implements OnInit {
 
   subCategoria = new subCategorias();
   listarSubCategorias: subCategorias[] = [];
+
 
   facultad = new Facultad();
   ListarFacultad: Facultad[] = [];
@@ -62,6 +69,26 @@ export class ProductoComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   filtroProducto: any;
+
+
+  multi: any[];
+
+  view: [number, number] = [700, 400];
+
+  // options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Categoria de Productos';
+  showYAxisLabel = true;
+  yAxisLabel;
+
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+  proNuevo: productoNuevo;
   constructor(
     private fb: FormBuilder,
     private facultadService: FacultadService,
@@ -74,26 +101,35 @@ export class ProductoComponent implements OnInit {
     private grupoService: GrupoService,
     private tokenService: TokenService
   ) {
+    // Object.assign(this, { single })
+
     this.filtroProducto = this.fb.group({
       StartDate: ['', Validators.required],
       EndDate: ['', Validators.required],
     })
     //_CargaScripts.Carga(["main3"]);
   }
+  onSelect(event) {
+    console.log(event);
+  }
+
+
+
+
 
 
   isLogged = false;
 
-  soloAdmin=false;
+  soloAdmin = false;
   ngOnInit() {
 
     const rol = sessionStorage.getItem("rol_");
-    if(rol==='ROLE_ADMIN'){
-      this.soloAdmin=true;
+    if (rol === 'ROLE_ADMIN') {
+      this.soloAdmin = true;
 
-    }else{
-      this.soloAdmin=false;
-    }  
+    } else {
+      this.soloAdmin = false;
+    }
     if (this.tokenService.getToken()) {
       this.isLogged = true;
 
@@ -142,8 +178,8 @@ export class ProductoComponent implements OnInit {
 
 
           this.programaAcademicoService.getProgramaAcademicoById(elemento.programa).subscribe((programa: ProgramaAcademico) => {
-              elemento.programa = programa.nombre;
-            });
+            elemento.programa = programa.nombre;
+          });
 
           this.facultadService.getFacultadById(elemento.facultad).subscribe(
             (facu: Facultad) => {
@@ -184,23 +220,23 @@ export class ProductoComponent implements OnInit {
     const x = (event.target as HTMLInputElement).value;
     const fechaIni = this.formatearFecha(this.filtroProducto.value.StartDate);
     const fechaFin = this.formatearFecha(this.filtroProducto.value.EndDate);
-    console.log(fechaIni + "-------Fecha Inicio"+this.filtroProducto.value.StartDate);
+    console.log(fechaIni + "-------Fecha Inicio" + this.filtroProducto.value.StartDate);
     console.log(fechaFin + "-------Fecha FIn");
-    const data:Producto[]=[];
-    for(let element of this.listarProductos){ 
+    const data: Producto[] = [];
+    for (let element of this.listarProductos) {
 
       console.log(new Date(element.fecha).getTime())
-      if((new Date(element.fecha).getTime()>=new Date(fechaIni).getTime())&& ( new Date(element.fecha).getTime()<=new Date(fechaFin).getTime())){
+      if ((new Date(element.fecha).getTime() >= new Date(fechaIni).getTime()) && (new Date(element.fecha).getTime() <= new Date(fechaFin).getTime())) {
         data.push(element);
-      
+
       }
     }
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-  
+
   }
-  vaciarFiltro(){
+  vaciarFiltro() {
     this.filtroProducto.reset();
     this.listarProducto();
   }
@@ -284,6 +320,7 @@ export class ProductoComponent implements OnInit {
   mostrarEditar: Boolean = false;
   mostrarAgregarIndividual: Boolean = false;
   mostrarAgregarMasivo: Boolean = false;
+  mostrarEstadistica: Boolean = false;
 
 
   mostrarAgg() {
@@ -325,6 +362,7 @@ export class ProductoComponent implements OnInit {
     this.mostrarListado = true;
     this.mostrarAgregar = false;
     this.mostrarEditar = false;
+    this.mostrarEstadistica = false;
     this.listarProducto();
   }
 
@@ -332,10 +370,20 @@ export class ProductoComponent implements OnInit {
     this.mostrarEditar = true;
     this.mostrarAgregar = false;
     this.mostrarListado = false;
+    this.mostrarEstadistica = false;
+
     this.listarFacultades();
     this.listarSubCategoriasMostrar();
     this.listadoGrupos();
     this.listadoProgramas();
+  }
+
+  estadisticas() {
+    this.mostrarEstadistica = true;
+    this.mostrarListado = false;
+    this.mostrarAgregar = false;
+    this.mostrarEditar = false;
+    this.listarFacultades();
   }
 
   mostrarMas() {
@@ -356,7 +404,6 @@ export class ProductoComponent implements OnInit {
   enviarID(id) {
     this.mostrarEdit();
 
-    console.log(id + "_id");
     this.productoService.getProductoByID(id).subscribe(
       (data: Producto) => {
 
@@ -368,12 +415,34 @@ export class ProductoComponent implements OnInit {
     );
   }
 
+  enviarID_Eliminar(id) {
+
+    Swal.fire({
+      title: 'Do you want to Delete?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      denyButtonText: `Don't Delete`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+
+        this.productoService.deleteProducto(id).subscribe();
+
+
+      } else if (result.isDenied) {
+        Swal.fire('Product are not deleted', '', 'info')
+
+      }
+      this.mostrarList();
+    })
+
+  }
   //Listar subCategorias para agregar en el list
   listarSubCategoriasMostrar() {
     this.subCategoriaService.getSubCategorias().subscribe((data: subCategorias[]) => {
-        this.listarSubCategorias = data;
-        console.log(this.listarSubCategorias);
-      });
+      this.listarSubCategorias = data;
+    });
 
     this.filteredOptionsSubCategoria = this.myControlSub.valueChanges.pipe(
       startWith(""),
@@ -428,7 +497,7 @@ export class ProductoComponent implements OnInit {
       wb.SheetNames.forEach(sheet => {
         this.listarProductos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
         // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-console.log(this.listarProductos);
+        console.log(this.listarProductos);
 
         Swal.fire({
           title: 'Do you want to save the changes?',
@@ -466,5 +535,92 @@ console.log(this.listarProductos);
 
   }
 
+
+  inicio = new FormControl(new Date().toISOString());
+  fin = new FormControl(new Date().toISOString());
+
+  datos: Producto[] = [];
+  pros: productoNuevo[] = [];
+  nuevo: productoNuevo[] = []
+  program:String='';
+  guardarPrograma(dato: any){
+    this.program=dato.target.value;
+    console.log(this.program)
+  }
+  filtrarEstadistica() {
+    this.pros=[];
+    this.nuevo=[];
+    console.log(this.program);
+
+    for (let element of this.listarProductos) {
+      if ((new Date(element.fecha).getTime() >= new Date(this.inicio.value).getTime()) && (new Date(element.fecha).getTime() <= new Date(this.fin.value).getTime()) && element.programa==this.program) {
+        this.datos.push(element);
+
+
+      }
+    }
+
+    this.yAxisLabel=this.formatearFecha(new Date(this.inicio.value))+ "  -  "+this.formatearFecha(new Date(this.fin.value));
+
+    this.subCategoriaService.getSubCategorias().subscribe((data: subCategorias[]) => {
+
+      this.listarSubCategorias = data;
+
+      for (let categorias of this.listarSubCategorias) {
+       var cont:number;
+          cont=0;
+        for (let element of this.datos) {
+          if (element.subcategoria === categorias.descripcion) {
+           cont++;
+  
+          }
+          
+  
+        }
+        console.log(cont);
+        const a = { name: categorias.descripcion, value: cont }
+        this.pros.push(a);
+  
+  
+       
+      } 
+      
+  
+      
+    
+
+    this.nuevo = this.pros;
+
+    console.log(this.pros);
+
+    });
+
+
+  
+
+
+  }
+
+vaciar(){
+  this.pros=[];
+    this.nuevo=[];
+
+}
+listaPro:ProgramaAcademico[]=[];
+mostrar(dato: any){
+  this.listaPro=[];
+  const fac =dato.target.value;
+  this.programaAcademicoService.getProgramasAcademicos().subscribe((data: ProgramaAcademico[]) => {
+
+    for(let element of data){
+      const id =element.idFacultad.id;
+
+      if(id==fac){
+
+        this.listaPro.push(element);
+      }
+    }
+  });
+}
 
 }

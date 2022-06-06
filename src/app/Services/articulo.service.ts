@@ -37,7 +37,6 @@ export class ArticuloService {
 
   //eliminar
   deleteArticulo(id: string): Observable<any> {
-    console.log("eliminar" + id);
     return this.http.delete<any>(this.url + "/deleteArt/" + id);
   }
 

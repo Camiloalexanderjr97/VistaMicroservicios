@@ -218,12 +218,18 @@
                   </div>
 
 
-                  <div class="col-2" *ngIf="soloAdmin">
+                  <div class="col" *ngIf="soloAdmin">
                     <button mat-flat-button color="warn" (click)="enviarID(libros.id_libro)"
                       aria-label="Example icon button with a delete icon">
                       <span class="material-icons">mode_edit</span>
                     </button>
 
+                  </div>
+                  <div class="col" *ngIf="soloAdmin">
+                    <button mat-flat-button color="warn" (click)="enviarID_Eliminar(libros.id_libro)"
+                      aria-label="Example icon button with a delete icon">
+                      <span class="material-icons">delete</span>
+                    </button>
                   </div>
 
                 </td>
@@ -554,15 +560,15 @@
 
 
 
-                      <div class="col-md-4">
+                      <!-- <div class="col-md-4">
                         <mat-form-field class="example-full-width">
                           <input [(ngModel)]="libros.fecha_publicacion_libro" matInput placeholder="Fecha Publicacion"
                             type="date" />
                         </mat-form-field>
-                      </div>
+                      </div> -->
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="libros.lugar_publicacion_libro" matInput placeholder="Lugar Publicacion"
+                          <input [(ngModel)]="libros.lugar_publicacion_libro" matInput placeholder="Lugar Publicacion" [value]="libros.lugar_publicacion_libro"
                             type="text" />
                         </mat-form-field>
                       </div>
