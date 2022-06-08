@@ -18,6 +18,11 @@ import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from 'app/Modelos/SubCategorias';
 import * as XLSX from 'xlsx';
 
+
+interface objeto {
+  name: any;
+  value: any;
+}
 @Component({
   selector: 'articulo',
   templateUrl: './articulo.component.html',
@@ -28,7 +33,28 @@ export class ArticuloComponent implements OnInit {
   articulos = new Articulos();
   listarArticulos: Articulos[]=[];
 
+  view: [number, number] = [700, 400];
 
+  // options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Categoria de Productos';
+  showYAxisLabel = true;
+  yAxisLabel;
+
+  colorScheme = {
+    domain: [  '#FF8A80', 
+    '#EA80FC',
+    '#8C9EFF', 
+    '#80D8FF', 
+    '#A7FFEB', 
+    '#CCFF90', 
+    '#FFFF8D', 
+    '#FF9E80']
+  };
     
   displayedColumns: string[] = ["id_articulo", "nombre_revista","titulo_articulo","autores_articulo","fecha_articulo","volumen_articulo","pagina_inical","pagina_final","issn_articulo","doi_articulo","url_articulo"];
 
@@ -89,16 +115,14 @@ export class ArticuloComponent implements OnInit {
     const x = (event.target as HTMLInputElement).value;
     const fechaIni = this.formatearFecha(this.filtroProducto.value.StartDate);
     const fechaFin = this.formatearFecha(this.filtroProducto.value.EndDate);
-    console.log(fechaIni + "-------Fecha Inicio"+this.filtroProducto.value.StartDate);
-    console.log(fechaFin + "-------Fecha FIn");
     const data:Articulos[]=[];
     for(let element of this.listarArticulos){ 
 
       // console.log(new Date(element.fecha_publicacion_libro).getTime())
-      // if((new Date(element.fecha_publicacion_libro).getTime()>=new Date(fechaIni).getTime())&& ( new Date(element.fecha_publicacion_libro).getTime()<=new Date(fechaFin).getTime())){
-      //   data.push(element);
+      if((new Date(element.fecha_articulo).getTime()>=new Date(fechaIni).getTime())&& ( new Date(element.fecha_articulo).getTime()<=new Date(fechaFin).getTime())){
+        data.push(element);
       
-      // }
+      }
     }
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.sort = this.sort;
@@ -167,7 +191,7 @@ mostrarAgregar: Boolean = false;
 mostrarEditar: Boolean = false;
 mostrarAgregarIndividual: Boolean= false;
 mostrarAgregarMasivo: Boolean=false;
-
+mostrarEstadistica: Boolean =false;
 mostrarAgg() {
 
   Swal.fire({
@@ -200,6 +224,7 @@ mostrarList() {
   this.mostrarAgregar = false;
   this.mostrarListado = true;
   this.mostrarEditar = false;
+  this.mostrarEstadistica = false;
   this.listarArticulo();
 }
 
@@ -207,6 +232,8 @@ mostrarEdit() {
   this.mostrarAgregar = false;
   this.mostrarListado = false;
   this.mostrarEditar = true;
+  this.mostrarEstadistica = false;
+
 }
 
 mostrarMas(){
@@ -220,6 +247,15 @@ mostrarIndi(){
   this.mostrarAgregarMasivo=false;    
 
  }
+
+ estadisticas() {
+  this.mostrarEstadistica = true;
+  this.mostrarListado = false;
+  this.mostrarAgregar = false;
+  this.mostrarEditar = false;
+  this.filtrarEstadistica();
+  this.listarArticulo();
+}
 
 
 editarArticulo() {
@@ -351,6 +387,77 @@ onFileChange(evt: any){
 
 }
 
+
+
+datos: Articulos[] = [];
+arti: objeto[] = [];
+nuevo: objeto[] = []
+fecha:String;
+filtrarEstadistica(){
+  this.vaciar();
+    this.arti=[];
+    this.nuevo=[];
+    this.datos=[];
+    
+
+const star="1/1/"+this.fecha;
+const end="12/31/"+this.fecha;
+ for (let element of this.listarArticulos) {
+      if ((new Date(element.fecha_articulo).getTime() >= new Date(star).getTime()) && (new Date(element.fecha_articulo).getTime() <= new Date(end).getTime())) {
+          
+        
+        this.datos.push(element);
+
+
+      }
+    }
+
+    this.yAxisLabel="Año "+this.fecha;
+
+       var cont:number;
+        for (let element of this.monthNames) {
+          cont=0;
+
+          for(let art of this.datos){
+            const fecha=this.getLongMonthName(new Date(art.fecha_articulo));
+            if(fecha==element){
+              cont++;
+            }
+
+          }
+          const a = { name: element, value: cont }
+          this.arti.push(a);
+          
+  
+        }
+
+    this.nuevo = this.arti;
+
+
+    
+    this.listarArticulos=[];
+}
+
+monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+// getShortMonthName = function(date: Date) {
+//   return this.monthNames[date.getMonth()].substring(0, 3);
+// }
+getLongMonthName = function(date: Date) {
+    return this.monthNames[date.getMonth()];
+}
+onSelect(event) {
+  console.log(event);
+}
+
+vaciar(){
+  this.arti=[];
+    this.nuevo=[];
+    this.listarArticulo();
+
+}
 
 
 }

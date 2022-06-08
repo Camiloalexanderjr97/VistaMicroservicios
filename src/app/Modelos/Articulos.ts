@@ -6,7 +6,7 @@ export class Articulos {
   nombre_revista?: String;
   titulo_articulo?: String;
   autores_articulo?: String;
-  fecha_articulo?: String;
+  fecha_articulo?: Date;
   volumen_articulo?: String;
   pagina_inical?: String;
   pagina_final?: String;

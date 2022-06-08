@@ -25,7 +25,7 @@ import { Grupo } from 'app/Modelos/Grupo';
 import * as XLSX from 'xlsx';
 // import { single } from './data';
 
-interface productoNuevo {
+interface objeto {
   name: any;
   value: any;
 }
@@ -86,9 +86,17 @@ export class ProductoComponent implements OnInit {
   yAxisLabel;
 
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: [
+      '#FF8A80', 
+      '#EA80FC',
+      '#8C9EFF', 
+      '#80D8FF', 
+      '#A7FFEB', 
+      '#CCFF90', 
+      '#FFFF8D', 
+      '#FF9E80'
+    ]
   };
-  proNuevo: productoNuevo;
   constructor(
     private fb: FormBuilder,
     private facultadService: FacultadService,
@@ -220,12 +228,9 @@ export class ProductoComponent implements OnInit {
     const x = (event.target as HTMLInputElement).value;
     const fechaIni = this.formatearFecha(this.filtroProducto.value.StartDate);
     const fechaFin = this.formatearFecha(this.filtroProducto.value.EndDate);
-    console.log(fechaIni + "-------Fecha Inicio" + this.filtroProducto.value.StartDate);
-    console.log(fechaFin + "-------Fecha FIn");
     const data: Producto[] = [];
     for (let element of this.listarProductos) {
 
-      console.log(new Date(element.fecha).getTime())
       if ((new Date(element.fecha).getTime() >= new Date(fechaIni).getTime()) && (new Date(element.fecha).getTime() <= new Date(fechaFin).getTime())) {
         data.push(element);
 
@@ -383,6 +388,7 @@ export class ProductoComponent implements OnInit {
     this.mostrarListado = false;
     this.mostrarAgregar = false;
     this.mostrarEditar = false;
+    this.filtrarEstadistica();
     this.listarFacultades();
   }
 
@@ -456,7 +462,6 @@ export class ProductoComponent implements OnInit {
   listarFacultades() {
     this.facultadService.getFacultad().subscribe((data: Facultad[]) => {
       this.ListarFacultad = data;
-      console.log(this.ListarFacultad);
     });
 
     this.filteredOptionsFacultad = this.myControlFacultad.valueChanges.pipe(
@@ -497,8 +502,6 @@ export class ProductoComponent implements OnInit {
       wb.SheetNames.forEach(sheet => {
         this.listarProductos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
         // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-        console.log(this.listarProductos);
-
         Swal.fire({
           title: 'Do you want to save the changes?',
           showDenyButton: true,
@@ -512,7 +515,6 @@ export class ProductoComponent implements OnInit {
             this.productoService.agregarListado(this.listarProductos).subscribe(
               (data: any) => {
                 this.listarProductos = data;
-                console.log(data);
                 Swal.fire("Register Success!", "Registrado correctamente", "success");
                 this.mostrarList();
               },
@@ -540,17 +542,17 @@ export class ProductoComponent implements OnInit {
   fin = new FormControl(new Date().toISOString());
 
   datos: Producto[] = [];
-  pros: productoNuevo[] = [];
-  nuevo: productoNuevo[] = []
+  pros: objeto[] = [];
+  nuevo: objeto[] = []
   program:String='';
-  guardarPrograma(dato: any){
+  guardarPrograma(dato: any){ 
     this.program=dato.target.value;
-    console.log(this.program)
   }
   filtrarEstadistica() {
+    this.vaciar();
     this.pros=[];
     this.nuevo=[];
-    console.log(this.program);
+    this.datos=[];
 
     for (let element of this.listarProductos) {
       if ((new Date(element.fecha).getTime() >= new Date(this.inicio.value).getTime()) && (new Date(element.fecha).getTime() <= new Date(this.fin.value).getTime()) && element.programa==this.program) {
@@ -577,7 +579,6 @@ export class ProductoComponent implements OnInit {
           
   
         }
-        console.log(cont);
         const a = { name: categorias.descripcion, value: cont }
         this.pros.push(a);
   
@@ -588,23 +589,22 @@ export class ProductoComponent implements OnInit {
   
       
     
-
+ 
     this.nuevo = this.pros;
 
-    console.log(this.pros);
 
-    });
+    }); 
 
 
   
-
+    this.listarProductos=[];
 
   }
 
 vaciar(){
   this.pros=[];
     this.nuevo=[];
-
+  this.listarProducto();
 }
 listaPro:ProgramaAcademico[]=[];
 mostrar(dato: any){

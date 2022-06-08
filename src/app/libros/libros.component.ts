@@ -24,6 +24,11 @@ import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from 'app/Modelos/SubCategorias';
 import * as XLSX from 'xlsx';
 
+
+interface objeto {
+  name: any;
+  value: any;
+}
 @Component({
   selector: 'libros',
   templateUrl: './libros.component.html',
@@ -49,6 +54,41 @@ export class LibrosComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   filtroProducto: any;
+
+
+
+  view: [number, number] = [700, 400];
+
+  // options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Categoria de Productos';
+  showYAxisLabel = true;
+  yAxisLabel;
+
+  colorScheme = {
+    domain: [  '#FF8A80', 
+    '#EA80FC',
+    '#8C9EFF', 
+    '#80D8FF', 
+    '#A7FFEB', 
+    '#CCFF90', 
+    '#FFFF8D', 
+    '#FF9E80']
+  };
+
+
+
+
+
+
+
+
+
+
 
 
   constructor( private fb: FormBuilder,private tokenService: TokenService,private router: Router,private libroService: LibrosService,private _liveAnnouncer: LiveAnnouncer,) {
@@ -131,12 +171,9 @@ soloAdmin=false;
     const x = (event.target as HTMLInputElement).value;
     const fechaIni = this.formatearFecha(this.filtroProducto.value.StartDate);
     const fechaFin = this.formatearFecha(this.filtroProducto.value.EndDate);
-    console.log(fechaIni + "-------Fecha Inicio"+this.filtroProducto.value.StartDate);
-    console.log(fechaFin + "-------Fecha FIn");
     const data:Libros[]=[];
     for(let element of this.listarLibreria){ 
 
-      console.log(new Date(element.fecha_publicacion_libro).getTime())
       if((new Date(element.fecha_publicacion_libro).getTime()>=new Date(fechaIni).getTime())&& ( new Date(element.fecha_publicacion_libro).getTime()<=new Date(fechaFin).getTime())){
         data.push(element);
       
@@ -224,7 +261,7 @@ mostrarAgregar: Boolean = false;
 mostrarEditar: Boolean = false;
 mostrarAgregarIndividual: Boolean= false;
 mostrarAgregarMasivo: Boolean=false;
-
+mostrarEstadistica:Boolean=false;
 mostrarAgg() {
   Swal.fire({
     title: 'Como le gustaría crear el Libro?',
@@ -276,6 +313,16 @@ mostrarIndi(){
   this.mostrarAgregarMasivo=false;    
 
  }
+
+ estadisticas() {
+  this.mostrarEstadistica = true;
+  this.mostrarListado = false;
+  this.mostrarAgregar = false;
+  this.mostrarEditar = false;
+  this.filtrarEstadistica();
+  this.listarLibreriaLibros();
+}
+
 
 
 
@@ -380,6 +427,79 @@ onFileChange(evt: any){
 
 }
 
+
+
+
+datos: Libros[] = [];
+arti: objeto[] = [];
+nuevo: objeto[] = []
+fecha:String;
+filtrarEstadistica(){
+  this.vaciar();
+    this.arti=[];
+    this.nuevo=[];
+    this.datos=[];
+    
+
+const star="1/1/"+this.fecha;
+const end="12/31/"+this.fecha;
+
+    for (let element of this.listarLibreria) {
+      if ((new Date(element.fecha_publicacion_libro).getTime() >= new Date(star).getTime()) && (new Date(element.fecha_publicacion_libro).getTime() <= new Date(end).getTime())) {
+          
+        
+        this.datos.push(element);
+
+
+      }
+    }
+
+    this.yAxisLabel="Año "+this.fecha;
+
+       var cont:number;
+        for (let element of this.monthNames) {
+          cont=0;
+
+          for(let art of this.datos){
+            const fecha=this.getLongMonthName(new Date(art.fecha_publicacion_libro));
+            if(fecha==element){
+              cont++;
+            }
+
+          }
+          const a = { name: element, value: cont }
+          this.arti.push(a);
+          
+  
+        }
+
+    this.nuevo = this.arti;
+
+
+    
+    this.listarLibreria=[];
+}
+
+monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+// getShortMonthName = function(date: Date) {
+//   return this.monthNames[date.getMonth()].substring(0, 3);
+// }
+getLongMonthName = function(date: Date) {
+    return this.monthNames[date.getMonth()];
+}
+onSelect(event) {
+  console.log(event);
+}
+
+vaciar(){
+  this.arti=[];
+    this.nuevo=[];
+    this.listarLibreriaLibros();
+
+}
 
 
 

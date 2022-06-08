@@ -82,13 +82,17 @@
               </th>
 
               <td mat-cell *matCellDef="let programaAcademico" class="row">
-                <div class="col-10">{{programaAcademico.facultad}}</div>
+                <div class="col">{{programaAcademico.facultad}}</div>
 
-                <div class="col-2" *ngIf="soloAdmin">
-                  <button mat-flat-button color="warn" (click)="enviarID(programaAcademico.id)"
+                <div class="col" *ngIf="soloAdmin">
+                  <button mat-flat-button color="primary" (click)="enviarID(programaAcademico.id)"
                     aria-label="Example icon button with a delete icon">
                     <span class="material-icons">mode_edit</span>
                   </button>
+                  <button mat-flat-button color="warn" (click)="enviarID_Eliminar(programaAcademico.id)"
+                  aria-label="Example icon button with a delete icon">
+                  <span class="material-icons">delete</span>
+                </button>
                 </div>
               </td>
             </ng-container>

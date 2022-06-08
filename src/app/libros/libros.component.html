@@ -55,6 +55,16 @@
             </div>
           </div>
             <div class="row">
+
+              <div class="col-2 pt-2">
+                <mat-card-actions class="child">
+                  <button class="button" type="button" mat-raised-button color="primary" (click)="estadisticas()">Estadisticas
+  
+                    <span class="material-icons">sort</span>
+  
+                  </button>
+                </mat-card-actions>
+              </div>
               <div class="col">
                 <mat-form-field>
                   <mat-label>Buscar</mat-label>
@@ -219,13 +229,12 @@
 
 
                   <div class="col" *ngIf="soloAdmin">
-                    <button mat-flat-button color="warn" (click)="enviarID(libros.id_libro)"
+                    <button mat-flat-button color="primary" (click)="enviarID(libros.id_libro)"
                       aria-label="Example icon button with a delete icon">
                       <span class="material-icons">mode_edit</span>
                     </button>
 
-                  </div>
-                  <div class="col" *ngIf="soloAdmin">
+                  
                     <button mat-flat-button color="warn" (click)="enviarID_Eliminar(libros.id_libro)"
                       aria-label="Example icon button with a delete icon">
                       <span class="material-icons">delete</span>
@@ -615,4 +624,102 @@
       </div>
     </div>
   </div>
+
+
+
+
+    <!-- Modal Estadisticas -->
+
+    <div class="agregar" *ngIf="mostrarEstadistica">
+      <div class="agregar">
+        <div class="main-content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header card-header-danger row">
+                    <div class="col-4">
+                      <h4 class="card-title">Generate stadistics</h4>
+                      <p class="card-category">Complete your Filter</p>
+                    </div>
+                    <div class="col-5"></div>
+                    <div class="col-3">
+                      <div class="float-right">
+                        <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
+                          <div class="float-left">
+                            <div class="input-group form-control-lg p-0">
+                              <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+                            </div>
+                          </div>
+                          <div class="float-right">
+                            <div id="accionBuscarReHo" class="d-inline-block">
+                              <button mat-mini-fab color="warn" type="button" (click)="mostrarList()"
+                                aria-placeholder="Listar">
+                                <mat-icon>menu</mat-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div >
+  
+                    <div class="card-body">
+                     
+                      <form  (ngSubmit)="filtrarEstadistica()" class="demo-button">
+  
+                        <div class="row">
+                          <div class="input-group mb-3 col-2">
+                            
+                            <mat-form-field class="example-full-width">
+                              <input [(ngModel)]="fecha" matInput placeholder="Año" type="text" />
+                            </mat-form-field>
+  
+                          </div>
+                        <div class="col-sm-1">
+  
+                        </div>
+  
+                        
+  
+                          <div class="col pt-2">
+                            
+                            <mat-card-actions class="child">
+                              <button class="button" type="submit" mat-raised-button color="primary">Filtrar</button>
+                            </mat-card-actions>
+                           
+                          </div>
+  
+                        </div>
+        
+        
+                    
+               
+                    
+                      </form>
+                      <ngx-charts-bar-vertical
+                      [view]="view"
+                      [scheme]="colorScheme"
+                      [results]="nuevo"
+                      [gradient]="gradient"
+                      [xAxis]="showXAxis"
+                      [yAxis]="showYAxis"
+                      [legend]="showLegend"
+                      [showXAxisLabel]="showXAxisLabel"
+                      [showYAxisLabel]="showYAxisLabel"
+                      [xAxisLabel]="xAxisLabel"
+                      [yAxisLabel]="yAxisLabel"
+                      (select)="onSelect($event)">
+                      </ngx-charts-bar-vertical>
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
