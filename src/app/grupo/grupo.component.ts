@@ -184,4 +184,16 @@ export class GrupoComponent implements OnInit {
   }
 
 
+  enviarID(id) {
+    this.mostrarEdit();
+    this.grupoService.getGrupoById(id).subscribe(
+      (data: Grupo) => {
+        this.grupos = data;
+        console.log(this.grupos);
+      },
+      (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+  }
+
 }

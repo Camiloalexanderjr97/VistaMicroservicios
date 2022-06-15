@@ -290,13 +290,10 @@ editarArticulo() {
 //Editar Libro
 
 enviarID(id){
-  alert(id);
   this.mostrarEdit();
-
   this.articuloService.getArticuloById(id).subscribe(
     (data: Articulos) => {
-      this.articulos = new Articulos();
-      
+      this.articulos = new Articulos();  
       this.articulos=data;
       console.log(data);
     },
@@ -316,12 +313,9 @@ EliminarArticulo(id){
     denyButtonText: `Don't Delete`,
   }).then((result) => {
     /* Read more about isConfirmed, isDenied below */
-    if (result.isConfirmed) {
-
-      
+    if (result.isConfirmed) {  
   this.articuloService.deleteArticulo(id).subscribe();
-
-
+  window.location.reload();
     } else if (result.isDenied) {
       Swal.fire('Product are not deleted', '', 'info')
    

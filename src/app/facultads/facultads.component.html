@@ -145,40 +145,14 @@
                         </div>
                         <div class="col-md-4">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="facultad.nombre" matInput placeholder="Full Name" type="text" />
+                            <input [(ngModel)]="Facultad.nombre" matInput placeholder="Nombre Facultad" type="text" />
                           </mat-form-field>
                         </div>
-                        <h3>Facultad</h3>
-
-                        <form class="example-form">
-                          <mat-form-field class="example-full-width" appearance="fill">
-                            <mat-label>Assignee</mat-label>
-
-                            <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                              [(ngModel)]="facultad.nombre" />
-                            <mat-autocomplete #auto="matAutocomplete">
-                              <mat-option [value]="option.id + '-' + option.nombre"
-                                *ngFor="let option of filteredOptions | async">
-                                {{ option.id }}-{{ option.nombre }}
-                              </mat-option>
-                            </mat-autocomplete>
-                          </mat-form-field>
-                        </form>
                       </div>
-                      <div class="col clearfix">
-
-                        <button mat-raised-button type="submit" class="btn btn-danger pull-right">
-                          Create Facultad
-                        </button>
-                      </div>
-
-                      <div class="row">
-                        <div class="col clearfix">
-                          <button (click)="mostrarMas()" class="btn btn-danger pull-right">
-                            Cambiar A Masivo
-                          </button>
-                        </div>
-                      </div>
+  
+                      <button mat-raised-button type="submit" class="btn btn-danger pull-right">
+                        Create Facultad
+                      </button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -284,30 +258,14 @@
                     <div class="row">
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="Facultad.id" matInput placeholder="Codigo" type="text" />
+                          <input [value]="Facultad.id" matInput placeholder="Codigo" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="Facultad.nombre" matInput placeholder="Nombre Facultad" type="text" />
+                          <input [value]="Facultad.nombre" matInput placeholder="Nombre Facultad" type="text" />
                         </mat-form-field>
                       </div>
-                      <h3>Facultad</h3>
-
-                      <form class="example-form">
-                        <mat-form-field class="example-full-width" appearance="fill">
-                          <mat-label>{{ Facultad.facultad }}</mat-label>
-
-                          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                            [(ngModel)]="Facultad.facultad" />
-                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
-                            <mat-option [value]="option.id + '-' + option.nombre"
-                              *ngFor="let option of filteredOptions | async">
-                              {{ option.id }}-{{ option.nombre }}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                      </form>
                     </div>
 
                     <button mat-raised-button type="submit" class="btn btn-danger pull-right">

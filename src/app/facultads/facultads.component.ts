@@ -246,4 +246,19 @@ list: string='';
   }
 
 
+  enviarID(id) {
+    this.mostrarEdit();
+
+    this.facultadService.getFacultadById(id).subscribe(
+      (data: Facultad) => {
+
+        this.Facultad = data;
+        console.log(this.Facultad);
+      },
+      (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+  }
+
+
 }

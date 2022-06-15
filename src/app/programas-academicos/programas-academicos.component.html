@@ -293,12 +293,12 @@
                     <div class="row">
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="programaAcademico.id" matInput placeholder="Codigo" type="text" />
+                          <input [value]="programaAcademico.id" matInput placeholder="Codigo" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="programaAcademico.nombre" matInput placeholder="Nombre Programa"
+                          <input [value]="programaAcademico.nombre" matInput placeholder="Nombre Programa"
                             type="text" />
                         </mat-form-field>
                       </div>
@@ -307,9 +307,8 @@
                       <form class="example-form">
                         <mat-form-field class="example-full-width" appearance="fill">
                           <mat-label>{{ programaAcademico.facultad }}</mat-label>
-
                           <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                            [(ngModel)]="programaAcademico.facultad" />
+                          [(ngModel)]="programaAcademico.facultad" />
                           <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
                             <mat-option [value]="option.id + '-' + option.nombre"
                               *ngFor="let option of filteredOptions | async">
@@ -321,7 +320,7 @@
                     </div>
 
                     <button mat-raised-button type="submit" class="btn btn-danger pull-right">
-                      Create Program
+                      Actualizar Programa
                     </button>
                     <div class="clearfix"></div>
                   </form>

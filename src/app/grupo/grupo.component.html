@@ -339,41 +339,63 @@
                 <div class="card-body">
                   <form (submit)="creargrupo()">
                     <div class="row">
-
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-
-                          <input [(ngModel)]="grupo.id" matInput placeholder="Codigo" type="text" />
+                          <input [(ngModel)]="id" [value]="grupos.id"  matInput placeholder="Codigo" type="text" />
                         </mat-form-field>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupo.nombre" matInput placeholder="Nombre grupo" type="text" />
+                          <input [(ngModel)]="sigla" [value]="grupos.sigla" matInput placeholder="Sigla" type="text" />
                         </mat-form-field>
                       </div>
-                      <h3>grupo</h3>
-
-                      <form class="example-form">
-                        <mat-form-field class="example-full-width" appearance="fill">
-                          <mat-label>{{grupo.grupo}}</mat-label>
-
-                          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                            [(ngModel)]="grupo.grupo">
-                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
-                            <mat-option [value]="option.id+'-'+option.nombre"
-                              *ngFor="let option of filteredOptions | async">
-                              {{option.id}}-{{option.nombre}}
-                            </mat-option>
-                          </mat-autocomplete>
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="nombre" [value]="grupos.nombre"  matInput placeholder="Full Name" type="text" />
                         </mat-form-field>
-                      </form>
-
-
-
+                      </div>
                     </div>
-
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="director" [value]="grupos.director" matInput placeholder="Director" type="text" />
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="canIntegrantes" [value]="grupos.canIntegrantes" matInput placeholder="Cant Integrantes" type="number" />
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="fechaConformacion" [value]="grupos.fechaConformacion | date: 'yyyy-MM-dd' " matInput placeholder="Fecha Conformacion" type="date" />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="semillero" [value]="grupos.semillero" matInput placeholder="Cant Semilleros" type="number" />
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="lineaInvestigacion" [value]="grupos.lineaInvestigacion" matInput placeholder="# Lineas Invest." type="number" />
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <label for="wrapped">Programa Academico</label>
+                        <select class="form-select" aria-label="Default select example"
+                          [(ngModel)]="id_departamento" [value]="grupos.id_departamento">
+                          <option value="" selected disabled>Please select</option>
+                          <option *ngFor="let departamentos of ListarDepartamentos" value="{{ departamentos.id }}">
+                            {{ departamentos.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                     <button mat-raised-button type="submit" class="btn btn-danger pull-right">
-                      Create grupo
+                      Editar grupo
                     </button>
                     <div class="clearfix"></div>
                   </form>

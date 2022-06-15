@@ -495,17 +495,17 @@
                       <div class="row">
                         <div class="col-md-2">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.id_articulo" matInput placeholder="Codigo" type="text" />
+                            <input [value]="articulos.id_articulo" matInput placeholder="Codigo" type="text" />
                           </mat-form-field>
                         </div>
                         <div class="col-md-4">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.nombre_revista" matInput placeholder="Nombre Revista" type="text" />
+                            <input [value]="articulos.nombre_revista" matInput placeholder="Nombre Revista" type="text" />
                           </mat-form-field>
                         </div>
                         <div class="col-md-4">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.titulo_articulo" matInput placeholder="Titulo"
+                            <input [value]="articulos.titulo_articulo" matInput placeholder="Titulo"
                               type="text" />
                           </mat-form-field>
                         </div>
@@ -514,19 +514,19 @@
                       <div class="row">
                         <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.autores_articulo" matInput placeholder="Autor" type="text" />
+                            <input [value]="articulos.autores_articulo" matInput placeholder="Autor" type="text" />
                           </mat-form-field>
                         </div>
 
                         <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.fecha_articulo" matInput
+                            <input [value]="articulos.fecha_articulo | date: 'yyyy-MM-dd'" matInput
                               placeholder="Fecha Publicacion" type="date" />
                           </mat-form-field>
                         </div>
                         <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.volumen_articulo" matInput
+                            <input [value]="articulos.volumen_articulo" matInput
                               placeholder="Volumen" type="text" />
                           </mat-form-field>
                         </div>
@@ -536,32 +536,32 @@
                       <div class="row">
                         <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.pagina_inical" matInput
+                            <input [value]="articulos.pagina_inical" matInput
                               placeholder="Pagina Inicial" type="text" />
                           </mat-form-field>
                         </div>
                         <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.pagina_final" matInput placeholder="Pagina Final"
+                            <input [value]="articulos.pagina_final" matInput placeholder="Pagina Final"
                               type="text" />
                           </mat-form-field>
                         </div>
                         <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.issn_articulo" matInput placeholder="ISSN" type="text" />
+                            <input [value]="articulos.issn_articulo" matInput placeholder="ISSN" type="text" />
                           </mat-form-field>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.doi_articulo" matInput
+                            <input [value]="articulos.doi_articulo" matInput
                               placeholder="DOI" type="text" />
                           </mat-form-field>
                         </div>
                         <div class="col">
                           <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="articulos.url_articulo" matInput
+                            <input [value]="articulos.url_articulo" matInput
                               placeholder="URL" type="text" />
                           </mat-form-field>
                         </div>
@@ -570,7 +570,7 @@
 
                       <div class="col clearfix">
                         <button mat-raised-button type="submit" class="btn btn-danger pull-right">
-                          Create Article
+                          Guardar información
                         </button>
                       </div>
 

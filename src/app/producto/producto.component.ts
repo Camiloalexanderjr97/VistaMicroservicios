@@ -409,10 +409,8 @@ export class ProductoComponent implements OnInit {
 
   enviarID(id) {
     this.mostrarEdit();
-
     this.productoService.getProductoByID(id).subscribe(
       (data: Producto) => {
-
         this.productoN = data;
         console.log(this.productoN);
       },
@@ -432,13 +430,11 @@ export class ProductoComponent implements OnInit {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-
         this.productoService.deleteProducto(id).subscribe();
-
+        window.location.reload();
 
       } else if (result.isDenied) {
         Swal.fire('Product are not deleted', '', 'info')
-
       }
       this.mostrarList();
     })

@@ -265,12 +265,12 @@
 
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="departamentos.id" matInput placeholder="Codigo" type="number" />
+                          <input [value]="departamentos.id" matInput placeholder="Codigo" type="number" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="departamentos.name" matInput placeholder="Full Name" type="text" />
+                          <input [value]="departamentos.name" matInput placeholder="Full Name" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col">
@@ -279,7 +279,6 @@
                         <select class="form-select" aria-label="Default select example"
                           [(ngModel)]="departamentos.progAcademico">
                           <option value="" selected disabled>Please select</option>
-
                           <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
                             {{ programa.nombre }}
                           </option>
