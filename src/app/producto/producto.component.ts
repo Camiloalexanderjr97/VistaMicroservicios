@@ -23,6 +23,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from "app/Modelos/SubCategorias";
 import { Grupo } from 'app/Modelos/Grupo';
 import * as XLSX from 'xlsx';
+import { categoria_especifica } from 'app/Modelos/categoria_general';
+import { categoria_general } from 'app/Modelos/categoria_especifica';
 // import { single } from './data';
 
 interface objeto {
@@ -45,7 +47,9 @@ export class ProductoComponent implements OnInit {
   ListarProgramas: ProgramaAcademico[] = [];
 
   subCategoria = new subCategorias();
-  listarSubCategorias: subCategorias[] = [];
+  listarSubCategoriasProducto: subCategorias[] = [];
+  listarSubCategoriasGeneral: categoria_general[] = [];
+  listarSubCategoriasEspecifica: categoria_especifica[] = [];
 
 
   facultad = new Facultad();
@@ -54,13 +58,13 @@ export class ProductoComponent implements OnInit {
 
   displayedColumns: string[] = [
     "id",
-    "nombre",
+    "tipo_prod",
     "cantidad",
     "subcategoria",
     "fecha",
     "grupo",
     "programa",
-    "facultad",
+    "categoria_general",
   ];
 
   dataSource: any;
@@ -175,7 +179,9 @@ export class ProductoComponent implements OnInit {
       (data: Producto[]) => {
         for (let elemento of data) {
 
-
+          this.subCategoriaService.getSubCategoriaEspecificaById(elemento.tipo_prod).subscribe((especifica: categoria_especifica) => {
+            elemento.tipo_prod = especifica.descripcion;
+          })
           this.subCategoriaService.getSubCategoriaById(elemento.subcategoria).subscribe((subcategoria: subCategorias) => {
             elemento.subcategoria = subcategoria.descripcion;
           })
@@ -189,9 +195,9 @@ export class ProductoComponent implements OnInit {
             elemento.programa = programa.nombre;
           });
 
-          this.facultadService.getFacultadById(elemento.facultad).subscribe(
-            (facu: Facultad) => {
-              elemento.facultad = facu.nombre;
+          this.subCategoriaService.getSubCategoriaGeneralById(elemento.categoria_general).subscribe(
+            (facu: categoria_general) => {
+              elemento.categoria_general = facu.descripcion;
             },
             (error) => console.log(error),
             () => console.log("Complete")
@@ -246,18 +252,8 @@ export class ProductoComponent implements OnInit {
     this.listarProducto();
   }
 
-  crearProgramaAcademico() {
-    this.productos.facultad;
-    var splitted = this.productos.facultad.split("-", 1);
-    this.productos.facultad = splitted[0];
+  crearProducto() {
 
-    alert(
-      this.productos.facultad +
-      "-" +
-      this.productos.id +
-      "-" +
-      this.productos.nombre
-    );
 
     this.productoService.addProducto(this.productos).subscribe(
       (data: Producto) => {
@@ -285,19 +281,7 @@ export class ProductoComponent implements OnInit {
     this.date = new Date(this.productoN.fecha);
 
     this.productoN.fecha = this.date;
-    alert(this.productoN + "---" + this.productoN.fecha);
-
-    this.productoN.facultad;
-    var splitted = this.productoN.facultad.split("-", 1);
-    this.productoN.facultad = splitted[0];
-
-    alert(
-      this.productoN.facultad +
-      "-" +
-      this.productoN.id +
-      "-" +
-      this.productoN.cantidad
-    );
+ 
 
     this.productoService.editProducto(this.productoN).subscribe(
       (data: Producto) => {
@@ -316,7 +300,9 @@ export class ProductoComponent implements OnInit {
   myControlSub = new FormControl();
   // // options: User[] = [{nombre: 'Mary'}, {nombre: 'Shelley'}, {nombre: 'Igor'}];
   // options: Facultad[] ;
-  filteredOptionsSubCategoria: Observable<subCategorias[]>;
+  filteredOptionsSubCategoriaProducto: Observable<subCategorias[]>;
+  filteredOptionsSubCategoriaEspecifica: Observable<categoria_especifica[]>;
+  filteredOptionsSubCategoriaGeneral: Observable<categoria_general[]>;
   filteredOptionsFacultad: Observable<Facultad[]>;
 
   //Ocultar y mostrar paneles de agregar y listar
@@ -331,9 +317,10 @@ export class ProductoComponent implements OnInit {
   mostrarAgg() {
 
     this.listarFacultades();
-    this.listarSubCategoriasMostrar();
     this.listadoGrupos();
     this.listadoProgramas();
+    this.listarSubCategoriaGeneral();
+    this.listarSubCategoriaEspecifica();
     Swal.fire({
       title: 'Como le gustaría crear el Libro?',
       showDenyButton: true,
@@ -378,7 +365,6 @@ export class ProductoComponent implements OnInit {
     this.mostrarEstadistica = false;
 
     this.listarFacultades();
-    this.listarSubCategoriasMostrar();
     this.listadoGrupos();
     this.listadoProgramas();
   }
@@ -388,7 +374,9 @@ export class ProductoComponent implements OnInit {
     this.mostrarListado = false;
     this.mostrarAgregar = false;
     this.mostrarEditar = false;
+    this.listarSubCategoriaGeneral();
     this.filtrarEstadistica();
+    this.listarSubCategoriaEspecifica();
     this.listarFacultades();
   }
 
@@ -441,18 +429,70 @@ export class ProductoComponent implements OnInit {
 
   }
   //Listar subCategorias para agregar en el list
-  listarSubCategoriasMostrar() {
+  listarSubCategoriaProducto( dato: any) {
+    console.log("entra");
+    this.listarSubCategoriasProducto=[];
+    const tipo =dato.target.value;
+   
+    this.subCategoriaService.getSubCategoriaEspecificaById(tipo).subscribe((subcategoria: subCategorias) => {
+      this.tipo = subcategoria.descripcion;
+    });
     this.subCategoriaService.getSubCategorias().subscribe((data: subCategorias[]) => {
-      this.listarSubCategorias = data;
+
+
+      for(let element of data){
+        const id =element.categoria_especifica;
+  
+        if(id==tipo){
+  
+          this.listarSubCategoriasProducto.push(element);
+        }
+      }
     });
 
-    this.filteredOptionsSubCategoria = this.myControlSub.valueChanges.pipe(
+    this.filteredOptionsSubCategoriaProducto = this.myControlSub.valueChanges.pipe(
       startWith(""),
       map((descripcion) => {
-        return this.listarSubCategorias.filter((options) => options.descripcion);
+        return this.listarSubCategoriasProducto.filter((options) => options.descripcion);
       })
     );
   }
+
+
+
+
+
+
+
+   //Listar subCategorias Especificas para agregar en el list
+   listarSubCategoriaEspecifica() {
+    this.subCategoriaService.getSubCategoriasEspecificas().subscribe((data: categoria_especifica[]) => {
+      this.listarSubCategoriasEspecifica = data;
+    });
+
+    this.filteredOptionsSubCategoriaEspecifica = this.myControlSub.valueChanges.pipe(
+      startWith(""),
+      map((descripcion) => {
+        return this.listarSubCategoriasEspecifica.filter((options) => options.descripcion);
+      })
+    );
+  }
+
+   //Listar subCategorias Especificas para agregar en el list
+   listarSubCategoriaGeneral() {
+    this.subCategoriaService.getSubCategoriasGenerales().subscribe((data: categoria_general[]) => {
+      this.listarSubCategoriasGeneral = data;
+    });
+
+    this.filteredOptionsSubCategoriaGeneral = this.myControlSub.valueChanges.pipe(
+      startWith(""),
+      map((descripcion) => {
+        return this.listarSubCategoriasGeneral.filter((options) => options.descripcion);
+      })
+    );
+  }
+
+
 
   //Listar Facultades para agregar en el list
   listarFacultades() {
@@ -541,35 +581,53 @@ export class ProductoComponent implements OnInit {
   pros: objeto[] = [];
   nuevo: objeto[] = []
   program:String='';
-  guardarPrograma(dato: any){ 
+  guardarProducto(dato: any){ 
     this.program=dato.target.value;
   }
+
+
+
+  guardarGeneral( dato: any) {
+    const general =dato.target.value;
+    this.general=general;
+  }
+  tipo: String;
+  general: String;
   filtrarEstadistica() {
     this.vaciar();
     this.pros=[];
     this.nuevo=[];
     this.datos=[];
 
+    console.log("-entra--"+this.general+"----"+this.tipo);
+
     for (let element of this.listarProductos) {
+
+      if(element.categoria_general==this.general && element.tipo_prod==this.tipo){
+
+
       if ((new Date(element.fecha).getTime() >= new Date(this.inicio.value).getTime()) && (new Date(element.fecha).getTime() <= new Date(this.fin.value).getTime()) && element.programa==this.program) {
+        console.log("push--------------------");
+
         this.datos.push(element);
+
 
 
       }
     }
+    }
 
     this.yAxisLabel=this.formatearFecha(new Date(this.inicio.value))+ "  -  "+this.formatearFecha(new Date(this.fin.value));
 
-    this.subCategoriaService.getSubCategorias().subscribe((data: subCategorias[]) => {
 
-      this.listarSubCategorias = data;
-
-      for (let categorias of this.listarSubCategorias) {
+console.log(this.listarSubCategoriasProducto);
+      for (let categorias of this.listarSubCategoriasProducto) {
        var cont:number;
           cont=0;
         for (let element of this.datos) {
           if (element.subcategoria === categorias.descripcion) {
-           cont++;
+           cont=(element.cantidad+cont);
+           console.log(cont+"--"+element.cantidad);
   
           }
           
@@ -589,7 +647,6 @@ export class ProductoComponent implements OnInit {
     this.nuevo = this.pros;
 
 
-    }); 
 
 
   

@@ -22,6 +22,7 @@ import { ArticuloComponent } from "./articulo/articulo.component";
 import { MaterialModule } from "./material-module";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { LoginComponent } from './login/login.component';
+import { ExportService } from './Services/ConverterExcel/exporter.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,7 @@ import { LoginComponent } from './login/login.component';
       apiKey: "YOUR_GOOGLE_MAPS_API_KEY",
     }),
   ],
-  providers: [CargarScriptsService, NgbModule],
+  providers: [CargarScriptsService, NgbModule,ExportService],
 
   bootstrap: [AppComponent],
 })

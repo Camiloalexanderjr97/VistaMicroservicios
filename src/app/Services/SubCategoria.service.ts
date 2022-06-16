@@ -4,12 +4,16 @@ import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import {urlArticulo } from "../../environments/environment";
 import {subCategorias} from "../Modelos/SubCategorias";
+import { categoria_general } from "app/Modelos/categoria_especifica";
+import { categoria_especifica } from "app/Modelos/categoria_general";
 
 @Injectable({
   providedIn: "root",
 })
 export class SubCategoriaService {
   private url = `${urlArticulo}/sub`;
+  private general = `${urlArticulo}/cat`;
+  private especifica = `${urlArticulo}/catEsp`;
   // private url2 = `${urlSubCategoria}/file`;
 
 
@@ -49,4 +53,33 @@ export class SubCategoriaService {
   editSubCategoria(subCategoria: subCategorias) {
     return this.http.put(this.url + "/editSub/"+subCategoria.id, subCategoria);
   }
+//Categoria Generales
+
+
+ //getSubCategorias General
+ getSubCategoriasGenerales(): Observable<categoria_general[]> {
+  return this.http.get<subCategorias[]>(this.general+"/categoriasgeneral");
+}
+
+  //get un SubCategoria General por id
+  getSubCategoriaGeneralById(id: String): Observable<categoria_general> {
+    return this.http.get<subCategorias>(this.general + "/findById/" + id);
+  }
+
+
+
+
+//Categoria Especificas
+
+
+ //getSubCategorias Especificas
+ getSubCategoriasEspecificas(): Observable<categoria_especifica[]> {
+  return this.http.get<subCategorias[]>(this.especifica+"/categoriasespecifica");
+}
+
+
+ //get un SubCategoria Especifica por id
+ getSubCategoriaEspecificaById(id: String): Observable<categoria_general> {
+  return this.http.get<subCategorias>(this.especifica + "/findById/" + id);
+}
 }

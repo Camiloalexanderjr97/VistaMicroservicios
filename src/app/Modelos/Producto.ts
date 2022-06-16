@@ -3,12 +3,12 @@ import { Facultad } from './Facultad';
 
 export class Producto {
       id?:String;
-  nombre?: String;
-        cantidad?: String;
+      tipo_prod?: String;
+        cantidad?: number;
         subcategoria?: String;
         fecha?: Date;
         grupo?: String;
         programa?: String;
-        facultad?: String;
+        categoria_general?: String;
 
 }

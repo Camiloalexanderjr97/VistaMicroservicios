@@ -55,8 +55,8 @@ export class TableListComponent implements OnInit {
       () => console.log("Complete")
     )
     
-
-    }
+ 
+    } 
 
     edit(id: any){
       console.log(id);

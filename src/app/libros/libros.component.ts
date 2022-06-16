@@ -23,6 +23,7 @@ import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from "app/Modelos/SubCategorias";
 import * as XLSX from "xlsx";
+import { ExportService } from "app/Services/ConverterExcel/exporter.service";
 
 interface objeto {
   name: any;
@@ -95,6 +96,7 @@ export class LibrosComponent implements OnInit {
   };
 
   constructor(
+    private exportService: ExportService,
     private fb: FormBuilder,
     private tokenService: TokenService,
     private router: Router,
@@ -481,4 +483,17 @@ export class LibrosComponent implements OnInit {
     this.nuevo = [];
     this.listarLibreriaLibros();
   }
+
+
+
+  exportAsXLSX(){
+    this.exportService.exportToExcel(this.dataSource.data, 'my_export');
+
+  }
+
+
+ 
+
+
+
 }

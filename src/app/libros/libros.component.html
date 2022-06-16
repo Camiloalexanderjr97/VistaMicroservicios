@@ -257,12 +257,12 @@
                 </td>
               </ng-container>
 
-
+ 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
 
-
+<button mat-raised-button (click)="exportAsXLSX()"> Export</button>
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
               aria-label="Select page of periodic elements">
             </mat-paginator>
@@ -430,7 +430,7 @@
 
                   <div class="col-2">
                     <div>
-                      <a href="../../assets/Files/prueba.xlsx" class="link-success pl-2 pt-2">
+                      <a href="../../assets/Files/PlantillaAddMasivaLibro.xlsx" class="link-success pl-2 pt-2">
                         <div>
                           <img src="../../assets/Files/excel.png" width="40%" class="rounded mx-auto d-block" alt="">
 
