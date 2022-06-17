@@ -337,6 +337,19 @@
                       </div>
 
                       <div class="row">
+                        <div class="col">
+                          <label for="wrapped">Facultad</label>
+
+                          <select class="form-select" aria-label="Default select example" 
+                            (click)="mostrar($event)">
+
+                            <option value="" selected disabled>Please select</option>
+
+                            <option *ngFor="let facultad of ListarFacultad" value="{{ facultad.id }}"  >
+                              {{ facultad.nombre }}
+                            </option>
+                          </select>
+                        </div>
                         <div class="col-4">
                           <label for="wrapped">Programa Academico</label>
 
@@ -344,7 +357,7 @@
                             [(ngModel)]="productos.programa">
                             <option value="" selected disabled>Please select</option>
 
-                            <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
+                            <option *ngFor="let programa of listaPro" value="{{ programa.id }}">
                               {{ programa.nombre }}
                             </option>
                           </select>
@@ -477,9 +490,8 @@
                         <label for="wrapped">Tipo Producto</label>
 
                         <select class="form-select" aria-label="Default select example"
-                          [(ngModel)]="productos.tipo_prod"  (click)="listarSubCategoriaProducto($event)">
+                          [(ngModel)]="tipo_prod" [value]="productoN.tipo_prod"  (click)="listarSubCategoriaProducto($event)">
                           <option value="" selected disabled>Please select</option>
-
                           <option *ngFor="let sub of listarSubCategoriasEspecifica" value="{{ sub.id }}">
                             {{ sub.descripcion }}
                           </option>
@@ -491,10 +503,8 @@
 
                         <label for="wrapped">Categoria General</label>
 
-                        <select class="form-select" aria-label="Default select example"
-                          >
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="subCategoria" [value]="productoN.subCategoria">
                           <option value="" selected disabled>Please select</option>
-
                           <option *ngFor="let sub of listarSubCategoriasGeneral" value="{{ sub.id }}">
                             {{ sub.descripcion }}
                           </option>
@@ -503,7 +513,7 @@
                       </div>
                       <div class="pt-3 col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="productos.cantidad" matInput placeholder="Cantidad" type="number" />
+                          <input [(ngModel)]="cantidad" [value]="productoN.cantidad" matInput placeholder="Cantidad" type="number" />
                         </mat-form-field>
                       </div>
                     </div>
@@ -513,7 +523,7 @@
                         <label for="wrapped">Sub Categoria</label>
 
                         <select class="form-select" aria-label="Default select example"
-                          [(ngModel)]="productos.subcategoria">
+                          [value]="productoN.subcategoria">
                           <option value="" selected disabled>Please select</option>
 
                           <option *ngFor="let sub of listarSubCategoriasProducto" value="{{ sub.id }}">
@@ -524,13 +534,13 @@
 
                       <div class="pt-3 col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="productos.fecha" matInput placeholder="Fecha" type="date" />
+                          <input [(ngModel)]="fecha" [value]="productoN.fecha | date: 'yyyy-MM-dd'" matInput placeholder="Fecha" type="date" />
                         </mat-form-field>
                       </div>
                       <div class="pt-3 col-md-4">
                         <label for="wrapped">Grupo</label>
 
-                        <select class="form-select" aria-label="Default select example" [(ngModel)]="productos.grupo">
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="grupo" [value]="productoN.grupo">
                           <option value="" selected disabled>Please select</option>
 
                           <option *ngFor="let grupo of ListarGrupos" value="{{ grupo.id }}">
@@ -541,14 +551,27 @@
                     </div>
 
                     <div class="row">
+                      <div class="col">
+                        <label for="wrapped">Facultad</label>
+
+                        <select class="form-select" aria-label="Default select example" [value]="productoN.facultad"
+                          (click)="mostrar($event)">
+
+                          <option value="" selected disabled>Please select</option>
+
+                          <option *ngFor="let facultad of ListarFacultad" value="{{ facultad.id }}"  >
+                            {{ facultad.nombre }}
+                          </option>
+                        </select>
+                      </div>
                       <div class="col-4">
                         <label for="wrapped">Programa Academico</label>
 
                         <select class="form-select" aria-label="Default select example"
-                          [(ngModel)]="productos.programa">
+                          [value]="productoN.programa">
                           <option value="" selected disabled>Please select</option>
 
-                          <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
+                          <option *ngFor="let programa of listaPro" value="{{ programa.id }}">
                             {{ programa.nombre }}
                           </option>
                         </select>
@@ -558,7 +581,7 @@
                     <div class="col clearfix">
 
                       <button mat-raised-button type="submit" class="btn btn-danger pull-right">
-                        Create Product
+                        Edit Product
                       </button>
                     </div>
                     <div class="row">

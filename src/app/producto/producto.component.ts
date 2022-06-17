@@ -214,7 +214,7 @@ export class ProductoComponent implements OnInit {
     );
   }
 
-  facultadPorId(id): String {
+  facultadPorId(id) {
     this.facultadService.getFacultadById(id).subscribe(
       (data: Facultad) => {
         this.facultad = data;
@@ -222,7 +222,6 @@ export class ProductoComponent implements OnInit {
       (error) => console.log(error),
       () => console.log("Complete")
     );
-    return this.facultad.nombre;
   }
 
   filtrar(event: Event) {
@@ -318,7 +317,6 @@ export class ProductoComponent implements OnInit {
 
     this.listarFacultades();
     this.listadoGrupos();
-    this.listadoProgramas();
     this.listarSubCategoriaGeneral();
     this.listarSubCategoriaEspecifica();
     Swal.fire({
@@ -366,7 +364,6 @@ export class ProductoComponent implements OnInit {
 
     this.listarFacultades();
     this.listadoGrupos();
-    this.listadoProgramas();
   }
 
   estadisticas() {
@@ -396,11 +393,49 @@ export class ProductoComponent implements OnInit {
   //Editat Programa Academico
 
   enviarID(id) {
+    
+    this.listarSubCategoriaGeneral();
+    this.listarSubCategoriaEspecifica();
+
     this.mostrarEdit();
     this.productoService.getProductoByID(id).subscribe(
       (data: Producto) => {
         this.productoN = data;
         console.log(this.productoN);
+
+    
+      
+   
+
+          this.programaAcademicoService.getProgramaAcademicoById( this.productoN.programa).subscribe((programa: ProgramaAcademico) => {
+            this.productoN.programa = programa.nombre;
+
+            this.facultadService.getFacultadById(programa.idFacultad.id).subscribe(
+              (data: Facultad) => {
+                this.facultad = data;
+                this.productoN.facultad=data.nombre;
+                console.log(this.productoN.facultad+"----1---");
+
+              },
+              (error) => console.log(error),
+              () => console.log("Complete")
+            );
+
+          });
+          console.log(this.productoN.facultad+"----2---");
+
+
+          this.subCategoriaService.getSubCategoriaGeneralById( this.productoN.categoria_general).subscribe(
+            (facu: categoria_general) => {
+              this.productoN.categoria_general = facu.descripcion;
+            },
+            (error) => console.log(error),
+            () => console.log("Complete")
+          );
+
+
+        
+
       },
       (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")

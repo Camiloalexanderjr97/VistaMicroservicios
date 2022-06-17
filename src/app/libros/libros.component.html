@@ -531,25 +531,20 @@
                 
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-                          <input  [value]="libros.id_libro" matInput placeholder="Codigo" type="text" />
+                          <input [(ngModel)]="id" [value]="libros.id_libro" matInput placeholder="Codigo" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [value]="libros.titulo_libro" matInput placeholder="Titulo" type="text" />
+                          <input [(ngModel)]="titulo_libro" [value]="libros.titulo_libro" matInput placeholder="Titulo" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [value]="libros.numero_capitulos_libro" matInput placeholder="Capitulos"
+                          <input [(ngModel)]="numero_capitulos_libro" [value]="libros.numero_capitulos_libro" matInput placeholder="Capitulos"
                             type="number" />
                         </mat-form-field>
                       </div>
-                
-                
-                
-                
-                
                 
                 
                     </div>
@@ -577,7 +572,7 @@
                       </div> -->
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [value]="libros.lugar_publicacion_libro" matInput placeholder="Lugar Publicacion" [value]="libros.lugar_publicacion_libro"
+                          <input [(ngModel)]="lugar_publicacion_libro" [value]="libros.lugar_publicacion_libro" matInput placeholder="Lugar Publicacion" [value]="libros.lugar_publicacion_libro"
                             type="text" />
                         </mat-form-field>
                       </div>
@@ -588,24 +583,24 @@
                 
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [value]="libros.certificado_creditos_libro" matInput
+                          <input [(ngModel)]="certificado_creditos_libro" [value]="libros.certificado_creditos_libro" matInput
                             placeholder="Certificacion Creditos" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [value]="libros.editorial_libro" matInput placeholder="Editorial" type="text" />
+                          <input [(ngModel)]="editorial_libro" [value]="libros.editorial_libro" matInput placeholder="Editorial" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [value]="libros.isbn_libro" matInput placeholder="Isbn" type="text" />
+                          <input [(ngModel)]="isbn_libro" [value]="libros.isbn_libro" matInput placeholder="Isbn" type="text" />
                         </mat-form-field>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <mat-form-field class="example-full-width">
-                        <input [value]="libros.certificado_investigacion_libro" matInput
+                        <input [(ngModel)]="certificado_investigacion_libro" [value]="libros.certificado_investigacion_libro" matInput
                           placeholder="Certificado Investigacion" type="text" />
                       </mat-form-field>
                     </div>

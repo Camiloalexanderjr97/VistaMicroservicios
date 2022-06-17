@@ -381,19 +381,19 @@
                       <div class="col">
                         <mat-form-field class="example-full-width">
                           <input [(ngModel)]="lineaInvestigacion" [value]="grupos.lineaInvestigacion" matInput placeholder="# Lineas Invest." type="number" />
-                        </mat-form-field>
-                      </div>
+                        </mat-form-field>   
+                      </div> 
                       <div class="col">
                         <label for="wrapped">Programa Academico</label>
                         <select class="form-select" aria-label="Default select example"
                           [(ngModel)]="id_departamento" [value]="grupos.id_departamento">
-                          <option value="" selected disabled>Please select</option>
+                          <option value="" selected disabled>Please select </option>
                           <option *ngFor="let departamentos of ListarDepartamentos" value="{{ departamentos.id }}">
                             {{ departamentos.name }}
-                          </option>
+                          </option> 
                         </select>
                       </div>
-                    </div>
+                    </div> 
                     <button mat-raised-button type="submit" class="btn btn-danger pull-right">
                       Editar grupo
                     </button>

@@ -10,5 +10,6 @@ export class Producto {
         grupo?: String;
         programa?: String;
         categoria_general?: String;
+        facultad: String;
 
 }
