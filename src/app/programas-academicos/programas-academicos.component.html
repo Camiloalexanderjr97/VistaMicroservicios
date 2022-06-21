@@ -89,10 +89,7 @@
                     aria-label="Example icon button with a delete icon">
                     <span class="material-icons">mode_edit</span>
                   </button>
-                  <button mat-flat-button color="warn" (click)="enviarID_Eliminar(programaAcademico.id)"
-                  aria-label="Example icon button with a delete icon">
-                  <span class="material-icons">delete</span>
-                </button>
+                
                 </div>
               </td>
             </ng-container>
@@ -162,22 +159,21 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col">
-                          <form class="example-form">
-                            <mat-form-field class="example-full-width" appearance="fill">
-                              <mat-label>Facultad</mat-label>
 
-                              <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                                [(ngModel)]="programaAcademico.facultad" />
-                              <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option [value]="option.id + '-' + option.nombre"
-                                  *ngFor="let option of filteredOptions | async">
-                                  {{ option.id }}-{{ option.nombre }}
-                                </mat-option>
-                              </mat-autocomplete>
-                            </mat-form-field>
-                          </form>
+                        <div class="col">
+                          <label for="wrapped">Facultad</label>
+
+                          <select class="form-select" aria-label="Default select example" >
+                            
+
+                            <option value="" selected disabled>Please select</option>
+
+                            <option *ngFor="let facultad of ListarFacultad" value="{{ facultad.id }}"  >
+                              {{ facultad.nombre }}
+                            </option>
+                          </select>
                         </div>
+                       
                         <div class="col clearfix">
                           <button mat-raised-button type="submit" class="btn btn-danger pull-right">
                             Create Program
@@ -302,21 +298,19 @@
                             type="text" />
                         </mat-form-field>
                       </div>
-                      <h3>Facultad</h3>
+                      <div class="col">
+                        <label for="wrapped">Facultad</label>
 
-                      <form class="example-form">
-                        <mat-form-field class="example-full-width" appearance="fill">
-                          <mat-label>{{ programaAcademico.facultad }}</mat-label>
-                          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" required
-                          [(ngModel)]="programaAcademico.facultad" />
-                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="">
-                            <mat-option [value]="option.id + '-' + option.nombre"
-                              *ngFor="let option of filteredOptions | async">
-                              {{ option.id }}-{{ option.nombre }}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
-                      </form>
+                        <select class="form-select" aria-label="Default select example" >
+                          
+
+                          <option value="" selected disabled>Please select</option>
+
+                          <option *ngFor="let facultad of ListarFacultad" value="{{ facultad.id }}"  >
+                            {{ facultad.nombre }}
+                          </option>
+                        </select>
+                      </div>
                     </div>
 
                     <button mat-raised-button type="submit" class="btn btn-danger pull-right">

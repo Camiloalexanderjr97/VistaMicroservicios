@@ -24,6 +24,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from "app/Modelos/SubCategorias";
 import * as XLSX from "xlsx";
 import { ExportService } from "app/Services/ConverterExcel/exporter.service";
+// import {MatTableExporterModule} from 'mat-table-exporter';
 
 interface objeto {
   name: any;
@@ -35,16 +36,16 @@ interface objeto {
   styleUrls: ["./libros.component.css"],
 })
 export class LibrosComponent implements OnInit {
-  id_libro?: String = "";
-  titulo_libro?: String = "";
-  numero_capitulos_libro?: String = "";
-  autores_libro?: String = "";
+  id_libro?: String;
+  titulo_libro?: String;
+  numero_capitulos_libro?: String;
+  autores_libro?: String;
   fecha_publicacion_libro?: Date = new Date();
-  lugar_publicacion_libro?: String = "";
-  certificado_creditos_libro?: String = "";
-  certificado_investigacion_libro?: String = "";
-  editorial_libro?: String = "";
-  isbn_libro?: String = "";
+  lugar_publicacion_libro?: String;
+  certificado_creditos_libro?: String;
+  certificado_investigacion_libro?: String;
+  editorial_libro?: String;
+  isbn_libro?: String;
 
   libros = new Libros();
   listarLibreria: Libros[] = [];
@@ -216,41 +217,52 @@ export class LibrosComponent implements OnInit {
       () => console.log("Complete")
     );
   }
+  libroNuevo: Libros;
 
   editarLibro() {
-    // this.libros.facultad;
-    // var splitted = this.libros.facultad.split("-", 1);
-    // this.libros.facultad=splitted[0];
+    console.log(this.id_libro);
 
-    // alert(
-    //   this.libros.facultad +
-    //     "-" +
-    //     this.libros.id +
-    //     "-" +
-    //     this.libros.nombre
-    // );
+    //  this.libroNuevo.id_libro=   this.id_libro;
+     
+    // console.log(this.libroNuevo.id_libro);
+    //  this.libroNuevo.titulo_libro= this.titulo_libro;
+    //  this.libroNuevo.numero_capitulos_libro=   this.numero_capitulos_libro;
+    //  this.libroNuevo.autores_libro=    this.autores_libro;
+    //  this.libroNuevo.fecha_publicacion_libro=    this.fecha_publicacion_libro;
+    //  this.libroNuevo.lugar_publicacion_libro=    this.lugar_publicacion_libro;
+    //  this.libroNuevo.certificado_creditos_libro=  this.certificado_creditos_libro;
+    //  this.libroNuevo.certificado_investigacion_libro=    this.certificado_investigacion_libro;
+    //  this.libroNuevo.editorial_libro=    this.editorial_libro;
+    //  this.libroNuevo.isbn_libro=   this.isbn_libro;
+  
 
-    console.log(this.autores_libro);
+    //  console.log(this.libroNuevo);
+
     // this.libroService
-    //   .editLibros(this.libros)
-    //   .subscribe(
+    //   .editLibros(this.libroNuevo).subscribe(
     //     (data: Libros) => {
     //       this.libros = data;
     //       console.log(data);
-    //       Swal.fire("Register Success!", "Actualizado correctamente", "success");
+    //       Swal.fire("Edit Success!", "Actualizado correctamente", "success");
     //      this.mostrarList();
     //     },
     //     (error) =>
-    //       Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+    //       Swal.fire("Edit Failed!", "Ha ocurrido un error", "warning"),
     //     () => console.log("Complete")
     //   );
+
+    // this.id_libro= "";
+    // this.titulo_libro = "";
+    // this.numero_capitulos_libro = "";
+    // this.autores_libro = "";
+    // this.fecha_publicacion_libro = new Date();
+    // this.lugar_publicacion_libro = "";
+    // this.certificado_creditos_libro = "";
+    // this.certificado_investigacion_libro = "";
+    // this.editorial_libro = "";
+    // this.isbn_libro = "";
   }
 
-  // myControl = new FormControl();
-  // // options: User[] = [{nombre: 'Mary'}, {nombre: 'Shelley'}, {nombre: 'Igor'}];
-  // options: Facultad[] ;
-  // filteredOptionsSubCategoria: Observable<Libros[]>;
-  // filteredOptionsFacultad: Observable<Facultad[]>;
 
   //Ocultar y mostrar paneles de agregar y listar
   mostrarListado: Boolean = true;
@@ -487,7 +499,7 @@ export class LibrosComponent implements OnInit {
 
 
   exportAsXLSX(){
-    this.exportService.exportToExcel(this.dataSource.data, 'my_export');
+    this.exportService.exportToExcel(this.dataSource.data, 'Libros');
 
   }
 

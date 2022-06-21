@@ -8,5 +8,7 @@ export class Semillero {
   canGrupos?: number;
   canEstudiantes: number;
   fechaConformacion?: Date;
+  programaAcademico?:String;
+  facultad?:String;
     
 }

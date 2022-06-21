@@ -20,6 +20,13 @@ export class TableListComponent implements OnInit {
   user = new User();
   ListarUser: User[]=[];
   
+  id?: string;
+  name?: string;
+  username?: string;
+  password?: string;
+  roles?:any[];
+  rol: String; 
+
     constructor(private usuarioService: UsuarioService, private router: Router, private tokenService: TokenService) {
       //_CargaScripts.Carga(["main3"]);
     }
@@ -58,7 +65,8 @@ export class TableListComponent implements OnInit {
  
     } 
 
-    edit(id: any){
+    enviarId(id: any){
+      this.mostrarEdit();
       console.log(id);
       this.usuarioService.getUserById(id).subscribe( (data: any) => {
         
@@ -71,6 +79,7 @@ export class TableListComponent implements OnInit {
     }
     isLogged= false;
   ngOnInit() {
+   this.mostrarListado();
   
 
     if (this.tokenService.getToken()) {
@@ -89,5 +98,36 @@ export class TableListComponent implements OnInit {
         timer: 1500
       })
     }
+  }
+
+  nuevoUser: User;
+listar:boolean;
+edita:boolean;
+  mostrarListado(){
+    this.listar=true;
+    this.edita=false;
+  }
+  mostrarEdit(){
+    this.listar=false;
+    this.edita=true;
+  }
+  
+  editar(){
+
+    // this.nuevoUser.id=this.id;
+    this.nuevoUser.name=this.name;
+    this.nuevoUser.username=this.username;
+    this.nuevoUser.password=this.password;
+    this.nuevoUser.rol=this.rol;
+
+    console.log(this.nuevoUser);
+  //   this.usuarioService.editUser(this.nuevoUser).subscribe( (data: any) => {
+        
+  //     console.log(data)
+  //     this.user=data;
+  //   },
+  //   (error) => Swal.fire("No Found!", "Ha ocurrido un error", "warning"),
+  //   () => console.log("Complete")
+  // )
   }
 }

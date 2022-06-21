@@ -2,7 +2,7 @@
 
 
 
-
+<div *ngIf="listar">
   <div class="main-content">
     <div class="container-fluid">
       <div class="row">
@@ -11,6 +11,29 @@
             <div class="card-header card-header-danger">
               <h4 class="card-title"><b>Usuarios registrados</b></h4>
               <p class="card-category">Usuarios registrados exitosamente.</p>
+            </div>
+            <div class="card-header card-header-danger row">
+                    
+              <div class="col-5"></div>
+              <div class="col-3">
+                <div class="float-right">
+                  <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
+                    <div class="float-left">
+                      <div class="input-group form-control-lg p-0">
+                        <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+                      </div>
+                    </div>
+                    <div class="float-right">
+                      <div id="accionBuscarReHo" class="d-inline-block">
+                        <button mat-mini-fab color="warn" type="button" (click)="mostrarListado()"
+                          aria-placeholder="Listar">
+                          <mat-icon>menu</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -33,7 +56,7 @@
                       <td>{{ user.password }}</td>
                       <td>{{ user.rol }}</td>
                       <td>
-                        <button mat-flat-button color="warn" (click)="edit(user.id)"
+                        <button mat-flat-button color="warn" (click)="enviarId(user.id)"
                           aria-label="Example icon button with a delete icon">
                           <span class="material-icons">mode_edit</span>
                         </button>
@@ -48,5 +71,101 @@
       </div>
     </div>
   </div>
+</div>
+
+
+
+
+
+<div *ngIf="edita">
+  <div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Edit Account</h4>
+                        <p class="card-category">Complete your profile</p>
+                    </div>
+                    <div class="card-header card-header-danger row">
+                    
+                      <div class="col-5"></div>
+                      <div class="col-3">
+                        <div class="float-right">
+                          <form class="text-center mt-2" autocomplete="off" name="formBuscarReHo" id="formBuscarReHo">
+                            <div class="float-left">
+                              <div class="input-group form-control-lg p-0">
+                                <div class="form-group m-0" id="accionBuscarDownHandlerReHo"></div>
+                              </div>
+                            </div>
+                            <div class="float-right">
+                              <div id="accionBuscarReHo" class="d-inline-block">
+                                <button mat-mini-fab color="warn" type="button" (click)="mostrarListado()"
+                                  aria-placeholder="Listar">
+                                  <mat-icon>menu</mat-icon>
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <form (submit)="editar()">
+                          <div class="row">
+                            <div class="col" style="display: none;">
+                              <mat-form-field class="example-full-width">
+                                <input [value]="user.id"  [(ngModel)]="id"  matInput placeholder="Full Name" type="text">
+                              </mat-form-field>
+                            </div>
+                            <div class="col">
+                              <mat-form-field class="example-full-width">
+                                <input [value]="user.name"  [(ngModel)]="name"  matInput placeholder="Full Name" type="text">
+                              </mat-form-field>
+                            </div>
+                            <div class="row col">
+           
+                              <div class=" col">
+                                <label for="wrapped">Rol</label>
+  
+                                <select class="form-select" aria-label="Default select example" [value]="user.rol"  [(ngModel)]="rol">
+                                  <option value="" selected disabled>Please select</option>
+                                  <option value="Admin">
+                                    Admin
+                                  </option>
+                                  <option value="User">
+                                    User
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                            
+                        </div>
+                            <div class="row">
+                               
+                                <div class="col-md-3">
+                                    <mat-form-field class="example-full-width">
+                                      <input [value]="user.username" matInput placeholder="Username">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                      <input [value]="user.password" matInput placeholder="Contraseña" type="password">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                           
+                        
+                            <button mat-raised-button type="submit" class="btn btn-danger pull-right">Edit Account</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+         
+        </div>
+    </div>
+  </div>
+</div>
 
 </div>

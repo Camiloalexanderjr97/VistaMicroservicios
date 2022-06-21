@@ -119,8 +119,7 @@
 
 
 
-            <table class="table" mat-table [dataSource]="dataSource" matSort
-              (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+            <table class="table" mat-table [dataSource]="dataSource" matSort     (matSortChange)="announceSortChange($event)" class="mat-elevation-z8" >
 
 
 
@@ -262,12 +261,14 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
 
-<button mat-raised-button (click)="exportAsXLSX()"> Export</button>
+<button mat-raised-button  (click)="exportAsXLSX()" color="primary"> Export
+  <mat-icon>trending_down</mat-icon>
+</button>
+&nbsp;
+
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
               aria-label="Select page of periodic elements">
             </mat-paginator>
-
-
 
 
           </div>
@@ -531,7 +532,7 @@
                 
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="id" [value]="libros.id_libro" matInput placeholder="Codigo" type="text" />
+                          <input [(ngModel)]="id_libro" [value]="libros.id_libro" matInput placeholder="Codigo" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">

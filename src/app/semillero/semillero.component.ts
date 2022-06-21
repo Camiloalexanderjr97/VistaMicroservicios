@@ -1,3 +1,7 @@
+import { ExportService } from 'app/Services/ConverterExcel/exporter.service';
+import { element } from 'protractor';
+import { ProgramaAcademicoService } from './../Services/ProgramaAcademico.service';
+import { ProgramaAcademico } from './../Modelos/ProgramaAcademico';
 import { TokenService } from "app/Services/JWT/token.service";
 import { SemilleroService } from "./../Services/semillero.service";
 import { Semillero } from "app/Modelos/Semillero";
@@ -20,6 +24,12 @@ import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
 import * as XLSX from "xlsx";
 
+
+interface objeto {
+  name: any;
+  value: any;
+}
+
 @Component({
   selector: "semillero",
   templateUrl: "./semillero.component.html",
@@ -28,6 +38,13 @@ import * as XLSX from "xlsx";
 export class SemilleroComponent implements OnInit {
   Semilleros = new Semillero();
   listarSemilleros: Semillero[] = [];
+  listarSemillerosByPrograma: Semillero[]=[];
+
+  ListarFacultad: Facultad[]=[];
+  filteredOptionsFacultad: Observable<Facultad[]>;
+  myControlFacultad = new FormControl();
+
+
 
   id: String;
   sigla: String;
@@ -40,17 +57,50 @@ export class SemilleroComponent implements OnInit {
     "id",
     "nombre",
     "sigla",
-    "canGrupos",
     "canEstudiantes",
     "fechaConformacion",
+    "programaAcademico"
   ];
   dataSource: any;
+
+  multi: any[];
+
+  view: [number, number] = [700, 400];
+
+  // options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Categoria de Productos';
+  showYAxisLabel = true;
+  yAxisLabel;
+
+  colorScheme = {
+    domain: [
+      '#FF8A80', 
+      '#EA80FC',
+      '#8C9EFF', 
+      '#80D8FF', 
+      '#A7FFEB', 
+      '#CCFF90', 
+      '#FFFF8D', 
+      '#FF9E80'
+    ]
+  };
+
+
+
 
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private exportService: ExportService,
+    private facultadService: FacultadService,
+    private programaAcademicoService: ProgramaAcademicoService,
     private tokenService: TokenService,
     private router: Router,
     private SemilleroService: SemilleroService,
@@ -60,13 +110,23 @@ export class SemilleroComponent implements OnInit {
   }
 
   listarSemillero(): void {
+    this.listarSemilleros=[];
     this.SemilleroService.getSemillero().subscribe(
       (data: any) => {
-        this.listarSemilleros = data;
+        
         console.log(data.nombre);
         console.log(this.listarSemilleros);
 
-        this.dataSource = new MatTableDataSource(data);
+
+        for(let element of data){
+        this.programaAcademicoService.getProgramaAcademicoById(element.programaAcademico).subscribe((programa: ProgramaAcademico) => {
+          element.programaAcademico = programa.nombre;
+       
+        });
+        this.listarSemilleros.push(element);
+      }
+
+        this.dataSource = new MatTableDataSource(this.listarSemilleros);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       },
@@ -74,6 +134,40 @@ export class SemilleroComponent implements OnInit {
       () => console.log("Complete")
     );
   }
+
+  guardarPrograma(dato: any){ 
+    this.program=dato.target.value;
+
+    console.log(this.program)
+
+
+    // const tipo =this.program;
+
+    // this.listarSemilleros=[];
+    // this.SemilleroService.getSemillero().subscribe(
+    //   (data: any) => {
+        
+
+
+    //     for(let element of data){
+
+    //     this.programaAcademicoService.getProgramaAcademicoById(element.programaAcademico).subscribe((programa: ProgramaAcademico) => {
+    //       element.programaAcademico = programa.nombre;
+       
+    //     });
+    //     if(element.programaAcademico==tipo){
+    //       console.log("Push elemento");
+
+    //     this.listarSemillerosByPrograma.push(element);
+    //     }
+    //   }
+
+    //   },
+    //   (error) => console.log(error),
+    //   () => console.log("Complete")
+    // );
+  }
+
 
   /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {
@@ -136,8 +230,10 @@ export class SemilleroComponent implements OnInit {
   mostrarEditar: Boolean = false;
   mostrarAgregarIndividual: Boolean = false;
   mostrarAgregarMasivo: Boolean = false;
-
+  mostrarEstadistica:Boolean=false;
   mostrarAgg() {
+    
+    this.listarFacultades();
     this.listarSemillero();
     Swal.fire({
       title: "Como le gustaría crear el Libro?",
@@ -175,6 +271,7 @@ export class SemilleroComponent implements OnInit {
     this.mostrarListado = false;
     this.mostrarEditar = true;
     this.listarSemillero();
+    this.listarFacultades();
   }
 
   mostrarMas() {
@@ -185,6 +282,15 @@ export class SemilleroComponent implements OnInit {
   mostrarIndi() {
     this.mostrarAgregarIndividual = true;
     this.mostrarAgregarMasivo = false;
+  }
+
+
+  estadisticas() {
+    this.mostrarEstadistica = true;
+    this.mostrarListado = false;
+    this.mostrarAgregar = false;
+    this.mostrarEditar = false;
+    this.listarFacultades();
   }
 
   isLogged = false;
@@ -267,5 +373,109 @@ console.log(this.listarSemilleros);
       });
     };
     reader.readAsBinaryString(target.files[0]);
+  }
+  listaPro:ProgramaAcademico[]=[];
+  mostrar(dato: any){
+    this.listaPro=[];
+    const fac =dato.target.value;
+    this.programaAcademicoService.getProgramasAcademicos().subscribe((data: ProgramaAcademico[]) => {
+  
+      for(let element of data){
+        const id =element.idFacultad.id;
+  
+        if(id==fac){
+  
+          this.listaPro.push(element);
+        }
+      }
+    });
+  }
+
+
+
+  listarFacultades() {
+    this.facultadService.getFacultad().subscribe((data: Facultad[]) => {
+      this.ListarFacultad = data;
+    });
+
+    this.filteredOptionsFacultad = this.myControlFacultad.valueChanges.pipe(
+      startWith(""),
+      map((nombre) => {
+        return this.ListarFacultad.filter((option) => option.nombre);
+      })
+    );
+  }
+
+
+  inicio = new FormControl(new Date().toISOString());
+  fin = new FormControl(new Date().toISOString());
+
+  datos: Semillero[] = [];
+  pros: objeto[] = []; 
+  nuevo: objeto[] = []
+  program:String='';
+  filtrarEstadistica() {
+    this.vaciar();
+    this.pros=[];
+    this.nuevo=[];
+    this.datos=[];
+
+    console.log("this.program");
+
+    for (let element of this.listarSemilleros) {
+      console.log("this.program"+element.nombre)
+
+
+      if ((new Date(element.fechaConformacion).getTime() >= new Date(this.inicio.value).getTime()) && (new Date(element.fechaConformacion).getTime() <= new Date(this.fin.value).getTime()) && element.programaAcademico==this.program) {
+        console.log("this.program")
+
+        this.datos.push(element);
+
+
+
+      }
+    
+    }
+
+    this.yAxisLabel=this.formatearFecha(new Date(this.inicio.value))+ "  -  "+this.formatearFecha(new Date(this.fin.value));
+
+
+      for (let semillero of this.datos) {
+       var cont:number;
+          cont=0;
+           cont=semillero.canEstudiantes;
+          
+          
+        const a = { name: semillero.nombre, value: cont }
+  
+        this.pros.push(a);
+        }
+  
+    this.nuevo = this.pros;
+
+  
+    this.datos=[];
+
+  }
+
+
+  formatearFecha(date: Date): string {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return `${year}-${month}-${day}`;
+  }
+
+  vaciar(){
+    this.pros=[];
+      this.nuevo=[];
+    this.listarSemillero();
+  }
+
+
+  exportAsXLSX(){
+    this.exportService.exportToExcel(this.dataSource.data, 'Semilleros');
+  
   }
 }

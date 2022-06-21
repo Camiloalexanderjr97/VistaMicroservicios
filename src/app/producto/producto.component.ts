@@ -1,3 +1,4 @@
+import { ExportService } from 'app/Services/ConverterExcel/exporter.service';
 import { element } from 'protractor';
 import { TokenService } from 'app/Services/JWT/token.service';
 import { GrupoService } from '../Services/grupo.service';
@@ -102,6 +103,7 @@ export class ProductoComponent implements OnInit {
     ]
   };
   constructor(
+    private exportService: ExportService,
     private fb: FormBuilder,
     private facultadService: FacultadService,
     private subCategoriaService: SubCategoriaService,
@@ -621,7 +623,7 @@ export class ProductoComponent implements OnInit {
   }
 
 
-
+ 
   guardarGeneral( dato: any) {
     const general =dato.target.value;
     this.general=general;
@@ -634,7 +636,6 @@ export class ProductoComponent implements OnInit {
     this.nuevo=[];
     this.datos=[];
 
-    console.log("-entra--"+this.general+"----"+this.tipo);
 
     for (let element of this.listarProductos) {
 
@@ -642,7 +643,6 @@ export class ProductoComponent implements OnInit {
 
 
       if ((new Date(element.fecha).getTime() >= new Date(this.inicio.value).getTime()) && (new Date(element.fecha).getTime() <= new Date(this.fin.value).getTime()) && element.programa==this.program) {
-        console.log("push--------------------");
 
         this.datos.push(element);
 
@@ -709,6 +709,13 @@ mostrar(dato: any){
       }
     }
   });
+}
+
+
+
+exportAsXLSX(){
+  this.exportService.exportToExcel(this.dataSource.data, 'Productos');
+
 }
 
 }

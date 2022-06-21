@@ -150,19 +150,8 @@ export class ProgramasAcademicosComponent implements OnInit {
 
   crearProgramaAcademico() {
 
-    this.programaAcademico.facultad
-    var splitted = this.programaAcademico.facultad.split("-", 1); 
-    this.programaAcademico.facultad=splitted[0];
 
-
-    // alert(
-    //   this.programaAcademico.facultad +
-    //     "-" +
-    //     this.programaAcademico.id +
-    //     "-" +
-    //     this.programaAcademico.nombre
-    // );
-
+   
     this.programaAcademicoService
       .addProgramaAcademico(this.programaAcademico)
       .subscribe(

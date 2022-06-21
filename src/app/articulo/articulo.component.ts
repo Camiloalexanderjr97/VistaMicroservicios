@@ -1,3 +1,4 @@
+import { ExportService } from 'app/Services/ConverterExcel/exporter.service';
 import { TokenService } from 'app/Services/JWT/token.service';
 import { Component, OnInit } from '@angular/core';
 import { Articulos } from 'app/Modelos/Articulos';
@@ -66,7 +67,8 @@ export class ArticuloComponent implements OnInit {
 
   filtroProducto: any;
 
-  constructor(private fb: FormBuilder,private tokenService: TokenService, private router: Router,private articuloService: ArticuloService,private _liveAnnouncer: LiveAnnouncer) {
+  constructor(    private exportService: ExportService,
+    private fb: FormBuilder,private tokenService: TokenService, private router: Router,private articuloService: ArticuloService,private _liveAnnouncer: LiveAnnouncer) {
     //_CargaScripts.Carga(["main3"]);
     
     this.filtroProducto = this.fb.group({
@@ -452,6 +454,9 @@ vaciar(){
     this.listarArticulo();
 
 }
+exportAsXLSX(){
+  this.exportService.exportToExcel(this.dataSource.data, 'Articulos');
 
+}
 
 }
