@@ -82,6 +82,7 @@ export class LibrosComponent implements OnInit {
   xAxisLabel = "Categoria de Productos";
   showYAxisLabel = true;
   yAxisLabel;
+  showDataLabel=true;
 
   colorScheme = {
     domain: [
@@ -505,7 +506,14 @@ export class LibrosComponent implements OnInit {
 
 
  
-
+  imprSelec() {
+    var ficha = document.getElementById("estadistica");
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print( );
+    ventimp.close();
+  }
 
 
 }

@@ -694,6 +694,8 @@
                
                     
                       </form>
+                      <div id="estadistica">
+
                       <ngx-charts-bar-vertical
                       [view]="view"
                       [scheme]="colorScheme"
@@ -706,11 +708,22 @@
                       [showYAxisLabel]="showYAxisLabel"
                       [xAxisLabel]="xAxisLabel"
                       [yAxisLabel]="yAxisLabel"
+                      [showDataLabel]="showDataLabel"
                       (select)="onSelect($event)">
                       </ngx-charts-bar-vertical>
+                      </div>
                     </div>
                   </div>
-                 
+                  <div class="col-2 pt-2">
+                    <mat-card-actions class="child">
+                      <button class="button" type="button" mat-raised-button color="primary" (click)="imprSelec()">Imprimir
+      
+                        <span class="material-icons">print</span>
+      
+                      </button>
+                    </mat-card-actions>
+                  </div>
+                  <br>
                 </div>
               </div>
             </div>

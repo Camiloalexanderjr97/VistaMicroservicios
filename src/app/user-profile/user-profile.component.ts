@@ -21,6 +21,7 @@ export class UserProfileComponent implements OnInit {
 
   register(): void {
 
+    console.log(this.user);
     // alert(this.user.idRol);
     this.usuarioService.addUser(this.user).subscribe( (data: any) => {
         

@@ -270,27 +270,13 @@
                             <input [(ngModel)]="productos.id" matInput placeholder="Codigo" type="text" />
                           </mat-form-field>
                         </div> -->
-                        <div class="col">
-                        
 
-                          <label for="wrapped">Tipo Producto</label>
-
-                          <select class="form-select" aria-label="Default select example"
-                            [(ngModel)]="productos.tipo_prod"  (click)="listarSubCategoriaProducto($event)">
-                            <option value="" selected disabled>Please select</option>
-
-                            <option *ngFor="let sub of listarSubCategoriasEspecifica" value="{{ sub.id }}">
-                              {{ sub.descripcion }}
-                            </option>
-                          </select>
-                        
-                        </div>
                         <div class="col">
                         
 
                           <label for="wrapped">Categoria General</label>
 
-                          <select class="form-select" aria-label="Default select example"  [(ngModel)]="productos.categoria_general"
+                          <select class="form-select" aria-label="Default select example"  [(ngModel)]="productos.categoria_general" (click)="listarTipoProductoByCategoriaGeneral($event)"
                             >
                             <option value="" selected disabled>Please select</option>
 
@@ -300,6 +286,22 @@
                           </select>
                         
                         </div>
+                        <div class="col">
+                        
+
+                          <label for="wrapped">Tipo Producto</label>
+
+                          <select class="form-select" aria-label="Default select example"
+                            [(ngModel)]="productos.tipo_prod"  (click)="listarSubCategoriaProducto($event)">
+                            <option value="" selected disabled>Please select</option>
+
+                            <option *ngFor="let sub of productosFiltrados" value="{{ sub.id }}">
+                              {{ sub.descripcion }}
+                            </option>
+                          </select>
+                        
+                        </div>
+                        
                         <div class="pt-3 col-md-4">
                           <mat-form-field class="example-full-width">
                             <input [(ngModel)]="productos.cantidad" matInput placeholder="Cantidad" type="number" />
@@ -608,7 +610,7 @@
 
   <!-- Modal Estadisticas -->
 
-  <div class="agregar" *ngIf="mostrarEstadistica">
+  <div  class="agregar" *ngIf="mostrarEstadistica">
     <div class="agregar">
       <div class="main-content">
         <div class="container-fluid">
@@ -675,10 +677,10 @@
                           <div class="col">
                             <label for="wrapped">Categoria General</label>
   
-                            <select class="form-select" aria-label="Default select example"  (click)="guardarGeneral($event)">
+                            <select class="form-select" aria-label="Default select example"  (click)="guardarGeneral($event)" (click)="listarTipoProductoByCategoriaGeneral($event)">
                               <option value="" selected disabled>Please select</option>
   
-                              <option *ngFor="let sub of listarSubCategoriasGeneral" value="{{ sub.descripcion }}">
+                              <option *ngFor="let sub of listarSubCategoriasGeneral" value="{{ sub.id }}">
                                 {{ sub.descripcion }}
                               </option>
                             </select>
@@ -693,7 +695,7 @@
                              (click)="listarSubCategoriaProducto($event)">
                             <option value="" selected disabled>Please select</option>
 
-                            <option *ngFor="let sub of listarSubCategoriasEspecifica" value="{{ sub.id }}">
+                            <option *ngFor="let sub of productosFiltrados" value="{{ sub.id }}">
                               {{ sub.descripcion }}
                             </option>
                           </select>
@@ -750,6 +752,7 @@
              
                   
                     </form>
+                    <div id="estadistica">
                     <ngx-charts-bar-vertical
                     [view]="view"
                     [scheme]="colorScheme"
@@ -762,11 +765,23 @@
                     [showYAxisLabel]="showYAxisLabel"
                     [xAxisLabel]="xAxisLabel"
                     [yAxisLabel]="yAxisLabel"
+                    [showDataLabel]="showDataLabel"
                     (select)="onSelect($event)">
                     </ngx-charts-bar-vertical>
                   </div>
+                  </div>
                 </div>
-               
+                <!-- <a href="javascript:imprSelec('estadistica')" >Imprimir texto</a> -->
+                <div class="col-2 pt-2">
+                  <mat-card-actions class="child">
+                    <button class="button" type="button" mat-raised-button color="primary" (click)="imprSelec()">Imprimir
+    
+                      <span class="material-icons">print</span>
+    
+                    </button>
+                  </mat-card-actions>
+                </div>
+                <br>
               </div>
             </div>
           </div>

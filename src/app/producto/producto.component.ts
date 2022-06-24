@@ -89,6 +89,7 @@ export class ProductoComponent implements OnInit {
   xAxisLabel = 'Categoria de Productos';
   showYAxisLabel = true;
   yAxisLabel;
+  showDataLabel=true;
 
   colorScheme = {
     domain: [
@@ -495,7 +496,30 @@ export class ProductoComponent implements OnInit {
     );
   }
 
+  productosFiltrados: categoria_especifica[]=[];
 
+  listarTipoProductoByCategoriaGeneral( dato: any){
+    console.log("entra"+dato.target.value);
+    this.productosFiltrados=[];
+    const tipo =dato.target.value;
+
+    this.subCategoriaService.getSubCategoriaGeneralById(tipo).subscribe((categoria: categoria_general) => {
+      this.tipo = categoria.descripcion;
+    });
+    this.subCategoriaService.getSubCategoriasEspecificas().subscribe((data: categoria_especifica[]) => {
+
+
+      for(let element of data){
+        const id =element.categoria_general;
+  
+        if(id==tipo){
+  
+          this.productosFiltrados.push(element);
+        }
+      }
+    });
+
+  }
 
 
 
@@ -627,9 +651,16 @@ export class ProductoComponent implements OnInit {
   guardarGeneral( dato: any) {
     const general =dato.target.value;
     this.general=general;
+
+    this.subCategoriaService.getSubCategoriaGeneralById(this.general).subscribe((general: categoria_general) => {
+      this.generalNombre=general.descripcion;
+    })
+    
+    console.log(this.general+"---"+this.generalNombre)
   }
   tipo: String;
   general: String;
+  generalNombre: String;
   filtrarEstadistica() {
     this.vaciar();
     this.pros=[];
@@ -639,7 +670,7 @@ export class ProductoComponent implements OnInit {
 
     for (let element of this.listarProductos) {
 
-      if(element.categoria_general==this.general && element.tipo_prod==this.tipo){
+      if(element.categoria_general==this.generalNombre && element.tipo_prod==this.tipo){
 
 
       if ((new Date(element.fecha).getTime() >= new Date(this.inicio.value).getTime()) && (new Date(element.fecha).getTime() <= new Date(this.fin.value).getTime()) && element.programa==this.program) {
@@ -711,11 +742,21 @@ mostrar(dato: any){
   });
 }
 
-
+// percentTickFormatting(val: any) {
+//   return val.toLocaleString();
+// }
 
 exportAsXLSX(){
   this.exportService.exportToExcel(this.dataSource.data, 'Productos');
 
 }
 
+ imprSelec() {
+                    var ficha = document.getElementById("estadistica");
+                    var ventimp = window.open(' ', 'popimpr');
+                    ventimp.document.write( ficha.innerHTML );
+                    ventimp.document.close();
+                    ventimp.print( );
+                    ventimp.close();
+                  }
 }

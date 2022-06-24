@@ -76,6 +76,8 @@ export class SemilleroComponent implements OnInit {
   xAxisLabel = 'Categoria de Productos';
   showYAxisLabel = true;
   yAxisLabel;
+  showDataLabel=true;
+
 
   colorScheme = {
     domain: [
@@ -420,14 +422,14 @@ console.log(this.listarSemilleros);
     this.nuevo=[];
     this.datos=[];
 
-    console.log("this.program");
+    console.log("this.program1");
 
     for (let element of this.listarSemilleros) {
-      console.log("this.program"+element.nombre)
+      console.log(element.programaAcademico+"this.program2"+element.nombre)
 
 
       if ((new Date(element.fechaConformacion).getTime() >= new Date(this.inicio.value).getTime()) && (new Date(element.fechaConformacion).getTime() <= new Date(this.fin.value).getTime()) && element.programaAcademico==this.program) {
-        console.log("this.program")
+        console.log("this.program3")
 
         this.datos.push(element);
 
@@ -478,4 +480,14 @@ console.log(this.listarSemilleros);
     this.exportService.exportToExcel(this.dataSource.data, 'Semilleros');
   
   }
+
+  imprSelec() {
+    var ficha = document.getElementById("estadistica");
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print( );
+    ventimp.close();
+  }
+  
 }

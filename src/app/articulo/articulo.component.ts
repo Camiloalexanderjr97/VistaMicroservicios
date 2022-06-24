@@ -45,6 +45,8 @@ export class ArticuloComponent implements OnInit {
   xAxisLabel = 'Categoria de Productos';
   showYAxisLabel = true;
   yAxisLabel;
+  showDataLabel=true;
+
 
   colorScheme = {
     domain: [  '#FF8A80', 
@@ -457,6 +459,15 @@ vaciar(){
 exportAsXLSX(){
   this.exportService.exportToExcel(this.dataSource.data, 'Articulos');
 
+}
+
+imprSelec() {
+  var ficha = document.getElementById("estadistica");
+  var ventimp = window.open(' ', 'popimpr');
+  ventimp.document.write( ficha.innerHTML );
+  ventimp.document.close();
+  ventimp.print( );
+  ventimp.close();
 }
 
 }
