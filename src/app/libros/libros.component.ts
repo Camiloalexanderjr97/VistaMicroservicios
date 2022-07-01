@@ -221,9 +221,11 @@ export class LibrosComponent implements OnInit {
 
   editarLibro() {
     console.log(this.id_libro);
-
+    this.libroService.editLibros(this.libros).subscribe();
+    this.router.navigate(['/LibrosComponent']);
+    console.log("--------");
+    
     //  this.libroNuevo.id_libro=   this.id_libro;
-     
     // console.log(this.libroNuevo.id_libro);
     //  this.libroNuevo.titulo_libro= this.titulo_libro;
     //  this.libroNuevo.numero_capitulos_libro=   this.numero_capitulos_libro;

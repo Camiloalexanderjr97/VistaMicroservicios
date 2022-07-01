@@ -32,6 +32,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MaterialModule } from 'app/material-module';
+import { EditarProductoComponent } from 'app/producto/editar/editar-producto/editar-producto.component';
 // MatTableModule
 
 
@@ -50,6 +51,8 @@ import { MaterialModule } from 'app/material-module';
     MatTooltipModule,
     MatProgressBarModule,
     MaterialModule,
+    
+
   ],
   declarations: [
     DashboardComponent,
@@ -65,7 +68,10 @@ import { MaterialModule } from 'app/material-module';
     SemilleroComponent,
     DepartamentoComponent,
     GrupoComponent,
-    ArticuloComponent
+    ArticuloComponent,
+    EditarProductoComponent
+
+    
     
   ]
 })

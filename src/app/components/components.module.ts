@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { EditarProductoComponent } from 'app/producto/editar/editar-producto/editar-producto.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   ],
   declarations: [
     NavbarComponent,
-    SidebarComponent,
+    SidebarComponent
   ],
   exports: [
     NavbarComponent,

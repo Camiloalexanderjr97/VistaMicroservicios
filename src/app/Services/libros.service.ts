@@ -47,7 +47,6 @@ export class LibrosService {
 
   //modificar un Libros
   editLibros(libros: Libros) {
-    console.log("entra---");
     return this.http.post(this.url + "/editLibro/"+libros.id_libro, libros);
   }
   agregarListado(libro: Libros[]){

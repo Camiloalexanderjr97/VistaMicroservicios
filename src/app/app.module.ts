@@ -23,6 +23,7 @@ import { MaterialModule } from "./material-module";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { LoginComponent } from './login/login.component';
 import { ExportService } from './Services/ConverterExcel/exporter.service';
+import { EditarProductoComponent } from './producto/editar/editar-producto/editar-producto.component';
 // import { MatTableExporterModule } from "mat-table-exporter";
 
 @NgModule({
@@ -45,6 +46,7 @@ import { ExportService } from './Services/ConverterExcel/exporter.service';
     DataTablesModule,
     HttpClientModule,
     NgxDatatableModule,
+    
 
     CommonModule,
     AppRoutingModule,
