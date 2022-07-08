@@ -47,6 +47,6 @@ export class GrupoService {
 
   //modificar un Grupo
   editGrupo(grupo: Grupo) {
-    return this.http.put(this.url + "/update/"+grupo.id, Grupo);
+    return this.http.post(this.url + "/update/"+grupo.id, Grupo);
   }
 }

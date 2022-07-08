@@ -27,6 +27,7 @@ import * as XLSX from 'xlsx';
 export class FacultadsComponent implements OnInit {
 
   Facultad = new Facultad();
+  FacultadN = new Facultad();
   ListarFacultad: Facultad[] = [];
 
 
@@ -132,30 +133,32 @@ export class FacultadsComponent implements OnInit {
 
   mostrarAgg() {
     this.listarFacultades();
-    Swal.fire({
-      title: 'Como le gustaría crear el Libro?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Individual',
-      denyButtonText: `Masivo`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.mostrarAgregar = true;
+
+     this.mostrarAgregar = true;
 
         this.mostrarListado = false;
         this.mostrarEditar = false;
         this.mostrarIndi();
-      } else if (result.isDenied) {
-        this.mostrarAgregar = true;
+    // Swal.fire({
+    //   title: 'Como le gustaría crear el Libro?',
+    //   showDenyButton: true,
+    //   showCancelButton: true,
+    //   confirmButtonText: 'Individual',
+    //   denyButtonText: `Masivo`,
+    // }).then((result) => {
+    //   /* Read more about isConfirmed, isDenied below */
+    //   if (result.isConfirmed) {
+       
+    //   } else if (result.isDenied) {
+    //     this.mostrarAgregar = true;
 
 
-        this.mostrarListado = false;
-        this.mostrarEditar = false;
+    //     this.mostrarListado = false;
+    //     this.mostrarEditar = false;
 
-        this.mostrarMas();
-      }
-    })
+    //     this.mostrarMas();
+    //   }
+    // })
   }
   mostrarList() {
     this.mostrarAgregar = false;
@@ -245,20 +248,72 @@ list: string='';
 
   }
 
+  crearFacultad(){
+    this.facultadService.addFacultad(this.Facultad).subscribe(
+      (data: Facultad) => {
+        this.Facultad = data;
 
+        Swal.fire("Register Success!", "Registrado correctamente", "success");
+        this.mostrarList();
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+  }
+
+
+idEnviar: any;
   enviarID(id) {
     this.mostrarEdit();
+
+    this.idEnviar=id;
 
     this.facultadService.getFacultadById(id).subscribe(
       (data: Facultad) => {
 
         this.Facultad = data;
-        console.log(this.Facultad);
       },
       (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")
     );
   }
 
+
+ editar() {
+    this.FacultadN.id=this.idEnviar;
+    const res=  this.validarVacios(this.FacultadN);
+    console.log(res);
+    if(res==true){
+      
+      Swal.fire("Edit Failed!", "Datos incompletos", "warning")
+    }else{
+   
+    this.facultadService.editFacultad(this.FacultadN)
+      .subscribe(
+        (data: any) => {
+          console.log(data);
+          Swal.fire("Edit Success!", "Editado correctamente", "success");
+          window.location.reload();
+        },
+        (error) =>
+          Swal.fire("Edit Failed!", "Ha ocurrido un error", "warning"),
+        () => console.log("Complete")
+      );
+    }
+  }
+
+
+  validarVacios(facultad: Facultad): boolean{
+   
+    let vacio =true;
+  
+    console.log(facultad.nombre+"-");
+    if(facultad.nombre!=undefined){
+      vacio=false;
+    }
+
+    return vacio;
+  }
 
 }

@@ -42,6 +42,6 @@ export class UsuarioService {
 
   //modificar un User
   editUser(user: User) {
-    return this.http.put(this.url + "/editar/"+user.id, user);
+    return this.http.post(this.url + "/users/editar/"+user.id, user);
   }
 }

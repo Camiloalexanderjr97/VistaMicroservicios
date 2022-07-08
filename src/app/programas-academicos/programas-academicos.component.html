@@ -163,7 +163,7 @@
                         <div class="col">
                           <label for="wrapped">Facultad</label>
 
-                          <select class="form-select" aria-label="Default select example" >
+                          <select class="form-select" aria-label="Default select example"  [(ngModel)]="programaAcademico.facultad">
                             
 
                             <option value="" selected disabled>Please select</option>
@@ -285,23 +285,23 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form (submit)="crearProgramaAcademico()">
+                  <form (submit)="editar()">
                     <div class="row">
                       <div class="col-md-2">
                         <mat-form-field class="example-full-width">
-                          <input [value]="programaAcademico.id" matInput placeholder="Codigo" type="text" />
+                          <input [(ngModel)]="programaN.id" [value]="programaAcademico.id" matInput placeholder="Codigo" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [value]="programaAcademico.nombre" matInput placeholder="Nombre Programa"
+                          <input [(ngModel)]="programaN.nombre" [value]="programaAcademico.nombre" matInput placeholder="Nombre Programa"
                             type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col">
                         <label for="wrapped">Facultad</label>
 
-                        <select class="form-select" aria-label="Default select example" >
+                        <select class="form-select" aria-label="Default select example"  [(ngModel)]="programaN.facultad" [value]="programaAcademico.facultad">
                           
 
                           <option value="" selected disabled>Please select</option>

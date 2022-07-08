@@ -115,12 +115,12 @@
                           <div class="row">
                             <div class="col" style="display: none;">
                               <mat-form-field class="example-full-width">
-                                <input [value]="user.id"  [(ngModel)]="id"  matInput placeholder="Full Name" type="text">
+                                <input  [(ngModel)]="id" value="{{user.id}}" matInput placeholder="Full Name" type="text">
                               </mat-form-field>
                             </div>
                             <div class="col">
                               <mat-form-field class="example-full-width">
-                                <input [value]="user.name"  [(ngModel)]="name"  matInput placeholder="Full Name" type="text">
+                                <input  [(ngModel)]="name" value="{{user.name}}" matInput placeholder="Full Name" type="text">
                               </mat-form-field>
                             </div>
                             <div class="row col">
@@ -128,7 +128,7 @@
                               <div class=" col">
                                 <label for="wrapped">Rol</label>
   
-                                <select class="form-select" aria-label="Default select example" [value]="user.rol"  [(ngModel)]="rol">
+                                <select class="form-select" aria-label="Default select example"  [(ngModel)]="rol" value="{{user.rol}}">
                                   <option value="" selected disabled>Please select</option>
                                   <option value="Admin">
                                     Admin
@@ -145,12 +145,12 @@
                                
                                 <div class="col-md-3">
                                     <mat-form-field class="example-full-width">
-                                      <input [value]="user.username" matInput placeholder="Username">
+                                      <input [(ngModel)]="username" value="{{user.username}}" matInput placeholder="Username">
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-4">
                                     <mat-form-field class="example-full-width">
-                                      <input [value]="user.password" matInput placeholder="Contraseña" type="password">
+                                      <input [(ngModel)]="password" value="{{user.password}}" matInput placeholder="Contraseña" type="password">
                                     </mat-form-field>
                                 </div>
                             </div>

@@ -28,6 +28,7 @@ import { MatPaginator } from "@angular/material/paginator";
 export class GrupoComponent implements OnInit {
 
   grupos = new Grupo();
+  grupoN = new Grupo();
   listarGrupos: Grupo[] = [];
   ListarDepartamentos: Departamento[]=[];
   displayedColumns: string[] = ["id", "sigla", "nombre","director", "canIntegrantes", "fechaConformacion", "semillero", "lineaInvestigacion","id_departamento"];
@@ -165,11 +166,10 @@ export class GrupoComponent implements OnInit {
         console.log(data);
       },
       (error) =>
-        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+        Swal.fire("Search Failed!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")
     );
 
-    console.log(this.grupos);
     this.grupoService.addGrupo(this.grupos).subscribe(
       (data: Grupo) => {
         this.grupos = data;
@@ -183,17 +183,77 @@ export class GrupoComponent implements OnInit {
     );
   }
 
-
+  idEnviar: any;
   enviarID(id) {
+    this.idEnviar=id;
     this.mostrarEdit();
     this.grupoService.getGrupoById(id).subscribe(
       (data: Grupo) => {
         this.grupos = data;
-        console.log(this.grupos);
+        this.departamentoService.getDepartamentoById(this.grupos.departamento.id).subscribe(
+          (data: Departamento) => {
+            this.grupos.id_departamento = data.name;
+          },
+          (error) =>
+            Swal.fire("Search Failed!", "Ha ocurrido un error", "warning"),
+          () => console.log("Complete")
+        );
+        
       },
       (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")
     );
+  }
+
+  editar() {
+    // this.date = new Date(this.productoN.fecha);
+
+    // this.productoN.fecha = this.date;
+    this.grupoN.id=this.idEnviar;
+    console.log(this.grupoN);
+   const res= this.validarVacios(this.grupoN);
+
+   console.log(res);  
+ 
+   if(res==true){
+    
+    Swal.fire("Edit Failed!", "Datos Incompletos", "warning");
+   }else{
+
+    this.departamentoService.getDepartamentoById(this.grupoN.id_departamento).subscribe(
+      (data: Departamento) => {
+        this.grupoN.departamento = data;
+      },
+      (error) =>
+        Swal.fire("Search Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+  
+    this.grupoService.editGrupo(this.grupoN).subscribe(
+      (data: any) => {
+
+        Swal.fire("Register Success!", "Actualizado correctamente", "success");
+        window.location.reload();
+
+      },
+      (error) =>
+        Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
+   }
+  }
+
+  validarVacios(grupo: Grupo): boolean{
+   
+    let vacio =true;
+
+    if(grupo.canIntegrantes!=0 && grupo.id_departamento!=undefined && grupo.director!=undefined && grupo.fechaConformacion!=undefined
+      && grupo.lineaInvestigacion!=undefined && grupo.nombre!=undefined && grupo.semillero!=0 && grupo.sigla!=undefined){
+      vacio=false;
+
+  }
+
+    return vacio;
   }
 
 }

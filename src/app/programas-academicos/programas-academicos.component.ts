@@ -19,6 +19,7 @@ import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
 import * as XLSX from 'xlsx';
+import { id } from '@swimlane/ngx-datatable';
 
 declare var $;
 var DataTable = require("datatables.net");
@@ -149,7 +150,11 @@ export class ProgramasAcademicosComponent implements OnInit {
   }
 
   crearProgramaAcademico() {
-
+    const res=  this.validarVacios(this.programaAcademico);
+    if(res==true){
+      
+      Swal.fire("Register Failed!", "Datos incompletos", "warning")
+    }else{
 
    
     this.programaAcademicoService
@@ -157,7 +162,6 @@ export class ProgramasAcademicosComponent implements OnInit {
       .subscribe(
         (data: any) => {
           this.programaAcademico = data;
-          console.log(data);
           Swal.fire("Register Success!", "Registrado correctamente", "success");
          this.mostrarList();
         },
@@ -165,6 +169,41 @@ export class ProgramasAcademicosComponent implements OnInit {
           Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
         () => console.log("Complete")
       );
+    }
+  }
+
+
+  validarVacios(programa: ProgramaAcademico): boolean{
+   
+    let vacio =true;
+  
+    if(programa.facultad!=undefined && programa.nombre!=undefined){
+      vacio=false;
+    }
+
+    return vacio;
+  }
+
+  editar() {
+    this.programaN.id=this.idEnviar;
+    const res=  this.validarVacios(this.programaN);
+    if(res==true){
+      
+      Swal.fire("Edit Failed!", "Datos incompletos", "warning")
+    }else{
+   
+    this.programaAcademicoService
+      .editProgramaAcademico(this.programaN,this.idEnviar)
+      .subscribe(
+        (data: any) => {
+          Swal.fire("Edit Success!", "Editado correctamente", "success");
+          window.location.reload();
+        },
+        (error) =>
+          Swal.fire("Edit Failed!", "Ha ocurrido un error", "warning"),
+        () => console.log("Complete")
+      );
+    }
   }
 
 
@@ -175,7 +214,6 @@ export class ProgramasAcademicosComponent implements OnInit {
 
     this.facultadService.getFacultad().subscribe((data: Facultad[]) => {
       this.ListarFacultad = data;
-      console.log(this.ListarFacultad);
     });
 
 
@@ -269,18 +307,18 @@ export class ProgramasAcademicosComponent implements OnInit {
 
 
 //Editat Programa Academico
-
+programaN =new ProgramaAcademico();
+idEnviar: any;
 enviarID(id){
   this.mostrarEdit();
   this.listarFacultades();
+  this.idEnviar=id;
 
-  console.log(id+"_id")
   this.programaAcademicoService.getProgramaAcademicoById(id).subscribe(
     (data: any) => {
-      this.programaAcademico = new ProgramaAcademico();
       
       this.programaAcademico=data;
-     
+     this.programaAcademico.facultad=this.programaAcademico.idFacultad.nombre;
     },
     (error) =>
       Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
@@ -292,15 +330,12 @@ enviarID(id){
 convertedJson!: String;
 
 onFileCh2ange(event: any){
-console.log(event.target.files);
   const selectedFIle = event.target.files[0];
   const fileReader = new FileReader();
   fileReader.readAsBinaryString(selectedFIle);
   fileReader.onload = (event: any) =>{
-    console.log(event);
     let binaryData = event.target.result;
     let wb =XLSX.read(binaryData, {type: 'binary'});
-    console.log(wb);
    
    
        const wsname : string = wb.SheetNames[0];
@@ -312,7 +347,6 @@ wb.SheetNames.forEach(sheet =>{
   this.ListarProgramas = (XLSX.utils.sheet_to_json(ws, { header: 1}));
   this.convertedJson =JSON.stringify(this.ListarProgramas,undefined,4);
 
-  console.log(this.convertedJson);
 })
     // workbook.SheetNames.forEach(sheet =>{
     //   const data = XLSX.utils.sheet_to_json(ws, { header: 1});
@@ -341,7 +375,6 @@ onFileChange(evt: any){
     wb.SheetNames.forEach(sheet =>{
       this.ListarProgramas = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
       // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
-     console.log(this.ListarProgramas);
 
       Swal.fire({
         title: 'Do you want to save the changes?',
@@ -355,7 +388,6 @@ onFileChange(evt: any){
 
             this.programaAcademicoService.agregarListado(this.ListarProgramas).subscribe(
         (data: any) => {
-          console.log(data);
           Swal.fire("Register Success!", "Registrado correctamente", "success");
          this.mostrarList();
         },

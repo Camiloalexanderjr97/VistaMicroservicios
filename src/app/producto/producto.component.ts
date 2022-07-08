@@ -1,3 +1,6 @@
+import { Producto } from './../Modelos/Producto';
+import { Departamento } from 'app/Modelos/Departamento';
+import { DepartamentoService } from './../Services/departamento.service';
 import { ExportService } from 'app/Services/ConverterExcel/exporter.service';
 import { element } from 'protractor';
 import { TokenService } from 'app/Services/JWT/token.service';
@@ -7,7 +10,6 @@ import { ProgramaAcademicoService } from "../Services/ProgramaAcademico.service"
 import { Facultad } from "../Modelos/Facultad";
 import { FacultadService } from "../Services/Facultad.service";
 import { SubCategoriaService } from "../Services/SubCategoria.service";
-import { Producto } from "app/Modelos/Producto";
 import { ProductoService } from "app/Services/producto.service";
 import { ViewChild } from "@angular/core";
 import { Component, OnInit } from "@angular/core";
@@ -33,6 +35,10 @@ interface objeto {
   value: any;
 }
 
+interface listaTipo{
+  nombre: any;
+  cantidad: any;
+}
 declare var $;
 var DataTable = require("datatables.net");
 
@@ -42,8 +48,11 @@ var DataTable = require("datatables.net");
   styleUrls: ["./producto.component.css"],
 })
 export class ProductoComponent implements OnInit {
-  productos = new Producto();
+  productos  = new Producto();
   productoN = new Producto();
+  producto = new Producto();
+  
+  
   listarProductos: Producto[] = [];
   ListarProgramas: ProgramaAcademico[] = [];
 
@@ -58,7 +67,7 @@ export class ProductoComponent implements OnInit {
   ListarGrupos: Grupo[] = [];
 
   displayedColumns: string[] = [
-    "id",
+    
     "tipo_prod",
     "cantidad",
     "subcategoria",
@@ -104,6 +113,7 @@ export class ProductoComponent implements OnInit {
     ]
   };
   constructor(
+    private departamentoService: DepartamentoService,
     private exportService: ExportService,
     private fb: FormBuilder,
     private facultadService: FacultadService,
@@ -118,6 +128,9 @@ export class ProductoComponent implements OnInit {
   ) {
     // Object.assign(this, { single })
 
+
+    
+
     this.filtroProducto = this.fb.group({
       StartDate: ['', Validators.required],
       EndDate: ['', Validators.required],
@@ -129,6 +142,21 @@ export class ProductoComponent implements OnInit {
   }
 
 
+  validarVacios(producto: Producto): boolean{
+   
+    let vacio =true;
+
+    if(producto.cantidad!=0 && producto.categoria_general!="" && producto.categoria_general!="" && producto.fecha!=""
+    && producto.grupo!="" && producto.subcategoria!="" && producto.tipo_prod!="" && producto.programa!=""){
+      vacio=false;
+
+  }
+
+    return vacio;
+  }
+
+  
+
 
 
 
@@ -137,6 +165,7 @@ export class ProductoComponent implements OnInit {
 
   soloAdmin = false;
   ngOnInit() {
+  this.setearDatos();
 
     const rol = sessionStorage.getItem("rol_");
     if (rol === 'ROLE_ADMIN') {
@@ -162,6 +191,26 @@ export class ProductoComponent implements OnInit {
         timer: 1500
       })
     }
+  }
+
+  setearDatos(){
+    this.productos.id="";
+    this.productos.cantidad=0;
+    this.productos.categoria_general="";
+    this.productos.fecha="";
+    this.productos.grupo="";
+    this.productos.subcategoria="";
+    this.productos.tipo_prod="";
+    this.productos.programa="";
+
+    this.producto.id="";
+    this.producto.cantidad=0;
+    this.producto.categoria_general="";
+    this.producto.fecha="";
+    this.producto.grupo="";
+    this.producto.subcategoria="";
+    this.producto.tipo_prod="";
+    this.producto.programa="";
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -208,7 +257,7 @@ export class ProductoComponent implements OnInit {
 
           this.listarProductos.push(elemento);
         }
-        this.dataSource = new MatTableDataSource(data);
+        this.dataSource = new MatTableDataSource(this.listarProductos);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       },
@@ -233,14 +282,17 @@ export class ProductoComponent implements OnInit {
   }
 
   filtrarPro() {
+   
     const x = (event.target as HTMLInputElement).value;
     const fechaIni = this.formatearFecha(this.filtroProducto.value.StartDate);
     const fechaFin = this.formatearFecha(this.filtroProducto.value.EndDate);
     const data: Producto[] = [];
+
     for (let element of this.listarProductos) {
 
       if ((new Date(element.fecha).getTime() >= new Date(fechaIni).getTime()) && (new Date(element.fecha).getTime() <= new Date(fechaFin).getTime())) {
         data.push(element);
+        
 
       }
     }
@@ -252,22 +304,29 @@ export class ProductoComponent implements OnInit {
   vaciarFiltro() {
     this.filtroProducto.reset();
     this.listarProducto();
+    this.listarProductos = [];
   }
 
   crearProducto() {
 
-
+  const res=  this.validarVacios(this.productos);
+if(res==true){
+  
+  Swal.fire("Register Failed!", "Datos incompletos", "warning")
+}else{
     this.productoService.addProducto(this.productos).subscribe(
       (data: Producto) => {
         this.productos = data;
 
         Swal.fire("Register Success!", "Registrado correctamente", "success");
+        window.location.reload();
         this.mostrarList();
       },
       (error) =>
         Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")
     );
+}
   }
 
   formatearFecha(date: Date): string {
@@ -280,22 +339,29 @@ export class ProductoComponent implements OnInit {
   date: Date;
 
   editarProducto() {
-    this.date = new Date(this.productoN.fecha);
+    // this.date = new Date(this.productoN.fecha);
 
-    this.productoN.fecha = this.date;
- 
+    // this.productoN.fecha = this.date;
+    this.producto.id=this.idEnviar;
+   const res= this.validarVacios(this.producto);
 
-    this.productoService.editProducto(this.productoN).subscribe(
-      (data: Producto) => {
-        this.productoN = data;
+   if(res==true){
+    
+    Swal.fire("Edit Failed!", "Datos Incompletos", "warning");
+   }else{
+    this.productoService.editProducto(this.producto).subscribe(
+      (data: any) => {
 
+        console.log(data);
         Swal.fire("Register Success!", "Actualizado correctamente", "success");
-        this.mostrarList();
+        window.location.reload();
+
       },
       (error) =>
         Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")
     );
+   }
   }
 
   myControlFacultad = new FormControl();
@@ -323,7 +389,7 @@ export class ProductoComponent implements OnInit {
     this.listarSubCategoriaGeneral();
     this.listarSubCategoriaEspecifica();
     Swal.fire({
-      title: 'Como le gustaría crear el Libro?',
+      title: 'Como le gustaría crear el Producto?',
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: 'Individual',
@@ -394,9 +460,9 @@ export class ProductoComponent implements OnInit {
 
 
   //Editat Programa Academico
-
+  idEnviar: any;
   enviarID(id) {
-    
+    this.idEnviar=id;
     this.listarSubCategoriaGeneral();
     this.listarSubCategoriaEspecifica();
 
@@ -417,15 +483,19 @@ export class ProductoComponent implements OnInit {
               (data: Facultad) => {
                 this.facultad = data;
                 this.productoN.facultad=data.nombre;
-                console.log(this.productoN.facultad+"----1---");
 
               },
               (error) => console.log(error),
               () => console.log("Complete")
             );
 
+            
+
           });
-          console.log(this.productoN.facultad+"----2---");
+          this.grupoService.getGrupoById(this.productoN.grupo).subscribe((grupo: Grupo) => {
+        
+            this.productoN.grupo = grupo.nombre;
+          })
 
 
           this.subCategoriaService.getSubCategoriaGeneralById( this.productoN.categoria_general).subscribe(
@@ -468,7 +538,6 @@ export class ProductoComponent implements OnInit {
   }
   //Listar subCategorias para agregar en el list
   listarSubCategoriaProducto( dato: any) {
-    console.log("entra");
     this.listarSubCategoriasProducto=[];
     const tipo =dato.target.value;
    
@@ -499,7 +568,6 @@ export class ProductoComponent implements OnInit {
   productosFiltrados: categoria_especifica[]=[];
 
   listarTipoProductoByCategoriaGeneral( dato: any){
-    console.log("entra"+dato.target.value);
     this.productosFiltrados=[];
     const tipo =dato.target.value;
 
@@ -568,6 +636,7 @@ export class ProductoComponent implements OnInit {
       })
     );
   }
+  
 
 
   listadoGrupos() {
@@ -584,12 +653,13 @@ export class ProductoComponent implements OnInit {
 
 
   onFileChange(evt: any) {
+
     const target: DataTransfer = <DataTransfer>(evt.target);
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
       const bstr: String = e.target.result;
 
-      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary', cellDates: true, dateNF: 'yyyy/mm/dd;@'});
 
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
@@ -598,6 +668,10 @@ export class ProductoComponent implements OnInit {
 
       wb.SheetNames.forEach(sheet => {
         this.listarProductos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
+
+        for(let element of this.listarProductos){
+          element.fecha=this.formatearFecha(new Date(element.fecha));
+        }
         // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
         Swal.fire({
           title: 'Do you want to save the changes?',
@@ -613,7 +687,7 @@ export class ProductoComponent implements OnInit {
               (data: any) => {
                 this.listarProductos = data;
                 Swal.fire("Register Success!", "Registrado correctamente", "success");
-                this.mostrarList();
+                window.location.reload();
               },
               (error) =>
                 Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
@@ -621,7 +695,7 @@ export class ProductoComponent implements OnInit {
             );
           } else if (result.isDenied) {
             Swal.fire('Changes are not saved', '', 'info')
-            this.mostrarList();
+            window.location.reload();
           }
         })
 
@@ -656,11 +730,11 @@ export class ProductoComponent implements OnInit {
       this.generalNombre=general.descripcion;
     })
     
-    console.log(this.general+"---"+this.generalNombre)
   }
   tipo: String;
   general: String;
   generalNombre: String;
+  valores: listaTipo[];
   filtrarEstadistica() {
     this.vaciar();
     this.pros=[];
@@ -685,15 +759,12 @@ export class ProductoComponent implements OnInit {
 
     this.yAxisLabel=this.formatearFecha(new Date(this.inicio.value))+ "  -  "+this.formatearFecha(new Date(this.fin.value));
 
-
-console.log(this.listarSubCategoriasProducto);
-      for (let categorias of this.listarSubCategoriasProducto) {
+   for (let categorias of this.listarSubCategoriasProducto) {
        var cont:number;
           cont=0;
         for (let element of this.datos) {
           if (element.subcategoria === categorias.descripcion) {
            cont=(element.cantidad+cont);
-           console.log(cont+"--"+element.cantidad);
   
           }
           
@@ -737,6 +808,46 @@ mostrar(dato: any){
       if(id==fac){
 
         this.listaPro.push(element);
+      }
+    }
+  });
+  
+}
+mostrarGrupo(dato: any){
+  this.ListarGrupos=[];
+  const grup =dato.target.value;
+  this.grupoService.getGrupo().subscribe((data: Grupo[]) => {
+
+    for(let element of data){
+      const id =element.departamento.id;
+
+      if(id==grup){
+
+        this.ListarGrupos.push(element);
+      }
+    }
+  });
+}
+
+ListarDepartamentos: Departamento []=[];
+
+// mostrarDepartamentos(){
+//   this.departamentoService.getDepartamento().subscribe((data: Departamento[]) => {
+//     this.ListarDepartamentos= data;
+//   });
+// }
+buscarDepartamentoByID(dato: any){
+  let dpto =dato.target.value;  
+
+  this.ListarDepartamentos=[];
+
+  this.departamentoService.getDepartamento().subscribe((data: Departamento[]) => {
+
+    for(let element of data){
+      const id =element.progAcademico;
+
+      if(id==dpto){
+        this.ListarDepartamentos.push(element);
       }
     }
   });

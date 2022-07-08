@@ -302,6 +302,7 @@ export class LibrosComponent implements OnInit {
     this.mostrarAgregar = false;
     this.mostrarListado = true;
     this.mostrarEditar = false;
+    this.mostrarEstadistica=false;
     this.listarLibreriaLibros();
   }
 
@@ -380,6 +381,14 @@ export class LibrosComponent implements OnInit {
       wb.SheetNames.forEach((sheet) => {
         this.listarLibreria = XLSX.utils.sheet_to_json(wb.Sheets[sheet]);
         // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
+        console.log(XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
+
+        for(let element of this.listarLibreria ){
+          element.fecha_publicacion_libro=this.formatearFecha(new Date(element.fecha_publicacion_libro));
+
+        }
+
+
 
         Swal.fire({
           title: "Do you want to save the changes?",

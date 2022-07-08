@@ -46,9 +46,10 @@ export class ProductoService {
  
   //modificar un Producto 
   editProducto(producto: Producto) {
-    return this.http.put(this.url + "/editProd/"+producto.id, producto);
+    return this.http.post(this.url + "/editProd/"+producto.id, producto);
   }
   agregarListado(producto: Producto[]){
+    console.log("entra a masivo");
     return this.http.post(this.url + "/masivo", producto);
   }
 }

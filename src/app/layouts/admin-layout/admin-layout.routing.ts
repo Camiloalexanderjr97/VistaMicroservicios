@@ -74,10 +74,10 @@ export const AdminLayoutRoutes: Routes = [
     // { path: 'notifications',  component: NotificationsComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
     // { path: 'upgrade',        component: UpgradeComponent },
     { path: 'ProgramasAcademicosComponent',        component: ProgramasAcademicosComponent ,canActivate: [guard], data: { expectedRol:['admin']} },
-    { path: 'LibrosComponent', component: LibrosComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
-    { path: 'ArticuloComponent', component: ArticuloComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
+    // { path: 'LibrosComponent', component: LibrosComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
+    // { path: 'ArticuloComponent', component: ArticuloComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
     { path: 'ProductoComponent', component: ProductoComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
-    { path: 'SemilleroComponent', component: SemilleroComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
+    // { path: 'SemilleroComponent', component: SemilleroComponent,canActivate: [guard], data: { expectedRol:['admin','user']} },
     { path: 'GrupoComponent', component: GrupoComponent,canActivate: [guard], data: { expectedRol:['admin', ]} },
     { path: 'DepartamentoComponent', component: DepartamentoComponent,canActivate: [guard], data: { expectedRol:['admin']} }
     

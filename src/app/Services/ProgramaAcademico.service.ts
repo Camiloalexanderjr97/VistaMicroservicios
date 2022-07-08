@@ -43,8 +43,8 @@ export class ProgramaAcademicoService {
 
 
   //modificar un ProgramaAcademico
-  editProgramaAcademico(programaAcademico: ProgramaAcademico) {
-    return this.http.put(this.url + "/", programaAcademico);
+  editProgramaAcademico(programaAcademico: ProgramaAcademico, id: any) {
+    return this.http.post(this.url + "/editar/"+id, programaAcademico);
   }
 
   agregarListado(programaAcademico: ProgramaAcademico[]){

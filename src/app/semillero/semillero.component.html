@@ -566,7 +566,7 @@
                 
                   </form>
                   <div id="estadistica">
-
+                    <div class="col">
                   <ngx-charts-bar-vertical
                   [view]="view"
                   [scheme]="colorScheme"
@@ -582,6 +582,24 @@
                   [showDataLabel]="showDataLabel"
                   (select)="onSelect($event)">
                   </ngx-charts-bar-vertical>
+                    </div>
+                  <div class="col-2">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Tipo</th>
+                          <th scope="col">Cantidad</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngFor="let dato of pros">
+                        <tr >
+                          <td scope="row">{{dato.name}}</td>
+                          <td scope="row">{{dato.value}}</td>
+                        </tr>
+                       
+                      </tbody>
+                    </table>
+                  </div>
                   </div>
                 </div>
               </div>

@@ -20,12 +20,12 @@ export class TableListComponent implements OnInit {
   user = new User();
   ListarUser: User[]=[];
   
-  id?: string;
-  name?: string;
-  username?: string;
-  password?: string;
+  id?: string='';
+  name?: string='';
+  username?: string='';
+  password?: string='';
   roles?:any[];
-  rol: String; 
+  rol: String=''; 
 
     constructor(private usuarioService: UsuarioService, private router: Router, private tokenService: TokenService) {
       //_CargaScripts.Carga(["main3"]);
@@ -65,13 +65,30 @@ export class TableListComponent implements OnInit {
  
     } 
 
+    idEnviar: any;
     enviarId(id: any){
       this.mostrarEdit();
       console.log(id);
-      this.usuarioService.getUserById(id).subscribe( (data: any) => {
-        
+      this.usuarioService.getUserById(id).subscribe( (data: User) => {
+        this.idEnviar=data.id;
         console.log(data)
         this.user=data;
+
+        for(let dato of  data.roles){
+          if(dato.rolNombre==='ROLE_ADMIN'){
+          this.user.rol="Admin";
+          }else{
+            this.user.rol="User"
+          }
+            
+          
+        }
+        // this.id=data.id;
+        // this.name=data.name;
+        // this.username=data.username;
+        // this.password=data.password;
+        // this.roles=data.roles;
+ 
       },
       (error) => Swal.fire("No Found!", "Ha ocurrido un error", "warning"),
       () => console.log("Complete")
@@ -100,7 +117,7 @@ export class TableListComponent implements OnInit {
     }
   }
 
-  nuevoUser: User;
+  nuevoUser: User=new User;
 listar:boolean;
 edita:boolean;
   mostrarListado(){
@@ -114,20 +131,26 @@ edita:boolean;
   
   editar(){
 
-    // this.nuevoUser.id=this.id;
+    
+    // console.log(this.user);
+    // console.log(this.name+"-"+this.username+"-"+this.password+"-"+this.idEnviar)
+    this.nuevoUser.id=this.idEnviar;
     this.nuevoUser.name=this.name;
     this.nuevoUser.username=this.username;
     this.nuevoUser.password=this.password;
     this.nuevoUser.rol=this.rol;
 
-    console.log(this.nuevoUser);
-  //   this.usuarioService.editUser(this.nuevoUser).subscribe( (data: any) => {
+    this.usuarioService.editUser(this.nuevoUser).subscribe( (data: any) => {
         
-  //     console.log(data)
-  //     this.user=data;
-  //   },
-  //   (error) => Swal.fire("No Found!", "Ha ocurrido un error", "warning"),
-  //   () => console.log("Complete")
-  // )
+      console.log(data)
+      
+      Swal.fire("Register Success!", "Actualizado correctamente", "success");
+      window.location.reload();
+
+
+    },
+    (error) => Swal.fire("No Found!", "Ha ocurrido un error", "warning"),
+    () => console.log("Complete")
+  )
   }
 }
