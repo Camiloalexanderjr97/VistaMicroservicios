@@ -1,7 +1,7 @@
-import { ExportService } from "app/Services/ConverterExcel/exporter.service";
-import { element } from "protractor";
-import { TokenService } from "app/Services/JWT/token.service";
-import { GrupoService } from "../Services/grupo.service";
+import { ExportService } from 'app/Services/ConverterExcel/exporter.service';
+import { element } from 'protractor';
+import { TokenService } from 'app/Services/JWT/token.service';
+import { GrupoService } from '../Services/grupo.service';
 import { ProgramaAcademico } from "../Modelos/ProgramaAcademico";
 import { ProgramaAcademicoService } from "../Services/ProgramaAcademico.service";
 import { Facultad } from "../Modelos/Facultad";
@@ -22,10 +22,10 @@ import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { MatPaginator } from "@angular/material/paginator";
 import { subCategorias } from "app/Modelos/SubCategorias";
-import { Grupo } from "app/Modelos/Grupo";
-import * as XLSX from "xlsx";
-import { categoria_especifica } from "app/Modelos/categoria_general";
-import { categoria_general } from "app/Modelos/categoria_especifica";
+import { Grupo } from 'app/Modelos/Grupo';
+import * as XLSX from 'xlsx';
+import { categoria_especifica } from 'app/Modelos/categoria_general';
+import { categoria_general } from 'app/Modelos/categoria_especifica';
 // import { single } from './data';
 
 interface objeto {
@@ -52,6 +52,7 @@ export class ProductoComponent implements OnInit {
   listarSubCategoriasGeneral: categoria_general[] = [];
   listarSubCategoriasEspecifica: categoria_especifica[] = [];
 
+
   facultad = new Facultad();
   ListarFacultad: Facultad[] = [];
   ListarGrupos: Grupo[] = [];
@@ -74,6 +75,7 @@ export class ProductoComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   filtroProducto: any;
 
+
   multi: any[];
 
   view: [number, number] = [700, 400];
@@ -84,21 +86,21 @@ export class ProductoComponent implements OnInit {
   gradient = false;
   showLegend = true;
   showXAxisLabel = true;
-  xAxisLabel = "Categoria de Productos";
+  xAxisLabel = 'Categoria de Productos';
   showYAxisLabel = true;
   yAxisLabel;
 
   colorScheme = {
     domain: [
-      "#FF8A80",
-      "#EA80FC",
-      "#8C9EFF",
-      "#80D8FF",
-      "#A7FFEB",
-      "#CCFF90",
-      "#FFFF8D",
-      "#FF9E80",
-    ],
+      '#FF8A80', 
+      '#EA80FC',
+      '#8C9EFF', 
+      '#80D8FF', 
+      '#A7FFEB', 
+      '#CCFF90', 
+      '#FFFF8D', 
+      '#FF9E80'
+    ]
   };
   constructor(
     private exportService: ExportService,
@@ -116,22 +118,29 @@ export class ProductoComponent implements OnInit {
     // Object.assign(this, { single })
 
     this.filtroProducto = this.fb.group({
-      StartDate: ["", Validators.required],
-      EndDate: ["", Validators.required],
-    });
+      StartDate: ['', Validators.required],
+      EndDate: ['', Validators.required],
+    })
     //_CargaScripts.Carga(["main3"]);
   }
   onSelect(event) {
     console.log(event);
   }
 
+
+
+
+
+
   isLogged = false;
 
   soloAdmin = false;
   ngOnInit() {
+
     const rol = sessionStorage.getItem("rol_");
-    if (rol === "ROLE_ADMIN") {
+    if (rol === 'ROLE_ADMIN') {
       this.soloAdmin = true;
+
     } else {
       this.soloAdmin = false;
     }
@@ -142,14 +151,15 @@ export class ProductoComponent implements OnInit {
     } else {
       this.isLogged = false;
 
-      this.router.navigate(["/login"]);
+
+      this.router.navigate(['/login']);
       Swal.fire({
-        position: "center",
-        icon: "warning",
-        title: "No tienes Acceso",
+        position: 'center',
+        icon: 'warning',
+        title: 'No tienes Acceso',
         showConfirmButton: false,
-        timer: 1500,
-      });
+        timer: 1500
+      })
     }
   }
 
@@ -170,37 +180,30 @@ export class ProductoComponent implements OnInit {
     this.productoService.getProductos().subscribe(
       (data: Producto[]) => {
         for (let elemento of data) {
-          this.subCategoriaService
-            .getSubCategoriaEspecificaById(elemento.tipo_prod)
-            .subscribe((especifica: categoria_especifica) => {
-              elemento.tipo_prod = especifica.descripcion;
-            });
-          this.subCategoriaService
-            .getSubCategoriaById(elemento.subcategoria)
-            .subscribe((subcategoria: subCategorias) => {
-              elemento.subcategoria = subcategoria.descripcion;
-            });
-          this.grupoService
-            .getGrupoById(elemento.grupo)
-            .subscribe((grupo: Grupo) => {
-              elemento.grupo = grupo.nombre;
-            });
 
-          this.programaAcademicoService
-            .getProgramaAcademicoById(elemento.programa)
-            .subscribe((programa: ProgramaAcademico) => {
-              elemento.programa = programa.nombre;
-            });
+          this.subCategoriaService.getSubCategoriaEspecificaById(elemento.tipo_prod).subscribe((especifica: categoria_especifica) => {
+            elemento.tipo_prod = especifica.descripcion;
+          })
+          this.subCategoriaService.getSubCategoriaById(elemento.subcategoria).subscribe((subcategoria: subCategorias) => {
+            elemento.subcategoria = subcategoria.descripcion;
+          })
+          this.grupoService.getGrupoById(elemento.grupo).subscribe((grupo: Grupo) => {
 
-          this.subCategoriaService
-            .getSubCategoriaGeneralById(elemento.categoria_general)
-            .subscribe(
-              (facu: categoria_general) => {
-                elemento.categoria_general = facu.descripcion;
-              },
-              (error) => console.log(error),
-              () => console.log("Complete")
-            );
+            elemento.grupo = grupo.nombre;
+          })
+
+
+          this.programaAcademicoService.getProgramaAcademicoById(elemento.programa).subscribe((programa: ProgramaAcademico) => {
+            elemento.programa = programa.nombre;
+          });
+
+          this.subCategoriaService.getSubCategoriaGeneralById(elemento.categoria_general).subscribe(
+            (facu: categoria_general) => {
+              elemento.categoria_general = facu.descripcion;
+            },
+            (error) => console.log(error),
+            () => console.log("Complete")
+          );
 
           this.listarProductos.push(elemento);
         }
@@ -234,16 +237,16 @@ export class ProductoComponent implements OnInit {
     const fechaFin = this.formatearFecha(this.filtroProducto.value.EndDate);
     const data: Producto[] = [];
     for (let element of this.listarProductos) {
-      if (
-        new Date(element.fecha).getTime() >= new Date(fechaIni).getTime() &&
-        new Date(element.fecha).getTime() <= new Date(fechaFin).getTime()
-      ) {
+
+      if ((new Date(element.fecha).getTime() >= new Date(fechaIni).getTime()) && (new Date(element.fecha).getTime() <= new Date(fechaFin).getTime())) {
         data.push(element);
+
       }
     }
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+
   }
   vaciarFiltro() {
     this.filtroProducto.reset();
@@ -251,6 +254,8 @@ export class ProductoComponent implements OnInit {
   }
 
   crearProducto() {
+
+
     this.productoService.addProducto(this.productos).subscribe(
       (data: Producto) => {
         this.productos = data;
@@ -277,6 +282,7 @@ export class ProductoComponent implements OnInit {
     this.date = new Date(this.productoN.fecha);
 
     this.productoN.fecha = this.date;
+ 
 
     this.productoService.editProducto(this.productoN).subscribe(
       (data: Producto) => {
@@ -308,16 +314,18 @@ export class ProductoComponent implements OnInit {
   mostrarAgregarMasivo: Boolean = false;
   mostrarEstadistica: Boolean = false;
 
+
   mostrarAgg() {
+
     this.listarFacultades();
     this.listadoGrupos();
     this.listarSubCategoriaGeneral();
     this.listarSubCategoriaEspecifica();
     Swal.fire({
-      title: "Como le gustaría crear el Libro?",
+      title: 'Como le gustaría crear el Libro?',
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: "Individual",
+      confirmButtonText: 'Individual',
       denyButtonText: `Masivo`,
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
@@ -330,13 +338,17 @@ export class ProductoComponent implements OnInit {
       } else if (result.isDenied) {
         this.mostrarAgregar = true;
 
+
         this.mostrarListado = false;
         this.mostrarEditar = false;
 
         this.mostrarMas();
       }
-    });
+    })
   }
+
+
+
 
   mostrarList() {
     this.mostrarListado = true;
@@ -368,6 +380,7 @@ export class ProductoComponent implements OnInit {
   }
 
   mostrarMas() {
+
     this.mostrarAgregarMasivo = true;
     this.mostrarAgregarIndividual = false;
   }
@@ -375,104 +388,148 @@ export class ProductoComponent implements OnInit {
   mostrarIndi() {
     this.mostrarAgregarIndividual = true;
     this.mostrarAgregarMasivo = false;
+
   }
+
 
   //Editat Programa Academico
 
   enviarID(id) {
-    localStorage.removeItem("idLocal");
-    localStorage.setItem("idLocal", id);
+    
+    this.listarSubCategoriaGeneral();
+    this.listarSubCategoriaEspecifica();
+
+    this.mostrarEdit();
+    this.productoService.getProductoByID(id).subscribe(
+      (data: Producto) => {
+        this.productoN = data;
+        console.log(this.productoN);
+
+    
+      
+   
+
+          this.programaAcademicoService.getProgramaAcademicoById( this.productoN.programa).subscribe((programa: ProgramaAcademico) => {
+            this.productoN.programa = programa.nombre;
+
+            this.facultadService.getFacultadById(programa.idFacultad.id).subscribe(
+              (data: Facultad) => {
+                this.facultad = data;
+                this.productoN.facultad=data.nombre;
+                console.log(this.productoN.facultad+"----1---");
+
+              },
+              (error) => console.log(error),
+              () => console.log("Complete")
+            );
+
+          });
+          console.log(this.productoN.facultad+"----2---");
+
+
+          this.subCategoriaService.getSubCategoriaGeneralById( this.productoN.categoria_general).subscribe(
+            (facu: categoria_general) => {
+              this.productoN.categoria_general = facu.descripcion;
+            },
+            (error) => console.log(error),
+            () => console.log("Complete")
+          );
+
+
+        
+
+      },
+      (error) => Swal.fire("Failed!", "Ha ocurrido un error", "warning"),
+      () => console.log("Complete")
+    );
   }
 
   enviarID_Eliminar(id) {
+
     Swal.fire({
-      title: "Do you want to Delete?",
+      title: 'Do you want to Delete?',
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: "Delete",
+      confirmButtonText: 'Delete',
       denyButtonText: `Don't Delete`,
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.productoService.deleteProducto(id).subscribe();
         window.location.reload();
+
       } else if (result.isDenied) {
-        Swal.fire("Product are not deleted", "", "info");
+        Swal.fire('Product are not deleted', '', 'info')
       }
       this.mostrarList();
-    });
+    })
+
   }
   //Listar subCategorias para agregar en el list
-  listarSubCategoriaProducto(dato: any) {
+  listarSubCategoriaProducto( dato: any) {
     console.log("entra");
-    this.listarSubCategoriasProducto = [];
-    const tipo = dato.target.value;
+    this.listarSubCategoriasProducto=[];
+    const tipo =dato.target.value;
+   
+    this.subCategoriaService.getSubCategoriaEspecificaById(tipo).subscribe((subcategoria: subCategorias) => {
+      this.tipo = subcategoria.descripcion;
+    });
+    this.subCategoriaService.getSubCategorias().subscribe((data: subCategorias[]) => {
 
-    this.subCategoriaService
-      .getSubCategoriaEspecificaById(tipo)
-      .subscribe((subcategoria: subCategorias) => {
-        this.tipo = subcategoria.descripcion;
-      });
-    this.subCategoriaService
-      .getSubCategorias()
-      .subscribe((data: subCategorias[]) => {
-        for (let element of data) {
-          const id = element.categoria_especifica;
 
-          if (id == tipo) {
-            this.listarSubCategoriasProducto.push(element);
-          }
+      for(let element of data){
+        const id =element.categoria_especifica;
+  
+        if(id==tipo){
+  
+          this.listarSubCategoriasProducto.push(element);
         }
-      });
+      }
+    });
 
-    this.filteredOptionsSubCategoriaProducto =
-      this.myControlSub.valueChanges.pipe(
-        startWith(""),
-        map((descripcion) => {
-          return this.listarSubCategoriasProducto.filter(
-            (options) => options.descripcion
-          );
-        })
-      );
+    this.filteredOptionsSubCategoriaProducto = this.myControlSub.valueChanges.pipe(
+      startWith(""),
+      map((descripcion) => {
+        return this.listarSubCategoriasProducto.filter((options) => options.descripcion);
+      })
+    );
   }
 
-  //Listar subCategorias Especificas para agregar en el list
-  listarSubCategoriaEspecifica() {
-    this.subCategoriaService
-      .getSubCategoriasEspecificas()
-      .subscribe((data: categoria_especifica[]) => {
-        this.listarSubCategoriasEspecifica = data;
-      });
 
-    this.filteredOptionsSubCategoriaEspecifica =
-      this.myControlSub.valueChanges.pipe(
-        startWith(""),
-        map((descripcion) => {
-          return this.listarSubCategoriasEspecifica.filter(
-            (options) => options.descripcion
-          );
-        })
-      );
+
+
+
+
+
+   //Listar subCategorias Especificas para agregar en el list
+   listarSubCategoriaEspecifica() {
+    this.subCategoriaService.getSubCategoriasEspecificas().subscribe((data: categoria_especifica[]) => {
+      this.listarSubCategoriasEspecifica = data;
+    });
+
+    this.filteredOptionsSubCategoriaEspecifica = this.myControlSub.valueChanges.pipe(
+      startWith(""),
+      map((descripcion) => {
+        return this.listarSubCategoriasEspecifica.filter((options) => options.descripcion);
+      })
+    );
   }
 
-  //Listar subCategorias Especificas para agregar en el list
-  listarSubCategoriaGeneral() {
-    this.subCategoriaService
-      .getSubCategoriasGenerales()
-      .subscribe((data: categoria_general[]) => {
-        this.listarSubCategoriasGeneral = data;
-      });
+   //Listar subCategorias Especificas para agregar en el list
+   listarSubCategoriaGeneral() {
+    this.subCategoriaService.getSubCategoriasGenerales().subscribe((data: categoria_general[]) => {
+      this.listarSubCategoriasGeneral = data;
+    });
 
-    this.filteredOptionsSubCategoriaGeneral =
-      this.myControlSub.valueChanges.pipe(
-        startWith(""),
-        map((descripcion) => {
-          return this.listarSubCategoriasGeneral.filter(
-            (options) => options.descripcion
-          );
-        })
-      );
+    this.filteredOptionsSubCategoriaGeneral = this.myControlSub.valueChanges.pipe(
+      startWith(""),
+      map((descripcion) => {
+        return this.listarSubCategoriasGeneral.filter((options) => options.descripcion);
+      })
+    );
   }
+
+
 
   //Listar Facultades para agregar en el list
   listarFacultades() {
@@ -488,158 +545,177 @@ export class ProductoComponent implements OnInit {
     );
   }
 
+
   listadoGrupos() {
     this.grupoService.getGrupo().subscribe((data: Grupo[]) => {
       this.ListarGrupos = data;
-    });
+    })
   }
 
   listadoProgramas() {
-    this.programaAcademicoService
-      .getProgramasAcademicos()
-      .subscribe((data: ProgramaAcademico[]) => {
-        this.ListarProgramas = data;
-      });
+    this.programaAcademicoService.getProgramasAcademicos().subscribe((data: ProgramaAcademico[]) => {
+      this.ListarProgramas = data;
+    })
   }
 
+
   onFileChange(evt: any) {
-    const target: DataTransfer = <DataTransfer>evt.target;
+    const target: DataTransfer = <DataTransfer>(evt.target);
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
       const bstr: String = e.target.result;
 
-      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: "binary" });
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
 
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-      wb.SheetNames.forEach((sheet) => {
-        this.listarProductos = XLSX.utils.sheet_to_json(wb.Sheets[sheet]);
+
+
+      wb.SheetNames.forEach(sheet => {
+        this.listarProductos = (XLSX.utils.sheet_to_json(wb.Sheets[sheet]));
         // this.convertedJson =JSON.stringify((XLSX.utils.sheet_to_json(wb.Sheets[sheet])),undefined,4);
         Swal.fire({
-          title: "Do you want to save the changes?",
+          title: 'Do you want to save the changes?',
           showDenyButton: true,
           showCancelButton: true,
-          confirmButtonText: "Save",
+          confirmButtonText: 'Save',
           denyButtonText: `Don't save`,
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
+
             this.productoService.agregarListado(this.listarProductos).subscribe(
               (data: any) => {
                 this.listarProductos = data;
-                Swal.fire(
-                  "Register Success!",
-                  "Registrado correctamente",
-                  "success"
-                );
+                Swal.fire("Register Success!", "Registrado correctamente", "success");
                 this.mostrarList();
               },
               (error) =>
-                Swal.fire(
-                  "Register Failed!",
-                  "Ha ocurrido un error",
-                  "warning"
-                ),
+                Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
               () => console.log("Complete")
             );
           } else if (result.isDenied) {
-            Swal.fire("Changes are not saved", "", "info");
+            Swal.fire('Changes are not saved', '', 'info')
             this.mostrarList();
           }
-        });
-      });
+        })
+
+
+
+
+      })
     };
     reader.readAsBinaryString(target.files[0]);
+
   }
+
 
   inicio = new FormControl(new Date().toISOString());
   fin = new FormControl(new Date().toISOString());
 
   datos: Producto[] = [];
   pros: objeto[] = [];
-  nuevo: objeto[] = [];
-  program: String = "";
-  guardarProducto(dato: any) {
-    this.program = dato.target.value;
+  nuevo: objeto[] = []
+  program:String='';
+  guardarProducto(dato: any){ 
+    this.program=dato.target.value;
   }
 
-  guardarGeneral(dato: any) {
-    const general = dato.target.value;
-    this.general = general;
+
+ 
+  guardarGeneral( dato: any) {
+    const general =dato.target.value;
+    this.general=general;
   }
   tipo: String;
   general: String;
   filtrarEstadistica() {
     this.vaciar();
-    this.pros = [];
-    this.nuevo = [];
-    this.datos = [];
+    this.pros=[];
+    this.nuevo=[];
+    this.datos=[];
+
 
     for (let element of this.listarProductos) {
-      if (
-        element.categoria_general == this.general &&
-        element.tipo_prod == this.tipo
-      ) {
-        if (
-          new Date(element.fecha).getTime() >=
-            new Date(this.inicio.value).getTime() &&
-          new Date(element.fecha).getTime() <=
-            new Date(this.fin.value).getTime() &&
-          element.programa == this.program
-        ) {
-          this.datos.push(element);
-        }
+
+      if(element.categoria_general==this.general && element.tipo_prod==this.tipo){
+
+
+      if ((new Date(element.fecha).getTime() >= new Date(this.inicio.value).getTime()) && (new Date(element.fecha).getTime() <= new Date(this.fin.value).getTime()) && element.programa==this.program) {
+
+        this.datos.push(element);
+
+
+
       }
     }
-
-    this.yAxisLabel =
-      this.formatearFecha(new Date(this.inicio.value)) +
-      "  -  " +
-      this.formatearFecha(new Date(this.fin.value));
-
-    console.log(this.listarSubCategoriasProducto);
-    for (let categorias of this.listarSubCategoriasProducto) {
-      var cont: number;
-      cont = 0;
-      for (let element of this.datos) {
-        if (element.subcategoria === categorias.descripcion) {
-          cont = element.cantidad + cont;
-          console.log(cont + "--" + element.cantidad);
-        }
-      }
-      const a = { name: categorias.descripcion, value: cont };
-      this.pros.push(a);
     }
 
+    this.yAxisLabel=this.formatearFecha(new Date(this.inicio.value))+ "  -  "+this.formatearFecha(new Date(this.fin.value));
+
+
+console.log(this.listarSubCategoriasProducto);
+      for (let categorias of this.listarSubCategoriasProducto) {
+       var cont:number;
+          cont=0;
+        for (let element of this.datos) {
+          if (element.subcategoria === categorias.descripcion) {
+           cont=(element.cantidad+cont);
+           console.log(cont+"--"+element.cantidad);
+  
+          }
+          
+  
+        }
+        const a = { name: categorias.descripcion, value: cont }
+        this.pros.push(a);
+  
+  
+       
+      } 
+      
+  
+      
+    
+ 
     this.nuevo = this.pros;
 
-    this.listarProductos = [];
+
+
+
+  
+    this.listarProductos=[];
+
   }
 
-  vaciar() {
-    this.pros = [];
-    this.nuevo = [];
-    this.listarProducto();
-  }
-  listaPro: ProgramaAcademico[] = [];
-  mostrar(dato: any) {
-    this.listaPro = [];
-    const fac = dato.target.value;
-    this.programaAcademicoService
-      .getProgramasAcademicos()
-      .subscribe((data: ProgramaAcademico[]) => {
-        for (let element of data) {
-          const id = element.idFacultad.id;
+vaciar(){
+  this.pros=[];
+    this.nuevo=[];
+  this.listarProducto();
+}
+listaPro:ProgramaAcademico[]=[];
+mostrar(dato: any){
+  this.listaPro=[];
+  const fac =dato.target.value;
+  this.programaAcademicoService.getProgramasAcademicos().subscribe((data: ProgramaAcademico[]) => {
 
-          if (id == fac) {
-            this.listaPro.push(element);
-          }
-        }
-      });
-  }
+    for(let element of data){
+      const id =element.idFacultad.id;
 
-  exportAsXLSX() {
-    this.exportService.exportToExcel(this.dataSource.data, "Productos");
-  }
+      if(id==fac){
+
+        this.listaPro.push(element);
+      }
+    }
+  });
+}
+
+
+
+exportAsXLSX(){
+  this.exportService.exportToExcel(this.dataSource.data, 'Productos');
+
+}
+
 }
