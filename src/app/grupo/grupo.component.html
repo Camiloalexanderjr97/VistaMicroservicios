@@ -338,52 +338,52 @@
                     <div class="row">
                       <div class="col-md-2" hidden>
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupoN.id" [value]="grupos.id"  matInput placeholder="Codigo" type="text" />
+                          <input [(ngModel)]="id" [value]="grupos.id"  matInput placeholder="Codigo" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupoN.sigla" [value]="grupos.sigla" matInput placeholder="Sigla" type="text" />
+                          <input [(ngModel)]="sigla" [value]="grupos.sigla" matInput placeholder="Sigla" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupoN.nombre" [value]="grupos.nombre"  matInput placeholder="Full Name" type="text" />
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupoN.director" [value]="grupos.director" matInput placeholder="Director" type="text" />
-                        </mat-form-field>
-                      </div>
-                      <div class="col">
-                        <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupoN.canIntegrantes" [value]="grupos.canIntegrantes" matInput placeholder="Cant Integrantes" type="number" />
-                        </mat-form-field>
-                      </div>
-                      <div class="col">
-                        <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupoN.fechaConformacion" [value]="grupos.fechaConformacion | date: 'yyyy-MM-dd' " matInput placeholder="Fecha Conformacion" type="date" />
+                          <input [(ngModel)]="nombre" [value]="grupos.nombre"  matInput placeholder="Full Name" type="text" />
                         </mat-form-field>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupoN.semillero" [value]="grupos.semillero" matInput placeholder="Cant Semilleros" type="number" />
+                          <input [(ngModel)]="director" [value]="grupos.director" matInput placeholder="Director" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col">
                         <mat-form-field class="example-full-width">
-                          <input [(ngModel)]="grupoN.lineaInvestigacion" [value]="grupos.lineaInvestigacion" matInput placeholder="# Lineas Invest." type="number" />
+                          <input [(ngModel)]="canIntegrantes" [value]="grupos.canIntegrantes" matInput placeholder="Cant Integrantes" type="number" />
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="fechaConformacion" [value]="grupos.fechaConformacion | date: 'yyyy-MM-dd' " matInput placeholder="Fecha Conformacion" type="date" />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="semillero" [value]="grupos.semillero" matInput placeholder="Cant Semilleros" type="number" />
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="lineaInvestigacion" [value]="grupos.lineaInvestigacion" matInput placeholder="# Lineas Invest." type="number" />
                         </mat-form-field>   
                       </div> 
                       <div class="col">
                         <label for="wrapped">Programa Academico</label>
                         <select class="form-select" aria-label="Default select example"
-                          [(ngModel)]="grupoN.id_departamento" [value]="grupos.id_departamento">
+                          [(ngModel)]="id_departamento" [value]="grupos.id_departamento">
                           <option value="" selected disabled>Please select </option>
                           <option *ngFor="let departamentos of ListarDepartamentos" value="{{ departamentos.id }}">
                             {{ departamentos.name }}

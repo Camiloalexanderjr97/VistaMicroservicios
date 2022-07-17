@@ -31,7 +31,11 @@ import { MatPaginator } from "@angular/material/paginator";
 export class DepartamentoComponent implements OnInit {
 
   departamentos = new Departamento();
+  departamentoN = new Departamento();
   listarDepartamentos: Departamento[]=[];
+
+  name: any="";
+  programa: any="";
 
   ListarProgramas: ProgramaAcademico[]=[];
 
@@ -177,6 +181,7 @@ mostrarEdit() {
 
 crearDepartamento(){
 
+  console.log(this.departamentos)
     this.departamentoService.addDepartamento(this.departamentos).subscribe(
       (data: Departamento) => {
         this.departamentos = data;
@@ -189,7 +194,10 @@ crearDepartamento(){
       () => console.log("Complete")
     );
   }
+  
+  idEnviar: any;
   enviarID(id){
+    this.idEnviar=id;
       this.mostrarEdit();
       this.listadoProgramas();
       this.departamentoService.getDepartamentoById(id).subscribe(
@@ -203,19 +211,49 @@ crearDepartamento(){
       );
     }
     
-    editarDepartamento(){
-      this.departamentoService.editDepartamento(this.departamentos).subscribe(
-        (data: Departamento) => {
-          this.departamentos = data;
+    editar(){
+
+      this.departamentoN.id=this.idEnviar;
+      this.departamentoN.name=this.name;
+      this.departamentoN.progAcademico=this.programa;
+
+      console.log(this.departamentoN);
+      const res= this.validarVacios(this.departamentoN);
+
+      const dato=JSON.stringify(this.departamentoN);
+      console.log(dato);
+      console.log(res);  
+      if(res==true){
+    
+        Swal.fire("Edit Failed!", "Datos Incompletos", "warning");
+       }else{
+      this.departamentoService.editDepartamento(this.departamentoN,this.idEnviar).subscribe(
+        (data: any) => {
+          console.log(data);
   
-          Swal.fire("Register Success!", "Editado correctamente", "success");
+          Swal.fire("Edit Success!", "Editado correctamente", "success");
           this.mostrarList();
         },
         (error) =>
-          Swal.fire("Register Failed!", "Ha ocurrido un error", "warning"),
+          Swal.fire("Edit Failed!", "Ha ocurrido un error", "warning"),
         () => console.log("Complete")
       );
     }
+  }
 
+
+
+  validarVacios(departamento: Departamento): boolean{
+   
+    let vacio =true;
+
+    console.log(departamento.name+"-"+departamento.progAcademico);
+    if(departamento.name!="" && departamento.progAcademico!=0 ){
+      vacio=false;
+
+  }
+
+    return vacio;
+  }
 
 }

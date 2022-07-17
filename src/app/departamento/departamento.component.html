@@ -173,11 +173,11 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form (submit)="editarDepartamento()">
+                  <form (submit)="crearDepartamento()">
                     <div class="row">
 
 
-                      <div class="col-md-2">
+                      <div class="col-md-2" hidden>
                         <mat-form-field class="example-full-width">
                           <input [(ngModel)]="departamentos.id" matInput placeholder="Codigo" type="number" />
                         </mat-form-field>
@@ -256,25 +256,25 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <form (submit)="crearDepartamento()">
+                  <form (submit)="editar()">
                     <div class="row">
 
 
-                      <div class="col-md-2">
+                      <div class="col-md-2" hidden>
                         <mat-form-field class="example-full-width">
-                          <input [value]="departamentos.id" matInput placeholder="Codigo" type="number" />
+                          <input  [value]="departamentos.id" matInput placeholder="Codigo" type="number" />
                         </mat-form-field>
                       </div>
                       <div class="col-md-4">
                         <mat-form-field class="example-full-width">
-                          <input [value]="departamentos.name" matInput placeholder="Full Name" type="text" />
+                          <input [(ngModel)]="name" [value]="departamentos.name" matInput placeholder="Full Name" type="text" />
                         </mat-form-field>
                       </div>
                       <div class="col">
                         <label for="wrapped">Programa Academico</label>
 
                         <select class="form-select" aria-label="Default select example"
-                          [(ngModel)]="departamentos.progAcademico">
+                        [(ngModel)]="programa" [value]="departamentos.programa">
                           <option value="" selected disabled>Please select</option>
                           <option *ngFor="let programa of ListarProgramas" value="{{ programa.id }}">
                             {{ programa.nombre }}

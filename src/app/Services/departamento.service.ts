@@ -1,6 +1,6 @@
 import { Departamento } from './../Modelos/Departamento';
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import {urlGrupo } from "../../environments/environment";
@@ -47,7 +47,8 @@ export class DepartamentoService {
   // }
 
   //modificar un Departamento
-  editDepartamento(departamento: Departamento) {
-    return this.http.put(this.url + "/update/"+departamento.id, Departamento);
+   
+  editDepartamento(departamento: any,id: any) {
+    return this.http.post(`${this.url}/update/${id}`, Departamento,{headers: {'Content-Type': 'application/json; charset=utf-8'}});
   }
 }

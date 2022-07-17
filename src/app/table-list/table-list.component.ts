@@ -140,6 +140,14 @@ edita:boolean;
     this.nuevoUser.password=this.password;
     this.nuevoUser.rol=this.rol;
 
+    
+    const res= this.validarVacios(this.nuevoUser);
+
+    console.log(res);  
+    if(res==true){
+  
+      Swal.fire("Edit Failed!", "Datos Incompletos", "warning");
+     }else{
     this.usuarioService.editUser(this.nuevoUser).subscribe( (data: any) => {
         
       console.log(data)
@@ -153,4 +161,17 @@ edita:boolean;
     () => console.log("Complete")
   )
   }
+}
+
+validarVacios(user: User): boolean{
+   
+  let vacio =true;
+
+  if(user.name!=undefined && user.password!= undefined  && user.rol!=undefined && user.username){
+    vacio=false;
+
+}
+
+  return vacio;
+}
 }

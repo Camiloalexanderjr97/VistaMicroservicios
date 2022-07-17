@@ -34,6 +34,17 @@ export class GrupoComponent implements OnInit {
   displayedColumns: string[] = ["id", "sigla", "nombre","director", "canIntegrantes", "fechaConformacion", "semillero", "lineaInvestigacion","id_departamento"];
   dataSource: any;
 
+  id:any="";
+  sigla:any="";
+  nombre:any="";
+  director:any="";
+  canIntegrantes:any="";
+  fechaConformacion:any="";
+  semillero:any="";
+  lineaInvestigacion:any="";
+  id_departamento:any="";
+
+
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -210,6 +221,14 @@ export class GrupoComponent implements OnInit {
 
     // this.productoN.fecha = this.date;
     this.grupoN.id=this.idEnviar;
+    this.grupoN.sigla=this.sigla;
+   this.grupoN.nombre=this.nombre;
+   this.grupoN.director=this.director;
+   this.grupoN.canIntegrantes=this.canIntegrantes;
+   this.grupoN.fechaConformacion=this.fechaConformacion;
+   this.grupoN.semillero=this.semillero;
+   this.grupoN.lineaInvestigacion=this.lineaInvestigacion;
+   this.grupoN.id_departamento=this.id_departamento;
     console.log(this.grupoN);
    const res= this.validarVacios(this.grupoN);
 
@@ -229,7 +248,9 @@ export class GrupoComponent implements OnInit {
       () => console.log("Complete")
     );
   
-    this.grupoService.editGrupo(this.grupoN).subscribe(
+const dato=JSON.stringify(this.grupoN);
+console.log(dato);
+    this.grupoService.editGrupo(dato).subscribe(
       (data: any) => {
 
         Swal.fire("Register Success!", "Actualizado correctamente", "success");
